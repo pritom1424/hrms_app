@@ -23,24 +23,34 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     AppVars.screenSize = MediaQuery.of(context).size;
-    List<Widget> _navViews() {
+    List<Widget> navViews() {
       return [
         //dashboard
-        const Center(
-          child: Text("dashboard"),
+        Center(
+          child: Text(
+              AppVars.navBarData[_selectedNavIndex].entries.toList()[0].key),
         ),
         //employee list
-        const Center(
-          child: Text("employee list"),
+        Center(
+          child: Text(
+              AppVars.navBarData[_selectedNavIndex].entries.toList()[0].key),
         ),
-        // profile
-        const Center(
-          child: Text("profile"),
+        // users
+        Center(
+          child: Text(
+              AppVars.navBarData[_selectedNavIndex].entries.toList()[0].key),
+        ),
+
+        // settings
+        Center(
+          child: Text(
+              AppVars.navBarData[_selectedNavIndex].entries.toList()[0].key),
         ),
         //logout
-        const Center(
-          child: Text("log out"),
-        )
+        Center(
+          child: Text(
+              AppVars.navBarData[_selectedNavIndex].entries.toList()[0].key),
+        ),
       ];
     }
 
@@ -58,7 +68,7 @@ class _HomePageState extends State<HomePage> {
           currentIndex: _selectedNavIndex,
           onTap: onNavigationTap,
         ),
-        body: _navViews()[_selectedNavIndex],
+        body: navViews()[_selectedNavIndex],
       ),
     );
   }
