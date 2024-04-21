@@ -24,12 +24,24 @@ class _SplasScreenState extends State<SplasScreen> {
   Widget build(BuildContext context) {
     Size scSize = MediaQuery.of(context).size;
     return Scaffold(
-        body: Container(
-            //   height: GenericVars.scSize.height,
-            width: double.infinity,
-            child: Center(
-                child: Image.asset(
-                    "assets/images/dummy_splash_logo.png") //Text("Splash Screen"),
-                )));
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("Welcome To DhakaProkash HRMS",
+            style: TextStyle(
+              fontWeight: FontWeight.w300,
+              fontSize: 20
+            )),
+            SizedBox(height: 30,),
+            Container(
+                //   height: GenericVars.scSize.height,
+                width: double.infinity,
+                child: Center(
+                    child: Image.asset(
+                        "assets/images/dummy_splash_logo.png") //Text("Splash Screen"),
+                    )),
+          ],
+        ));
   }
 }

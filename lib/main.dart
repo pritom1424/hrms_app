@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hrms_app/utils/app_colors/app_colors.dart';
+import 'package:hrms_app/view/leave_cards.dart';
 import 'package:hrms_app/view/pages/home_page.dart';
 import 'package:hrms_app/view/pages/splash_page.dart';
 
@@ -19,7 +20,10 @@ class MyApp extends StatelessWidget {
 //        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           // useMaterial3: true,
           ),
-      home: SplasScreen(),
+      // home: SplasScreen(),
+      home: MyHomePage(),
     );
   }
 }
+
+
