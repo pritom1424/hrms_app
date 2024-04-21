@@ -39,9 +39,9 @@ class NavBarWidget extends StatelessWidget {
           onTap: onTap, //_onItemTapped
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.home), label: "home"),
+                icon: Icon(Icons.grid_view_rounded), label: "dashboard"),
             BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.person_2), label: "employee"),
+                icon: Icon(CupertinoIcons.home), label: "home"),
             BottomNavigationBarItem(
                 icon: Icon(CupertinoIcons.profile_circled), label: "profile"),
             BottomNavigationBarItem(icon: Icon(Icons.logout), label: "logout")
