@@ -1,18 +1,23 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hrms_app/utils/app_variables/app_vars.dart';
+import 'package:hrms_app/view/pages/login_page.dart';
+import 'package:hrms_app/view/pages/navigation_pages/dashboard_page.dart';
+import 'package:hrms_app/view/pages/navigation_pages/employee_page.dart';
+import 'package:hrms_app/view/pages/navigation_pages/logout_page.dart';
+import 'package:hrms_app/view/pages/navigation_pages/settings_page.dart';
+import 'package:hrms_app/view/pages/navigation_pages/users_page.dart';
 import 'package:hrms_app/view/widgets/app_drawer/custom_app_drawer.dart';
 import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
 import 'package:hrms_app/view/widgets/navbar_widget.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class RootNavPage extends StatefulWidget {
+  const RootNavPage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<RootNavPage> createState() => _RootNavPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _RootNavPageState extends State<RootNavPage> {
   int _selectedNavIndex = 0;
 
   @override
@@ -26,31 +31,15 @@ class _HomePageState extends State<HomePage> {
     List<Widget> navViews() {
       return [
         //dashboard
-        Center(
-          child: Text(
-              AppVars.navBarData[_selectedNavIndex].entries.toList()[0].key),
-        ),
+        DashboardPage(),
         //employee list
-        Center(
-          child: Text(
-              AppVars.navBarData[_selectedNavIndex].entries.toList()[0].key),
-        ),
+        EmployeePage(),
         // users
-        Center(
-          child: Text(
-              AppVars.navBarData[_selectedNavIndex].entries.toList()[0].key),
-        ),
-
+        UsersPage(),
         // settings
-        Center(
-          child: Text(
-              AppVars.navBarData[_selectedNavIndex].entries.toList()[0].key),
-        ),
+        SettingsPage(),
         //logout
-        Center(
-          child: Text(
-              AppVars.navBarData[_selectedNavIndex].entries.toList()[0].key),
-        ),
+        LogoutPage(),
       ];
     }
 
@@ -61,8 +50,12 @@ class _HomePageState extends State<HomePage> {
     }
 
     return SafeArea(
+      // top: false,
       child: Scaffold(
-        appBar: const AppbarDefault(),
+        appBar: AppbarDefault(
+          appbarName:
+              AppVars.navBarData[_selectedNavIndex].entries.toList()[0].key,
+        ),
         drawer: const CustomAppDrawer(),
         bottomNavigationBar: NavBarWidget(
           currentIndex: _selectedNavIndex,

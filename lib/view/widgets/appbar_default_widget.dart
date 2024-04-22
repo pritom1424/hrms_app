@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hrms_app/utils/app_variables/app_vars.dart';
+import 'package:hrms_app/utils/app_variables/image_paths.dart';
 
 class AppbarDefault extends StatelessWidget implements PreferredSize {
   final double? widthSize;
@@ -10,10 +11,21 @@ class AppbarDefault extends StatelessWidget implements PreferredSize {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      centerTitle: true,
+      automaticallyImplyLeading: true,
+      //centerTitle: true,
       title: Container(
-          width: AppVars.screenSize.width * (widthSize ?? 0.45),
-          child: Text(appbarName ?? "Home")),
+          width: AppVars.screenSize.width * (widthSize ?? 0.7),
+          child: Row(
+            children: [
+              CircleAvatar(
+                backgroundImage: AssetImage(ImagePath.proPicPath),
+              ),
+              SizedBox(width: 20),
+              Text(
+                appbarName ?? "Home",
+              ),
+            ],
+          )),
 
       /* Image.asset(
           "assets/images/dhakaprokash_logo.png",
@@ -47,7 +59,7 @@ class AppbarDefault extends StatelessWidget implements PreferredSize {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight + 10);
 
   @override
   Widget get child => throw UnimplementedError();

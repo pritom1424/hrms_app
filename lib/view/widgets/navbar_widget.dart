@@ -1,6 +1,3 @@
-import 'dart:ffi';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hrms_app/utils/app_colors/app_colors.dart';
 import 'package:hrms_app/utils/app_variables/app_vars.dart';
@@ -33,12 +30,12 @@ class NavBarWidget extends StatelessWidget {
           child: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
             backgroundColor: Appcolors.navbarBgColor,
-            unselectedItemColor: const Color.fromARGB(255, 49, 150, 153),
+            unselectedItemColor: Appcolors.navbarAppUnSelectColor,
             selectedItemColor: Appcolors.navbarAppSelectColor,
-            showUnselectedLabels: false,
-            showSelectedLabels: false,
+            showUnselectedLabels: true,
+            showSelectedLabels: true,
             currentIndex: currentIndex,
-            iconSize: 25,
+            iconSize: 30,
             onTap: onTap, //_onItemTapped
             items: List.generate(
                 AppVars.navBarData.length,
