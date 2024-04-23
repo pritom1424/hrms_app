@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:hrms_app/utils/app_variables/app_vars.dart';
+import 'package:hrms_app/view/pages/dashboard/add_new_application.dart';
 
 import 'package:hrms_app/view/pages/dashboard/attendance_page/attendance_page.dart';
 import 'package:hrms_app/view/pages/dashboard/files_page/files_page.dart';
@@ -8,6 +9,9 @@ import 'package:hrms_app/view/pages/dashboard/leave_page/leave_page.dart';
 import 'package:hrms_app/view/pages/dashboard/organization_page/organization_page.dart';
 import 'package:hrms_app/view/pages/dashboard/performance_page/performance_page.dart';
 import 'package:hrms_app/view/pages/dashboard/timeSheet_page/time_sheet_page.dart';
+import 'package:hrms_app/view/pages/employee_profile_page.dart';
+import 'package:hrms_app/view/pages/leave_application.dart';
+import 'package:hrms_app/view/pages/notice_page.dart';
 import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
 import 'package:hrms_app/view/widgets/dashboard_page/dashboard_menu_tile.dart';
 import 'package:hrms_app/view/widgets/dashboard_page/search_widget.dart';
@@ -20,21 +24,27 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     List<dynamic> getdashRoutes(int index) {
       return [
-        PerformancePage(
+        AddNewApplicationForm(title: "Add new")
+        // LeaveFormPage("Leave Application Form")
+        /* PerformancePage(
           title: AppVars.dashboardData[index].entries.toList()[0].key,
-        ),
+        ) */
+        ,
         LeaveCards(
           title: AppVars.dashboardData[index].entries.toList()[0].key,
         ),
-        OrganizationPage(
+        /* OrganizationPage(
           title: AppVars.dashboardData[index].entries.toList()[0].key,
-        ),
-        TimeSheetPage(
+        ), */
+        LeaveFormPage("Leave Application Form"),
+        /* TimeSheetPage(
           title: AppVars.dashboardData[index].entries.toList()[0].key,
-        ),
-        AttendancePage(
+        ) */
+        EmployeeProfilePage(id: "id", title: "Employee Profile"),
+        /* AttendancePage(
           title: AppVars.dashboardData[index].entries.toList()[0].key,
-        ),
+        ) */
+        NoticePage(title: "Notice"),
         FilesPage(
           title: AppVars.dashboardData[index].entries.toList()[0].key,
         ),

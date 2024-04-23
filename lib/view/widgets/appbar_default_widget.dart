@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hrms_app/utils/app_variables/app_vars.dart';
 import 'package:hrms_app/utils/app_variables/image_paths.dart';
 
@@ -13,19 +14,31 @@ class AppbarDefault extends StatelessWidget implements PreferredSize {
     return AppBar(
       automaticallyImplyLeading: true,
       //centerTitle: true,
+      titleSpacing: 0,
+      leadingWidth: AppVars.screenSize.width * 0.13,
       title: Container(
-          width: AppVars.screenSize.width * (widthSize ?? 0.7),
-          child: Row(
-            children: [
-              CircleAvatar(
-                backgroundImage: AssetImage(ImagePath.proPicPath),
+        width: AppVars.screenSize.width * (widthSize ?? 1),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            FittedBox(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 5),
+                child: CircleAvatar(
+                  backgroundImage: AssetImage(ImagePath.proPicPath),
+                ),
               ),
-              SizedBox(width: 20),
-              Text(
-                appbarName ?? "Home",
-              ),
-            ],
-          )),
+            ),
+            Text(
+              appbarName ?? "Home",
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              maxLines: 1,
+              textAlign: TextAlign.left,
+            ),
+          ],
+        ),
+      ),
 
       /* Image.asset(
           "assets/images/dhakaprokash_logo.png",
