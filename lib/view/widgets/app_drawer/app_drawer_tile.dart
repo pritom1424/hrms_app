@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hrms_app/utils/app_colors/app_colors.dart';
+import 'package:hrms_app/utils/app_variables/app_vars.dart';
 
 class AppDrawerListTile extends StatelessWidget {
   final int itemIndex;
-  const AppDrawerListTile({super.key, required this.itemIndex});
+  final dynamic route;
+  const AppDrawerListTile({super.key, required this.itemIndex, this.route});
 
   @override
   Widget build(BuildContext context) {
@@ -10,8 +13,20 @@ class AppDrawerListTile extends StatelessWidget {
       decoration: const BoxDecoration(
           border: Border(bottom: BorderSide(width: 0.3, color: Colors.grey))),
       child: ListTile(
-        leading: const Icon(Icons.circle),
-        title: Text("item $itemIndex"),
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => route),
+        ),
+        leading: Icon(
+          AppVars.appdrawerListData[itemIndex].entries.toList()[0].value,
+          color: Appcolors.appdrawerItemIconColor,
+        ),
+        title: Text(
+          AppVars.appdrawerListData[itemIndex].entries.toList()[0].key,
+          style: TextStyle(
+              color: Appcolors.appdrawerItemTextColor,
+              fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }

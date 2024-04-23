@@ -1,9 +1,16 @@
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hrms_app/utils/app_colors/app_colors.dart';
 import 'package:hrms_app/utils/app_variables/app_vars.dart';
+import 'package:hrms_app/utils/app_variables/image_paths.dart';
+import 'package:hrms_app/view/pages/navigation_pages/dashboard_page.dart';
+import 'package:hrms_app/view/pages/navigation_pages/employee_page.dart';
+import 'package:hrms_app/view/pages/navigation_pages/logout_page.dart';
+import 'package:hrms_app/view/pages/navigation_pages/settings_page.dart';
+import 'package:hrms_app/view/pages/navigation_pages/users_page.dart';
 import 'package:hrms_app/view/widgets/app_drawer/app_drawer_tile.dart';
 
 class CustomAppDrawer extends StatelessWidget {
@@ -12,62 +19,92 @@ class CustomAppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // String iconPath = "assets/images/dhakaprokash_icon.png";
+    List<dynamic> getdrawerRoutes(int index) {
+      return [
+        DashboardPage(
+          title: AppVars.appdrawerListData[index].entries.toList()[0].key,
+        ),
+        EmployeePage(
+          title: AppVars.appdrawerListData[index].entries.toList()[0].key,
+        ),
+        UsersPage(
+          title: AppVars.appdrawerListData[index].entries.toList()[0].key,
+        ),
+        SettingsPage(
+          title: AppVars.appdrawerListData[index].entries.toList()[0].key,
+        ),
+        LogoutPage(
+          title: AppVars.appdrawerListData[index].entries.toList()[0].key,
+        ),
+      ];
+    }
+
     return Drawer(
         backgroundColor: Appcolors.appdrawerBgColor, //AppColors.logoColorDeep
         child: Container(
           //height: GenericVars.scSize.height,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               /// Header of the Drawer
-              /* Expanded(
+              Expanded(
                 // borderOnForeground: false,
                 //color: AppColors.logoColorDeep,
 
                 child: InkWell(
                   onTap: () {},
-                  child: FittedBox(
-                    child: Container(
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).padding.top + 5,
-                          bottom: 5),
-                      child: const Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          //  Image.asset("assets/images/dhakaprokash_logo.png"),
-                          CircleAvatar(
-                            radius: 50,
-                            // backgroundColor: Colors.transparent,
-                            child: Icon(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        //  Image.asset("assets/images/dhakaprokash_logo.png"),
+                        FittedBox(
+                          child: CircleAvatar(
+                            radius: 20,
+                            backgroundImage: AssetImage(ImagePath.proPicPath),
+                            /* child: Icon(
                               CupertinoIcons.profile_circled,
-                              size: 100,
+                              size: 40,
+                            ), */
+                          ),
+                        ), // AssetImage("assets/images/character_placeholder.png")
+                        const SizedBox(
+                          width: 12,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Admin',
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.white),
                             ),
-                          ), // AssetImage("assets/images/character_placeholder.png")
-                          SizedBox(
-                            height: 12,
-                          ),
-                          Text(
-                            'User',
-                            style: TextStyle(fontSize: 28, color: Colors.white),
-                          ),
-                          Text(
-                            '@user.com',
-                            style: TextStyle(fontSize: 14, color: Colors.white),
-                          ),
-                        ],
-                      ),
+                            Text(
+                              'admin@gmail.com',
+                              style:
+                                  TextStyle(fontSize: 12, color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ), */
+              ),
               Container(
-                height: AppVars.screenSize.height * 0.9,
-                color: Appcolors.appdrawerListColor,
+                height: AppVars.screenSize.height * 0.75,
+                color: Appcolors.appdrawerListBgColor,
                 child: ListView.builder(
                     padding: const EdgeInsets.all(0),
                     itemCount: 5,
-                    itemBuilder: (ctx, i) => AppDrawerListTile(itemIndex: i)),
+                    itemBuilder: (ctx, i) => AppDrawerListTile(
+                          itemIndex: i,
+                          route: getdrawerRoutes(i)[i],
+                        )),
               ),
               const FittedBox(
                 child: Text(
