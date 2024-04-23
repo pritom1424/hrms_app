@@ -7,6 +7,7 @@ import 'package:hrms_app/view/pages/navigation_pages/logout_page.dart';
 import 'package:hrms_app/view/pages/navigation_pages/settings_page.dart';
 import 'package:hrms_app/view/pages/navigation_pages/users_page.dart';
 import 'package:hrms_app/view/widgets/app_drawer/custom_app_drawer.dart';
+import 'package:hrms_app/view/widgets/app_drawer/drawer_with_menu.dart';
 import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
 import 'package:hrms_app/view/widgets/navbar_widget.dart';
 
@@ -56,7 +57,7 @@ class _RootNavPageState extends State<RootNavPage> {
           appbarName:
               AppVars.navBarData[_selectedNavIndex].entries.toList()[0].key,
         ),
-        drawer: const CustomAppDrawer(),
+        drawer: DrawerWithMenu(), //const CustomAppDrawer(),
         bottomNavigationBar: NavBarWidget(
           currentIndex: _selectedNavIndex,
           onTap: onNavigationTap,

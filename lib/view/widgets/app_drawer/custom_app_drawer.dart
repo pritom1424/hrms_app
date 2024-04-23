@@ -6,11 +6,11 @@ import 'package:flutter/widgets.dart';
 import 'package:hrms_app/utils/app_colors/app_colors.dart';
 import 'package:hrms_app/utils/app_variables/app_vars.dart';
 import 'package:hrms_app/utils/app_variables/image_paths.dart';
-import 'package:hrms_app/view/pages/navigation_pages/dashboard_page.dart';
-import 'package:hrms_app/view/pages/navigation_pages/employee_page.dart';
-import 'package:hrms_app/view/pages/navigation_pages/logout_page.dart';
-import 'package:hrms_app/view/pages/navigation_pages/settings_page.dart';
-import 'package:hrms_app/view/pages/navigation_pages/users_page.dart';
+import 'package:hrms_app/view/pages/drawer_page/drawerpage_1.dart';
+import 'package:hrms_app/view/pages/drawer_page/drawerpage_2.dart';
+import 'package:hrms_app/view/pages/drawer_page/drawerpage_3.dart';
+import 'package:hrms_app/view/pages/drawer_page/drawerpage_4.dart';
+import 'package:hrms_app/view/pages/drawer_page/drawerpage_5.dart';
 import 'package:hrms_app/view/widgets/app_drawer/app_drawer_tile.dart';
 
 class CustomAppDrawer extends StatelessWidget {
@@ -21,19 +21,19 @@ class CustomAppDrawer extends StatelessWidget {
     // String iconPath = "assets/images/dhakaprokash_icon.png";
     List<dynamic> getdrawerRoutes(int index) {
       return [
-        DashboardPage(
+        DrawerPage1(
           title: AppVars.appdrawerListData[index].entries.toList()[0].key,
         ),
-        EmployeePage(
+        DrawerPage2(
           title: AppVars.appdrawerListData[index].entries.toList()[0].key,
         ),
-        UsersPage(
+        DrawerPage3(
           title: AppVars.appdrawerListData[index].entries.toList()[0].key,
         ),
-        SettingsPage(
+        DrawerPage4(
           title: AppVars.appdrawerListData[index].entries.toList()[0].key,
         ),
-        LogoutPage(
+        DrawerPage5(
           title: AppVars.appdrawerListData[index].entries.toList()[0].key,
         ),
       ];
@@ -55,7 +55,7 @@ class CustomAppDrawer extends StatelessWidget {
                 child: InkWell(
                   onTap: () {},
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -74,7 +74,7 @@ class CustomAppDrawer extends StatelessWidget {
                         const SizedBox(
                           width: 12,
                         ),
-                        Column(
+                        const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

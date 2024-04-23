@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
           appBarTheme: AppBarTheme(
             backgroundColor: Appcolors.appBarColor,
             titleTextStyle: const TextStyle(
-                fontWeight: FontWeight.bold, color: Colors.black, fontSize: 25),
+                fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
           ),
           textTheme: const TextTheme(
             //menu item
