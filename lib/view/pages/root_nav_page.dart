@@ -57,7 +57,7 @@ class _RootNavPageState extends State<RootNavPage> {
           appbarName:
               AppVars.navBarData[_selectedNavIndex].entries.toList()[0].key,
         ),
-        drawer: DrawerWithMenu(), //const CustomAppDrawer(),
+        drawer: const CustomAppDrawer(),
         bottomNavigationBar: NavBarWidget(
           currentIndex: _selectedNavIndex,
           onTap: onNavigationTap,

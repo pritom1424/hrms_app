@@ -57,30 +57,32 @@ class DashboardPage extends StatelessWidget {
               appbarName: title,
             )
           : null,
-      body: Column(
-        children: [
-          const SearcWidget(),
-          Container(
-            height: AppVars.screenSize.height * 0.72,
-            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 10),
-            child: GridView.count(
-              crossAxisCount: 2,
-              mainAxisSpacing: 25,
-              crossAxisSpacing: 20,
-              childAspectRatio: 3 / 2.8,
-              children: List.generate(
-                  6,
-                  (index) => DashboardMenuTile(
-                      route: getdashRoutes(index)[index],
-                      imagePath: AppVars.dashboardData[index].entries
-                          .toList()[0]
-                          .value,
-                      menuname: AppVars.dashboardData[index].entries
-                          .toList()[0]
-                          .key)),
-            ),
-          )
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SearcWidget(),
+            Container(
+              height: AppVars.screenSize.height * 0.72,
+              padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 10),
+              child: GridView.count(
+                crossAxisCount: 2,
+                mainAxisSpacing: 25,
+                crossAxisSpacing: 20,
+                childAspectRatio: 3 / 2.8,
+                children: List.generate(
+                    6,
+                    (index) => DashboardMenuTile(
+                        route: getdashRoutes(index)[index],
+                        imagePath: AppVars.dashboardData[index].entries
+                            .toList()[0]
+                            .value,
+                        menuname: AppVars.dashboardData[index].entries
+                            .toList()[0]
+                            .key)),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

@@ -24,11 +24,19 @@ class AppVars {
     {"FILES": ImagePath.dashmenuLogopath[5]},
   ];
 
-  static List<Map<String, IconData>> appdrawerListData = [
+  static List<Map<String, dynamic>> appdrawerListData = [
     {"Dashboard": CupertinoIcons.globe},
-    {"Employee": CupertinoIcons.person_2},
+    {
+      "Employee": CupertinoIcons.person_2,
+      "first list": CupertinoIcons.add_circled,
+      "second lis": CupertinoIcons.app_badge
+    },
     {"Users": CupertinoIcons.person},
-    {"Settings": CupertinoIcons.gear},
+    {
+      "Settings": CupertinoIcons.gear,
+      "top list": CupertinoIcons.today,
+      "bottom list": CupertinoIcons.thermometer
+    },
     {"Logout": Icons.logout},
   ];
 }

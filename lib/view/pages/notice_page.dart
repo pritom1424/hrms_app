@@ -32,7 +32,7 @@ class NoticePage extends StatelessWidget {
                       color: Colors.black26,
                       offset: Offset(
                         5.0,
-                        0.0,
+                        5.0,
                       ),
                       blurRadius: 10.0,
                       spreadRadius: 1.0,
