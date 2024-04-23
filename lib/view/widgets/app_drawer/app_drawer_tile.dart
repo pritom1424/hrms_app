@@ -5,6 +5,7 @@ import 'package:hrms_app/utils/app_variables/app_vars.dart';
 class AppDrawerListTile extends StatelessWidget {
   final int itemIndex;
   final dynamic route;
+
   const AppDrawerListTile({super.key, required this.itemIndex, this.route});
 
   @override
@@ -12,22 +13,55 @@ class AppDrawerListTile extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
           border: Border(bottom: BorderSide(width: 0.3, color: Colors.grey))),
-      child: ListTile(
-        onTap: () => Navigator.push(
+      child: (AppVars.appdrawerListData[itemIndex].entries.toList().length > 1)
+          ? ExpansionTile(
+              leading: Icon(
+                AppVars.appdrawerListData[itemIndex].entries.toList()[0].value,
+                color: Appcolors.appdrawerItemIconColor,
+              ),
+              title: Text(
+                  AppVars.appdrawerListData[itemIndex].entries.toList()[0].key),
+              children: List.generate(
+                AppVars.appdrawerListData[itemIndex].entries.toList().length -
+                    1,
+                (index) => ListTile(
+                  /* onTap: () => Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => route),
-        ),
-        leading: Icon(
-          AppVars.appdrawerListData[itemIndex].entries.toList()[0].value,
-          color: Appcolors.appdrawerItemIconColor,
-        ),
-        title: Text(
-          AppVars.appdrawerListData[itemIndex].entries.toList()[0].key,
-          style: TextStyle(
-              color: Appcolors.appdrawerItemTextColor,
-              fontWeight: FontWeight.bold),
-        ),
-      ),
+        ), */
+                  leading: Icon(
+                    AppVars.appdrawerListData[itemIndex].entries
+                        .toList()[index + 1]
+                        .value,
+                    color: Appcolors.appdrawerItemIconColor,
+                  ),
+                  title: Text(
+                    AppVars.appdrawerListData[itemIndex].entries
+                        .toList()[index + 1]
+                        .key,
+                    style: TextStyle(
+                        color: Appcolors.appdrawerItemTextColor,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            )
+          : ListTile(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => route),
+              ),
+              leading: Icon(
+                AppVars.appdrawerListData[itemIndex].entries.toList()[0].value,
+                color: Appcolors.appdrawerItemIconColor,
+              ),
+              title: Text(
+                AppVars.appdrawerListData[itemIndex].entries.toList()[0].key,
+                style: TextStyle(
+                    color: Appcolors.appdrawerItemTextColor,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
     );
   }
 }
