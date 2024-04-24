@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:hrms_app/utils/app_variables/app_vars.dart';
 import 'package:hrms_app/view/pages/add_new_application.dart';
+import 'package:hrms_app/view/pages/calender_page.dart';
 
 import 'package:hrms_app/view/pages/dashboard/attendance_page/attendance_page.dart';
 import 'package:hrms_app/view/pages/dashboard/files_page/files_page.dart';
@@ -16,6 +17,7 @@ import 'package:hrms_app/view/pages/notice_page.dart';
 import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
 import 'package:hrms_app/view/widgets/dashboard_page/dashboard_menu_tile.dart';
 import 'package:hrms_app/view/widgets/dashboard_page/search_widget.dart';
+import 'package:hrms_app/view/pages/datepicker_page.dart';
 
 class DashboardPage extends StatelessWidget {
   final String? title;
@@ -45,13 +47,13 @@ class DashboardPage extends StatelessWidget {
         /* AttendancePage(
           title: AppVars.dashboardData[index].entries.toList()[0].key,
         ) */
-        NoticePage(title: "Notice"),
+        CalendarScreen(title: "Calender Page"),
+        //datepicker_page
+        /* DateTimePickerScreen(), */
         /* FilesPage(
           title: AppVars.dashboardData[index].entries.toList()[0].key,
         ), */
-        NoticeListPage(
-          title: "Notice List",
-        )
+        NoticePage(title: "Notice"),
       ];
     }
 

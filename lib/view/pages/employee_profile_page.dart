@@ -59,7 +59,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage>
 
     //font related
     TextStyle textStyle =
-        const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
+        const TextStyle(fontSize: 18, fontWeight: FontWeight.normal);
 
     // profile
     TextStyle profileNameTextStyle =
@@ -78,6 +78,8 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage>
                           bottom: BorderSide(
                               width: borderWidth, color: borderColor))),
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Expanded(
                         child: Container(
@@ -116,6 +118,8 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage>
                           bottom: BorderSide(
                               width: borderWidth, color: borderColor))),
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Expanded(
                         child: Container(

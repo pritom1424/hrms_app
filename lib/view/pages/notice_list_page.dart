@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:hrms_app/utils/app_colors/app_colors.dart';
 import 'package:hrms_app/utils/app_variables/image_paths.dart';
 import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
 
@@ -9,27 +11,121 @@ class NoticeListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Map<String, String>> noticeData = [
+      {
+        'title':
+            "Scheduled meeting with Managing Director Sir regarding website",
+        'subtitle':
+            "Access to the office premises will now require the use of security badges. All employees must ensure they have their badges with them at all times."
+      },
+      {
+        'title':
+            "Scheduled meeting with Managing Director Sir regarding website",
+        'subtitle':
+            "Access to the office premises will now require the use of security badges. All employees must ensure they have their badges with them at all times."
+      },
+      {
+        'title':
+            "Scheduled meeting with Managing Director Sir regarding website",
+        'subtitle':
+            "Access to the office premises will now require the use of security badges. All employees must ensure they have their badges with them at all times."
+      },
+      {
+        'title':
+            "Scheduled meeting with Managing Director Sir regarding website",
+        'subtitle':
+            "Access to the office premises will now require the use of security badges. All employees must ensure they have their badges with them at all times."
+      },
+      {
+        'title':
+            "Scheduled meeting with Managing Director Sir regarding website",
+        'subtitle':
+            "Access to the office premises will now require the use of security badges. All employees must ensure they have their badges with them at all times."
+      },
+      {
+        'title':
+            "Scheduled meeting with Managing Director Sir regarding website",
+        'subtitle':
+            "Access to the office premises will now require the use of security badges. All employees must ensure they have their badges with them at all times."
+      },
+      {
+        'title':
+            "Scheduled meeting with Managing Director Sir regarding website",
+        'subtitle':
+            "Access to the office premises will now require the use of security badges. All employees must ensure they have their badges with them at all times."
+      },
+      {
+        'title':
+            "Scheduled meeting with Managing Director Sir regarding website",
+        'subtitle':
+            "Access to the office premises will now require the use of security badges. All employees must ensure they have their badges with them at all times."
+      }
+    ];
+
+    Widget getListTile(String title, String subtitle) {
+      return Container(
+        margin: EdgeInsets.all(5),
+        decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(66, 173, 163, 163),
+                /*  offset: Offset(
+                  4.0,
+                  4.0,
+                ), */
+                blurRadius: 5,
+                spreadRadius: 1,
+              ),
+            ],
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(width: 0.5, color: Colors.white)),
+        padding: EdgeInsets.all(5),
+        child: ListTile(
+          onTap: () => () {},
+          leading: CircleAvatar(
+            radius: 25,
+            backgroundImage: AssetImage(ImagePath.splashLogoPath),
+          ),
+          title: Text(
+            title,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
+          subtitle: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Divider(
+                thickness: 2.2,
+                color: Colors.black12,
+              ),
+              Text(
+                subtitle,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+              ),
+            ],
+          ),
+          titleTextStyle: Theme.of(context).textTheme.headlineLarge,
+        ),
+      );
+    }
+
     return Scaffold(
         appBar: (title == null)
             ? null
             : AppbarDefault(
                 appbarName: title,
               ),
-        body: ListTile(
-          leading: CircleAvatar(
-            backgroundImage: AssetImage(ImagePath.splashLogoPath),
+        body: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          child: Column(
+            children: List.generate(
+                noticeData.length,
+                (index) => getListTile(
+                    noticeData[index].entries.toList()[0].value,
+                    noticeData[index].entries.toList()[1].value)),
           ),
-          title: Text(
-            "Scheduled meeting with Managing Director Sir regarding website",
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-          ),
-          subtitle: Text(
-            "Access to the office premises will now require the use of security badges. All employees must ensure they have their badges with them at all times.",
-            overflow: TextOverflow.ellipsis,
-            maxLines: 3,
-          ),
-          titleTextStyle: Theme.of(context).textTheme.headlineLarge,
         )
 
         /* 

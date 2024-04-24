@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
           scaffoldBackgroundColor: Appcolors.appBgColor,
           appBarTheme: AppBarTheme(
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
             //menu item
             labelMedium: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
             headlineLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            titleLarge: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           )
 //        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           // useMaterial3: true,

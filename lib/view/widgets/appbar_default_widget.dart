@@ -3,11 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hrms_app/utils/app_variables/app_vars.dart';
 import 'package:hrms_app/utils/app_variables/image_paths.dart';
+import 'package:hrms_app/view/pages/notice_list_page.dart';
 
 class AppbarDefault extends StatelessWidget implements PreferredSize {
   final double? widthSize;
   final String? appbarName;
-  const AppbarDefault({this.widthSize, super.key, this.appbarName});
+  final PreferredSizeWidget? bottomAppWidget;
+  const AppbarDefault(
+      {this.widthSize, super.key, this.appbarName, this.bottomAppWidget});
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +42,7 @@ class AppbarDefault extends StatelessWidget implements PreferredSize {
           ],
         ),
       ),
+      bottom: (bottomAppWidget != null) ? bottomAppWidget : null,
 
       /* Image.asset(
           "assets/images/dhakaprokash_logo.png",
@@ -63,6 +67,13 @@ class AppbarDefault extends StatelessWidget implements PreferredSize {
               CupertinoIcons.bell,
             ),
             onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const NoticeListPage(
+                          title: "Notifications",
+                        )),
+              );
               // Handle notification icon tap
             },
           ),

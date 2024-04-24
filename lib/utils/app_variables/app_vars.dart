@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hrms_app/utils/app_variables/image_paths.dart';
+import 'package:hrms_app/view/pages/notice_list_page.dart';
+import 'package:hrms_app/view/pages/notice_page.dart';
 
 class AppVars {
   static Size screenSize = Size(600, 800);
@@ -39,4 +41,18 @@ class AppVars {
     },
     {"Logout": Icons.logout},
   ];
+  static Map<String, List<dynamic>> appsubDrawerListData = {
+    "Employee": [
+      NoticeListPage(title: "Notifications"),
+      NoticePage(
+        title: "Notice",
+      )
+    ],
+    "Settings": [
+      NoticeListPage(title: "Notifications"),
+      NoticePage(
+        title: "Notice",
+      )
+    ]
+  };
 }

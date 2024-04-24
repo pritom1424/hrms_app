@@ -64,9 +64,11 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppbarDefault(
-        appbarName: widget.title,
-      ),
+      appBar: (widget.title == null)
+          ? null
+          : AppbarDefault(
+              appbarName: widget.title,
+            ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(0),
         child: Container(

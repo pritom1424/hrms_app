@@ -10,6 +10,7 @@ class AppDrawerListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // AppVars.appsubDrawerListData[AppVars.appdrawerListData[itemIndex].entries.toList()[0].key]
     return Container(
       decoration: const BoxDecoration(
           border: Border(bottom: BorderSide(width: 0.3, color: Colors.grey))),
@@ -20,15 +21,50 @@ class AppDrawerListTile extends StatelessWidget {
                 color: Appcolors.appdrawerItemIconColor,
               ),
               title: Text(
-                  AppVars.appdrawerListData[itemIndex].entries.toList()[0].key),
+                AppVars.appdrawerListData[itemIndex].entries.toList()[0].key,
+                style: TextStyle(
+                    color: Appcolors.appdrawerItemTextColor,
+                    fontWeight: FontWeight.bold),
+              ),
+              iconColor: Appcolors.appdrawerItemIconColor,
+              collapsedIconColor: Appcolors.appdrawerItemIconColor,
               children: List.generate(
                 AppVars.appdrawerListData[itemIndex].entries.toList().length -
                     1,
                 (index) => ListTile(
-                  /* onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => route),
-        ), */
+                  onTap: () {
+                    AppVars.appsubDrawerListData[AppVars
+                                .appdrawerListData[itemIndex].entries
+                                .toList()[0]
+                                .key] !=
+                            null
+                        ? Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    AppVars.appsubDrawerListData[AppVars
+                                        .appdrawerListData[itemIndex].entries
+                                        .toList()[0]
+                                        .key]![index]),
+                          )
+                        : null;
+                  } /* (
+                    AppVars.appsubDrawerListData[AppVars
+                                .appdrawerListData[itemIndex].entries
+                                .toList()[0]
+                                .key] !=
+                            null
+                        ? Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    AppVars.appsubDrawerListData[AppVars
+                                        .appdrawerListData[itemIndex].entries
+                                        .toList()[0]
+                                        .key]![index]),
+                          )
+                        : null */
+                  ,
                   leading: Icon(
                     AppVars.appdrawerListData[itemIndex].entries
                         .toList()[index + 1]

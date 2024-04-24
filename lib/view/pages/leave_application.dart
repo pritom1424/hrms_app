@@ -62,9 +62,11 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       //Leave Application Form
-      appBar: AppbarDefault(
-        appbarName: widget.title,
-      ),
+      appBar: (widget.title == null)
+          ? null
+          : AppbarDefault(
+              appbarName: widget.title,
+            ),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(16),

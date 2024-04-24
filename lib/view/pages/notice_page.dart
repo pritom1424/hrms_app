@@ -89,9 +89,9 @@ class NoticePage extends StatelessWidget {
                         child: Text(
                           "In light of recent security concerns and our ongoing commitment to ensuring a safe and secure work environment for all employees, we are implementing several new security measures effective immediately.Enhanced Access Control: Access to the office premises will now require the use of security badges. All employees must ensure they have their badges with them at all times. Visitors will be required to sign in at the reception and will be escorted by authorized personnel.Increased Surveillance: We have installed additional security cameras in key areas of the office to monitor and enhance security measures. These cameras will be operational 24/7 and will assist in deterring any potential security threats.",
                           style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 14,
                               fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 94, 88, 88),
+                              color: Colors.grey,
                               fontFamily: "Roboto"),
                           textAlign: TextAlign.justify,
                         ),
