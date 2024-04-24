@@ -9,9 +9,11 @@ class OrganizationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppbarDefault(
-        appbarName: title,
-      ),
+      appBar: (title == null)
+          ? null
+          : AppbarDefault(
+              appbarName: title,
+            ),
       body: Center(
         child: Text("Organization"),
       ),

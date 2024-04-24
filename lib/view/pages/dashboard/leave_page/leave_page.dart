@@ -14,9 +14,11 @@ class _LeaveCardsState extends State<LeaveCards> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppbarDefault(
-        appbarName: widget.title,
-      ),
+      appBar: (widget.title == null)
+          ? null
+          : AppbarDefault(
+              appbarName: widget.title,
+            ),
       body: ListView.builder(
         itemCount: 10,
         itemBuilder: (BuildContext context, int index) {

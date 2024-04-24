@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:hrms_app/utils/app_variables/app_vars.dart';
-import 'package:hrms_app/view/pages/dashboard/add_new_application.dart';
+import 'package:hrms_app/view/pages/add_new_application.dart';
 
 import 'package:hrms_app/view/pages/dashboard/attendance_page/attendance_page.dart';
 import 'package:hrms_app/view/pages/dashboard/files_page/files_page.dart';
@@ -11,6 +11,7 @@ import 'package:hrms_app/view/pages/dashboard/performance_page/performance_page.
 import 'package:hrms_app/view/pages/dashboard/timeSheet_page/time_sheet_page.dart';
 import 'package:hrms_app/view/pages/employee_profile_page.dart';
 import 'package:hrms_app/view/pages/leave_application.dart';
+import 'package:hrms_app/view/pages/notice_list_page.dart';
 import 'package:hrms_app/view/pages/notice_page.dart';
 import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
 import 'package:hrms_app/view/widgets/dashboard_page/dashboard_menu_tile.dart';
@@ -45,18 +46,21 @@ class DashboardPage extends StatelessWidget {
           title: AppVars.dashboardData[index].entries.toList()[0].key,
         ) */
         NoticePage(title: "Notice"),
-        FilesPage(
+        /* FilesPage(
           title: AppVars.dashboardData[index].entries.toList()[0].key,
-        ),
+        ), */
+        NoticeListPage(
+          title: "Notice List",
+        )
       ];
     }
 
     return Scaffold(
-      appBar: (title != null)
-          ? AppbarDefault(
+      appBar: (title == null)
+          ? null
+          : AppbarDefault(
               appbarName: title,
-            )
-          : null,
+            ),
       body: SingleChildScrollView(
         child: Column(
           children: [

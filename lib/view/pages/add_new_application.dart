@@ -30,6 +30,22 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm> {
       TextEditingController();
   final TextEditingController _employeeAddressController =
       TextEditingController();
+
+// form vars
+  EdgeInsetsGeometry contentPadding =
+      const EdgeInsets.symmetric(horizontal: 20);
+  BorderRadius borderRadius = const BorderRadius.all(Radius.circular(20));
+  Color borderColor = const Color.fromARGB(255, 189, 183, 183);
+  double borderWidth = 1.5;
+
+  //font related
+  double labelFontSize = 18;
+  Color labelFontColor = Colors.grey;
+
+  // action button
+  Color actionButtonBgColor = const Color.fromARGB(255, 68, 156, 204);
+  Color actionButtonFgColor = Colors.white;
+
   @override
   void dispose() {
     _employeeIdController.dispose();
@@ -84,24 +100,20 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm> {
                     Expanded(
                       child: TextFormField(
                         controller: _employeeIdController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Employee ID',
-                          contentPadding: EdgeInsets.only(left: 10),
+                          contentPadding: contentPadding,
                           focusedBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
+                              borderRadius: borderRadius,
                               borderSide: BorderSide(
-                                  color: Color.fromARGB(255, 189, 183, 183),
-                                  width: 1.5)),
+                                  color: borderColor, width: borderWidth)),
                           enabledBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
+                              borderRadius: borderRadius,
                               borderSide: BorderSide(
-                                  color: Color.fromARGB(255, 189, 183, 183),
-                                  width: 1.5)),
+                                  color: borderColor, width: borderWidth)),
                           hintText: 'Employee ID',
-                          labelStyle:
-                              TextStyle(fontSize: 18, color: Colors.grey),
+                          labelStyle: TextStyle(
+                              fontSize: labelFontSize, color: labelFontColor),
                         ),
                         validator: (value) {
                           if (value != null && value == "") {
@@ -118,24 +130,20 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm> {
                       child: TextFormField(
                         controller: _employeeCodeController,
                         keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Employee Code',
-                          contentPadding: EdgeInsets.only(left: 10),
+                          contentPadding: contentPadding,
                           focusedBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
+                              borderRadius: borderRadius,
                               borderSide: BorderSide(
-                                  color: Color.fromARGB(255, 189, 183, 183),
-                                  width: 1.5)),
+                                  color: borderColor, width: borderWidth)),
                           enabledBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
+                              borderRadius: borderRadius,
                               borderSide: BorderSide(
-                                  color: Color.fromARGB(255, 189, 183, 183),
-                                  width: 1.5)),
+                                  color: borderColor, width: borderWidth)),
                           hintText: 'Employee Code',
-                          labelStyle:
-                              TextStyle(fontSize: 18, color: Colors.grey),
+                          labelStyle: TextStyle(
+                              fontSize: labelFontSize, color: labelFontColor),
                         ),
                         validator: (value) {
                           if (value != null && value == "") {
@@ -151,40 +159,38 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm> {
 
               TextFormField(
                 controller: _employeeNameController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Employee Name',
-                  contentPadding: EdgeInsets.only(left: 10),
+                  contentPadding: contentPadding,
                   focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   hintText: 'Employee Name',
-                  labelStyle: TextStyle(fontSize: 18, color: Colors.grey),
+                  labelStyle:
+                      TextStyle(fontSize: labelFontSize, color: labelFontColor),
                 ),
               ),
               TextFormField(
                 controller: _employeePhoneController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Phone',
-                  contentPadding: EdgeInsets.only(left: 10),
+                  contentPadding: contentPadding,
                   focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   hintText: 'Phone',
-                  labelStyle: TextStyle(fontSize: 18, color: Colors.grey),
+                  labelStyle:
+                      TextStyle(fontSize: labelFontSize, color: labelFontColor),
                 ),
                 validator: (value) {
                   if (value != null && value == "") {
@@ -195,21 +201,20 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm> {
               ),
               TextFormField(
                 controller: _employeeEmailController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Email',
-                  contentPadding: EdgeInsets.only(left: 10),
+                  contentPadding: contentPadding,
                   focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   hintText: 'Email',
-                  labelStyle: TextStyle(fontSize: 18, color: Colors.grey),
+                  labelStyle:
+                      TextStyle(fontSize: labelFontSize, color: labelFontColor),
                 ),
                 validator: (value) {
                   if (value != null && value == "") {
@@ -220,21 +225,20 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm> {
               ),
               TextFormField(
                 controller: _employeeWebsiteController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Website',
-                  contentPadding: EdgeInsets.only(left: 10),
+                  contentPadding: contentPadding,
                   focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   hintText: 'Website',
-                  labelStyle: TextStyle(fontSize: 18, color: Colors.grey),
+                  labelStyle:
+                      TextStyle(fontSize: labelFontSize, color: labelFontColor),
                 ),
                 validator: (value) {
                   if (value != null && value == "") {
@@ -245,21 +249,20 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm> {
               ),
               TextFormField(
                 controller: _responsibleEmployeeNameController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Responsible Person',
-                  contentPadding: EdgeInsets.only(left: 10),
+                  contentPadding: contentPadding,
                   focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   hintText: 'Responsible Person',
-                  labelStyle: TextStyle(fontSize: 18, color: Colors.grey),
+                  labelStyle:
+                      TextStyle(fontSize: labelFontSize, color: labelFontColor),
                 ),
                 validator: (value) {
                   if (value != null && value == "") {
@@ -270,41 +273,39 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm> {
               ),
               TextFormField(
                 controller: _responsibleEmployeePhoneController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Responsible Person Number',
-                  contentPadding: EdgeInsets.only(left: 10),
+                  contentPadding: contentPadding,
                   focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   hintText: 'Address During Leave',
-                  labelStyle: TextStyle(fontSize: 18, color: Colors.grey),
+                  labelStyle:
+                      TextStyle(fontSize: labelFontSize, color: labelFontColor),
                 ),
               ),
               TextFormField(
                 controller: _employeeAddressController,
                 maxLines: 3,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Address',
-                  contentPadding: EdgeInsets.only(left: 10),
+                  contentPadding: contentPadding,
                   focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   hintText: 'Address',
-                  labelStyle: TextStyle(fontSize: 18, color: Colors.grey),
+                  labelStyle:
+                      TextStyle(fontSize: labelFontSize, color: labelFontColor),
                 ),
                 validator: (value) {
                   if (value != null && value == "") {
@@ -318,14 +319,15 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm> {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
-                    backgroundColor: Color.fromARGB(255, 68, 156, 204),
-                    foregroundColor: Colors.white),
+                      borderRadius: borderRadius,
+                    ),
+                    backgroundColor: actionButtonBgColor,
+                    foregroundColor: actionButtonFgColor),
                 onPressed: () {
                   // Handle apply button press
                   // You can access the values using controller.text for each field
                 },
-                child: Text(
+                child: const Text(
                   'Create',
                   style: TextStyle(fontSize: 18),
                 ),

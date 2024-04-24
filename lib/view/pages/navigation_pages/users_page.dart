@@ -8,11 +8,11 @@ class UsersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: (title != null)
-          ? AppbarDefault(
+      appBar: (title == null)
+          ? null
+          : AppbarDefault(
               appbarName: title,
-            )
-          : null,
+            ),
       body: Center(
         child: Text("Users_page"),
       ),

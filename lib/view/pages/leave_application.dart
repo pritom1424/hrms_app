@@ -26,6 +26,20 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
       TextEditingController();
   final TextEditingController _remarksController = TextEditingController();
 
+  // form vars
+  EdgeInsetsGeometry contentPadding =
+      const EdgeInsets.symmetric(horizontal: 20);
+  BorderRadius borderRadius = const BorderRadius.all(Radius.circular(20));
+  Color borderColor = const Color.fromARGB(255, 189, 183, 183);
+  double borderWidth = 1.5;
+
+  //font related
+  double labelFontSize = 18;
+  Color labelFontColor = Colors.grey;
+
+  // action button
+  Color actionButtonBgColor = const Color.fromARGB(255, 68, 156, 204);
+  Color actionButtonFgColor = Colors.white;
   @override
   void dispose() {
     // Clean up controllers when the widget is disposed
@@ -62,21 +76,20 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
               TextFormField(
                 autofocus: false,
                 controller: _employeeIdController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Employee ID',
-                  contentPadding: EdgeInsets.only(left: 10),
+                  contentPadding: contentPadding,
                   focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   hintText: 'Employee ID',
-                  labelStyle: TextStyle(fontSize: 18, color: Colors.grey),
+                  labelStyle:
+                      TextStyle(fontSize: labelFontSize, color: labelFontColor),
                 ),
                 validator: (value) {
                   if (value != null && value == "") {
@@ -88,21 +101,20 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
               TextFormField(
                 controller: _contactNoController,
                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Contact No',
-                  contentPadding: EdgeInsets.only(left: 10),
+                  contentPadding: contentPadding,
                   focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   hintText: 'Contact No',
-                  labelStyle: TextStyle(fontSize: 18, color: Colors.grey),
+                  labelStyle:
+                      TextStyle(fontSize: labelFontSize, color: labelFontColor),
                 ),
                 validator: (value) {
                   if (value != null && value == "") {
@@ -113,40 +125,38 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
               ),
               TextFormField(
                 controller: _responsibleEmployeeIdController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Responsible Employee ID',
-                  contentPadding: EdgeInsets.only(left: 10),
+                  contentPadding: contentPadding,
                   focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   hintText: 'Responsible Employee ID',
-                  labelStyle: TextStyle(fontSize: 18, color: Colors.grey),
+                  labelStyle:
+                      TextStyle(fontSize: labelFontSize, color: labelFontColor),
                 ),
               ),
               TextFormField(
                 controller: _leaveTypeController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Leave Type',
-                  contentPadding: EdgeInsets.only(left: 10),
+                  contentPadding: contentPadding,
                   focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   hintText: 'Leave Type',
-                  labelStyle: TextStyle(fontSize: 18, color: Colors.grey),
+                  labelStyle:
+                      TextStyle(fontSize: labelFontSize, color: labelFontColor),
                 ),
                 validator: (value) {
                   if (value != null && value == "") {
@@ -157,21 +167,20 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
               ),
               TextFormField(
                 controller: _startDateController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Start Date',
-                  contentPadding: EdgeInsets.only(left: 10),
+                  contentPadding: contentPadding,
                   focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   hintText: 'Start Date',
-                  labelStyle: TextStyle(fontSize: 18, color: Colors.grey),
+                  labelStyle:
+                      TextStyle(fontSize: labelFontSize, color: labelFontColor),
                 ),
                 validator: (value) {
                   if (value != null && value == "") {
@@ -182,21 +191,20 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
               ),
               TextFormField(
                 controller: _endDateController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'End Date',
-                  contentPadding: EdgeInsets.only(left: 10),
+                  contentPadding: contentPadding,
                   focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   hintText: 'End Date',
-                  labelStyle: TextStyle(fontSize: 18, color: Colors.grey),
+                  labelStyle:
+                      TextStyle(fontSize: labelFontSize, color: labelFontColor),
                 ),
                 validator: (value) {
                   if (value != null && value == "") {
@@ -207,21 +215,20 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
               ),
               TextFormField(
                 controller: _totalLeaveDaysController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Total Leave Days',
-                  contentPadding: EdgeInsets.only(left: 10),
+                  contentPadding: contentPadding,
                   focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   hintText: 'Total Leave Days',
-                  labelStyle: TextStyle(fontSize: 18, color: Colors.grey),
+                  labelStyle:
+                      TextStyle(fontSize: labelFontSize, color: labelFontColor),
                 ),
                 validator: (value) {
                   if (value != null && value == "") {
@@ -232,40 +239,38 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
               ),
               TextFormField(
                 controller: _addressDuringLeaveController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Address During Leave',
-                  contentPadding: EdgeInsets.only(left: 10),
+                  contentPadding: contentPadding,
                   focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   hintText: 'Address During Leave',
-                  labelStyle: TextStyle(fontSize: 18, color: Colors.grey),
+                  labelStyle:
+                      TextStyle(fontSize: labelFontSize, color: labelFontColor),
                 ),
               ),
               TextFormField(
                 controller: _reasonForLeaveController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Reason for Leave',
-                  contentPadding: EdgeInsets.only(left: 10),
+                  contentPadding: contentPadding,
                   focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   hintText: 'Reason for Leave',
-                  labelStyle: TextStyle(fontSize: 18, color: Colors.grey),
+                  labelStyle:
+                      TextStyle(fontSize: labelFontSize, color: labelFontColor),
                 ),
                 validator: (value) {
                   if (value != null && value == "") {
@@ -276,21 +281,20 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
               ),
               TextFormField(
                 controller: _remarksController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Remarks',
-                  contentPadding: EdgeInsets.only(left: 10),
+                  contentPadding: contentPadding,
                   focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 189, 183, 183),
-                          width: 1.5)),
+                      borderRadius: borderRadius,
+                      borderSide:
+                          BorderSide(color: borderColor, width: borderWidth)),
                   hintText: 'Remarks',
-                  labelStyle: TextStyle(fontSize: 18, color: Colors.grey),
+                  labelStyle:
+                      TextStyle(fontSize: labelFontSize, color: labelFontColor),
                 ),
               ),
 //              const SizedBox(height: 20),
@@ -298,13 +302,13 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
                 style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
-                    backgroundColor: Color.fromARGB(255, 68, 156, 204),
-                    foregroundColor: Colors.white),
+                    backgroundColor: actionButtonBgColor,
+                    foregroundColor: actionButtonFgColor),
                 onPressed: () {
                   // Handle apply button press
                   // You can access the values using controller.text for each field
                 },
-                child: Text(
+                child: const Text(
                   'Apply',
                   style: TextStyle(fontSize: 18),
                 ),

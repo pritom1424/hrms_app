@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
           textTheme: const TextTheme(
             //menu item
             labelMedium: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
+            headlineLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           )
 //        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           // useMaterial3: true,
