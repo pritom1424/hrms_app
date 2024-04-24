@@ -3,6 +3,213 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 
+class MyDataTable extends StatefulWidget {
+  @override
+  _MyDataTableState createState() => _MyDataTableState();
+}
+
+class _MyDataTableState extends State<MyDataTable> {
+  final List<Map<String, dynamic>> users = [
+    {"id": 1, "name": "John Doe", "location": "New York"},
+    {"id": 2, "name": "Jane Smith", "location": "Los Angeles"},
+    {"id": 3, "name": "Alice Johnson", "location": "Chicago"},
+    {"id": 4, "name": "Alice Johnson", "location": "Chicago"},
+    {"id": 5, "name": "Alice Johnson", "location": "Chicago"},
+  ];
+
+  String newName = '';
+  ScrollController _scrollController = ScrollController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('User Data Table'),
+      ),
+      body: RawScrollbar(
+        thumbColor: Colors.blueAccent,
+        controller: _scrollController,
+        thumbVisibility: true,
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          scrollDirection: Axis.horizontal,
+          child: DataTable(
+            columns: [
+              DataColumn(label: Text('ID')),
+              DataColumn(label: Text('Name')),
+              DataColumn(label: Text('Location')),
+              DataColumn(label: Text('Actions')),
+              DataColumn(label: Text('Edit')),
+              DataColumn(label: Text('Option')),
+            ],
+            rows: List<DataRow>.generate(
+              users.length,
+                  (index) => DataRow(
+                cells: [
+                  DataCell(Text('${users[index]["id"]}')),
+                  DataCell(Text(users[index]["name"])),
+                  DataCell(Text(users[index]["location"])),
+                  DataCell(Text(users[index]["location"])),
+                  DataCell(Text(users[index]["location"])),
+                  DataCell(Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.edit),
+                        onPressed: () {
+                          _editName(context, users[index]);
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () {
+                          _deleteUser(index);
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.picture_as_pdf),
+                        onPressed: () {
+                          // Handle PDF download action
+                        },
+                      ),
+                    ],
+                  )),
+
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _editName(BuildContext context, Map<String, dynamic> user) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) {
+        return Padding(
+          padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: Container(
+            padding: EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  'Edit Name',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 20.0),
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: 'New Name',
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      newName = value;
+                    });
+                  },
+                ),
+                SizedBox(height: 20.0),
+                ElevatedButton(
+                  onPressed: () {
+                    // Update name in the data table
+                    setState(() {
+                      user['name'] = newName;
+                    });
+                    Navigator.pop(context);
+                  },
+                  child: Text('Save'),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _deleteUser(int index) {
+    setState(() {
+      users.removeAt(index);
+    });
+  }
+}
+
+class DateTimePickerScreen extends StatefulWidget {
+  @override
+  _DateTimePickerScreenState createState() => _DateTimePickerScreenState();
+}
+
+class _DateTimePickerScreenState extends State<DateTimePickerScreen> {
+  DateTime _selectedDate = DateTime.now();
+  TimeOfDay _selectedTime = TimeOfDay.now();
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime(2015, 8),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != _selectedDate)
+      setState(() {
+        _selectedDate = picked;
+      });
+  }
+
+  Future<void> _selectTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: _selectedTime,
+    );
+    if (picked != null && picked != _selectedTime)
+      setState(() {
+        _selectedTime = picked;
+      });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Date & Time Picker Demo'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'Selected Date: ${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}',
+            ),
+            SizedBox(height: 20),
+            TextButton(
+              onPressed: () => _selectDate(context),
+              child: Text('Select Date'),
+            ),
+            SizedBox(height: 40),
+            Text(
+              'Selected Time: ${_selectedTime.hour}:${_selectedTime.minute}',
+            ),
+            SizedBox(height: 20),
+            TextButton(
+              onPressed: () => _selectTime(context),
+              child: Text('Select Time'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+
 class PieChartSample3 extends StatefulWidget {
   const PieChartSample3({super.key});
 

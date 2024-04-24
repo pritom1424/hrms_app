@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hrms_app/utils/app_colors/app_colors.dart';
 import 'package:hrms_app/view/pages/root_nav_page.dart';
 import 'package:hrms_app/view/pages/splash_page.dart';
+import 'package:hrms_app/view/test.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
 //        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           // useMaterial3: true,
           ),
-      home: SplashScreen(),
+      home: MyDataTable(),
     );
   }
 }
