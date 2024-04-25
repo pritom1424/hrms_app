@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hrms_app/utils/app_variables/app_vars.dart';
 import 'package:hrms_app/utils/app_variables/image_paths.dart';
@@ -52,7 +53,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage>
       "General info2": "Demo info2s",
     };
     // form vars
-    EdgeInsetsGeometry contentPadding = const EdgeInsets.all(8);
+    EdgeInsetsGeometry contentPadding = const EdgeInsets.only(left: 60);
 
     Color borderColor = const Color.fromARGB(255, 189, 183, 183);
     double borderWidth = 1;
@@ -81,23 +82,31 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Expanded(
+                      Flexible(
                         child: Container(
+                          alignment: Alignment.centerLeft,
                           padding: contentPadding,
-                          child: Text(
-                            formDataTab1.entries.toList()[index].key,
-                            textAlign: TextAlign.center,
-                            style: textStyle,
+                          child: Row(
+                            children: [
+                              Text(
+                                formDataTab1.entries.toList()[index].key,
+                                style: textStyle,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                      Expanded(
+                      Flexible(
                         child: Container(
                           padding: contentPadding,
+                          alignment: Alignment.centerLeft,
                           child: Text(
                             formDataTab1.entries.toList()[index].value,
-                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
                             style: textStyle,
+                            maxLines: 1,
                           ),
                         ),
                       )
@@ -123,21 +132,29 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage>
                     children: [
                       Expanded(
                         child: Container(
+                          alignment: Alignment.centerLeft,
                           padding: contentPadding,
-                          child: Text(
-                            formDataTab2.entries.toList()[index].key,
-                            textAlign: TextAlign.center,
-                            style: textStyle,
+                          child: FittedBox(
+                            child: Text(
+                              formDataTab2.entries.toList()[index].key,
+                              //  textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              style: textStyle,
+                            ),
                           ),
                         ),
                       ),
                       Expanded(
                         child: Container(
+                          alignment: Alignment.centerLeft,
                           padding: contentPadding,
-                          child: Text(
-                            formDataTab2.entries.toList()[index].value,
-                            textAlign: TextAlign.center,
-                            style: textStyle,
+                          child: FittedBox(
+                            child: Text(
+                              formDataTab2.entries.toList()[index].value,
+                              //  textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              style: textStyle,
+                            ),
                           ),
                         ),
                       )

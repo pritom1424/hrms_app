@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:hrms_app/utils/app_variables/app_vars.dart';
 import 'package:hrms_app/view/pages/add_new_application.dart';
+import 'package:hrms_app/view/pages/admin_notice_page.dart';
 import 'package:hrms_app/view/pages/calender_page.dart';
 
 import 'package:hrms_app/view/pages/dashboard/attendance_page/attendance_page.dart';
@@ -14,6 +15,8 @@ import 'package:hrms_app/view/pages/employee_profile_page.dart';
 import 'package:hrms_app/view/pages/leave_application.dart';
 import 'package:hrms_app/view/pages/notice_list_page.dart';
 import 'package:hrms_app/view/pages/notice_page.dart';
+import 'package:hrms_app/view/pages/status_page.dart';
+import 'package:hrms_app/view/pages/user_table.dart';
 import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
 import 'package:hrms_app/view/widgets/dashboard_page/dashboard_menu_tile.dart';
 import 'package:hrms_app/view/widgets/dashboard_page/search_widget.dart';
@@ -27,7 +30,9 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     List<dynamic> getdashRoutes(int index) {
       return [
-        AddNewApplicationForm(title: "Add new")
+        // AdminNoticePage(title: "Admin Notice")
+        MyDataTable()
+        // AddNewApplicationForm(title: "Add new")
         // LeaveFormPage("Leave Application Form")
         /* PerformancePage(
           title: AppVars.dashboardData[index].entries.toList()[0].key,
@@ -47,7 +52,10 @@ class DashboardPage extends StatelessWidget {
         /* AttendancePage(
           title: AppVars.dashboardData[index].entries.toList()[0].key,
         ) */
-        CalendarScreen(title: "Calender Page"),
+        StatusPage(
+          title: "Status Page",
+        ),
+        //CalendarScreen(title: "Calender Page"),
         //datepicker_page
         /* DateTimePickerScreen(), */
         /* FilesPage(
