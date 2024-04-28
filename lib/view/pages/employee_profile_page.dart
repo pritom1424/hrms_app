@@ -173,43 +173,46 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage>
       body: Container(
         height: AppVars.screenSize.height,
         width: double.infinity,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              backgroundImage: AssetImage(ImagePath.proPicPath),
-              radius: 50,
-            ),
-            Text(
-              "Sajjad Hossen",
-              style: profileNameTextStyle,
-            ),
-            Text(
-              "Sr. Developer",
-              style: profileDesignationTextStyle,
-            ),
-            TabBar(
-                tabAlignment: TabAlignment.fill,
-                labelStyle:
-                    TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                controller: tabController,
-                isScrollable: false,
-                tabs: const [
-                  Tab(
-                    icon: Text('Official'),
-                  ),
-                  Tab(
-                    icon: Text('Personal'),
-                  ),
-                ]),
-            Container(
-              height: AppVars.screenSize.height * 0.6,
-              width: double.infinity,
-              child: TabBarView(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                backgroundImage: AssetImage(ImagePath.proPicPath),
+                radius: 50,
+              ),
+              Text(
+                "Sajjad Hossen",
+                style: profileNameTextStyle,
+              ),
+              Text(
+                "Sr. Developer",
+                style: profileDesignationTextStyle,
+              ),
+              TabBar(
+                  tabAlignment: TabAlignment.fill,
+                  labelStyle:
+                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   controller: tabController,
-                  children: [officialTabWidget(), personalTabWidget()]),
-            )
-          ],
+                  isScrollable: false,
+                  tabs: const [
+                    Tab(
+                      icon: Text('Official'),
+                    ),
+                    Tab(
+                      icon: Text('Personal'),
+                    ),
+                  ]),
+              Container(
+                height: AppVars.screenSize.height * 0.6,
+                width: double.infinity,
+                child: TabBarView(
+                    controller: tabController,
+                    children: [officialTabWidget(), personalTabWidget()]),
+              )
+            ],
+          ),
         ),
       ),
     );

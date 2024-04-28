@@ -48,10 +48,13 @@ class DashboardPage extends StatelessWidget {
         /* TimeSheetPage(
           title: AppVars.dashboardData[index].entries.toList()[0].key,
         ) */
-        EmployeeProfilePage(id: "id", title: "Employee Profile"),
+        // EmployeeProfilePage(id: "id", title: "Employee Profile"),
+        AddNewApplicationForm(
+          title: "New Application",
+        ),
         /* AttendancePage(
           title: AppVars.dashboardData[index].entries.toList()[0].key,
-        ) */
+        ), */
         StatusPage(
           title: "Status Page",
         ),

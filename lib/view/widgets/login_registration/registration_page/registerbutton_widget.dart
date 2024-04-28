@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hrms_app/utils/app_components/round_button.dart';
+import 'package:hrms_app/view/pages/login_page.dart';
 
 class RegButtonWidget extends StatelessWidget {
   RegButtonWidget({Key? key}) : super(key: key);
@@ -10,8 +11,8 @@ class RegButtonWidget extends StatelessWidget {
       title: 'Register',
       loading: false, //provider.loginLoading ? true : false,
       onPress: () {
-        /* Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (ctx) => LoginForm())); */
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (ctx) => LoginForm()));
         Navigator.pop(context);
         // if (provider.email.isEmpty) {
         //   // Utils.flushBarErrorMessage('Please enter email', context);

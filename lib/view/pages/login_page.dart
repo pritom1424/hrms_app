@@ -79,8 +79,8 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      /*  Navigator.of(context).push(MaterialPageRoute(
-                          builder: (ctx) => const RegisterPage())); */
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (ctx) => const RegisterPage()));
                     },
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(

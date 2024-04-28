@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:hrms_app/utils/app_components/round_button.dart';
+import 'package:hrms_app/view/pages/root_nav_page.dart';
 //import 'package:provider/provider.dart';
 
 class LoginButtonWidget extends StatelessWidget {
@@ -13,6 +14,8 @@ class LoginButtonWidget extends StatelessWidget {
       title: 'Login',
       loading: false, //provider.loginLoading ? true : false,
       onPress: () {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (ctx) => RootNavPage()));
         /* if (provider.email.isEmpty) {
             // Utils.flushBarErrorMessage('Please enter email', context);
           } else if (AppValidator.emailValidator(provider.email.toString())) {

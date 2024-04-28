@@ -9,6 +9,54 @@ class EmployeePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Map<String, String>> employeeData = [
+      {
+        'name': 'Sajjad Rahman',
+        'phone': '0171600000',
+        'id': '001122',
+        'joining date': '1-1-2024',
+        'gender': 'male',
+        'position': 'app developer',
+        'working shift': 'morning'
+      },
+      {
+        'name': 'Sajjad Rahman',
+        'phone': '0171600000',
+        'id': '001122',
+        'joining date': '1-1-2024',
+        'gender': 'male',
+        'position': 'app developer',
+        'working shift': 'morning'
+      },
+      {
+        'name': 'Sajjad Rahman',
+        'phone': '0171600000',
+        'id': '001122',
+        'joining date': '1-1-2024',
+        'gender': 'male',
+        'position': 'app developer',
+        'working shift': 'morning'
+      },
+      {
+        'name': 'Sajjad Rahman',
+        'phone': '0171600000',
+        'id': '001122',
+        'joining date': '1-1-2024',
+        'gender': 'male',
+        'position': 'app developer',
+        'working shift': 'morning'
+      },
+      {
+        'name': 'Sajjad Rahman',
+        'phone': '0171600000',
+        'id': '001122',
+        'joining date': '1-1-2024',
+        'gender': 'male',
+        'position': 'app developer',
+        'working shift': 'morning'
+      },
+    ];
+
     return Scaffold(
       appBar: (title == null)
           ? null
@@ -18,7 +66,7 @@ class EmployeePage extends StatelessWidget {
       body: SingleChildScrollView(
           child: Column(
         children: List.generate(
-            10,
+            employeeData.length,
             (index) => Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   child: Container(
@@ -48,8 +96,9 @@ class EmployeePage extends StatelessWidget {
                             leading: CircleAvatar(
                               child: Icon(Icons.person),
                             ),
-                            title: Text('Employee Name'),
-                            subtitle: Text('Phone'),
+                            title: Text(employeeData[index]['name'] ?? "name"),
+                            subtitle:
+                                Text(employeeData[index]['phone'] ?? "phone"),
                             // trailing: Text('Date'),
                           ),
                           Padding(
@@ -60,7 +109,7 @@ class EmployeePage extends StatelessWidget {
                                 //  MainAxisAlignment.spaceAround,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Column(
+                                  const Column(
                                     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -74,19 +123,38 @@ class EmployeePage extends StatelessWidget {
                                       Text('Working Shift: '),
                                     ],
                                   ),
-                                  /* Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(employeeData[index]['id'] ??
+                                            "null"),
+                                        Text(employeeData[index]
+                                                ['joining date'] ??
+                                            "null"),
+                                        Text(employeeData[index]['gender'] ??
+                                            "null"),
+                                        Text(employeeData[index]['position'] ??
+                                            "null"),
+                                        Text(employeeData[index]
+                                                ['working shift'] ??
+                                            "null"),
+                                      ]
+
+                                      /* [
                                       Text('Leave: '),
                                       Text('Duration: '),
                                       Text('Leave Date: '),
                                       Text('Leave Balance: '),
                                       Text('Reason: '),
-                                    ],
-                                  ), */
+                                    ], */
+                                      ),
                                 ],
                               )),
                           /* ButtonBar(
