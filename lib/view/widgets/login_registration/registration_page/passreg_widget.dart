@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hrms_app/utils/app_variables/app_vars.dart';
+
+import '../../../../utils/app_variables/app_vars.dart';
 
 class PasswordRegField extends StatelessWidget {
   PasswordRegField({Key? key, required this.focusNode}) : super(key: key);

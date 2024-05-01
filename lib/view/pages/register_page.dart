@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hrms_app/utils/app_variables/app_vars.dart';
-import 'package:hrms_app/utils/app_variables/image_paths.dart';
-import 'package:hrms_app/view/widgets/login_registration/registration_page/emailreg_widget.dart';
-import 'package:hrms_app/view/widgets/login_registration/registration_page/namereg_widget.dart';
-import 'package:hrms_app/view/widgets/login_registration/registration_page/passreg_widget.dart';
-import 'package:hrms_app/view/widgets/login_registration/registration_page/phonereg_widget.dart';
-import 'package:hrms_app/view/widgets/login_registration/registration_page/registerbutton_widget.dart';
+import '../../utils/app_variables/app_vars.dart';
+import '../../utils/app_variables/image_paths.dart';
+import '../widgets/login_registration/registration_page/emailreg_widget.dart';
+import '../widgets/login_registration/registration_page/namereg_widget.dart';
+import '../widgets/login_registration/registration_page/passreg_widget.dart';
+import '../widgets/login_registration/registration_page/phonereg_widget.dart';
+import '../widgets/login_registration/registration_page/registerbutton_widget.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});

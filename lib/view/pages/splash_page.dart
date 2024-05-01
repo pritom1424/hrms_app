@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:hrms_app/utils/app_variables/app_vars.dart';
-import 'package:hrms_app/utils/app_variables/image_paths.dart';
-import 'package:hrms_app/view/pages/login_page.dart';
-import 'package:hrms_app/view/pages/root_nav_page.dart';
-import 'package:hrms_app/view/widgets/splash_page/splash_logo_animation.dart';
+import '../../utils/app_variables/app_vars.dart';
+import '../../utils/app_variables/image_paths.dart';
+import 'login_page.dart';
+import 'root_nav_page.dart';
+import '../widgets/splash_page/splash_logo_animation.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({super.key});

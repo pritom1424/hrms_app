@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:hrms_app/utils/app_colors/app_colors.dart';
-import 'package:hrms_app/utils/app_variables/app_vars.dart';
+import '../../../utils/app_colors/app_colors.dart';
+import '../../../utils/app_variables/app_vars.dart';
 
 class AppDrawerListTile extends StatelessWidget {
   final int itemIndex;
   final dynamic route;
+  final bool? isReplacement;
 
-  const AppDrawerListTile({super.key, required this.itemIndex, this.route});
+  const AppDrawerListTile(
+      {super.key, required this.itemIndex, this.route, this.isReplacement});
 
   @override
   Widget build(BuildContext context) {
@@ -38,15 +40,27 @@ class AppDrawerListTile extends StatelessWidget {
                                 .toList()[0]
                                 .key] !=
                             null
-                        ? Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    AppVars.appsubDrawerListData[AppVars
-                                        .appdrawerListData[itemIndex].entries
-                                        .toList()[0]
-                                        .key]![index]),
-                          )
+                        ? (isReplacement == null || isReplacement == false)
+                            ? Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        AppVars.appsubDrawerListData[AppVars
+                                            .appdrawerListData[itemIndex]
+                                            .entries
+                                            .toList()[0]
+                                            .key]![index]),
+                              )
+                            : Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        AppVars.appsubDrawerListData[AppVars
+                                            .appdrawerListData[itemIndex]
+                                            .entries
+                                            .toList()[0]
+                                            .key]![index]),
+                              )
                         : null;
                   } /* (
                     AppVars.appsubDrawerListData[AppVars

@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hrms_app/utils/app_methods/app_methods.dart';
-import 'package:hrms_app/utils/app_variables/app_vars.dart';
-import 'package:hrms_app/view/pages/newsfeed_page.dart';
-import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
+import '../../../../utils/app_methods/app_methods.dart';
+import '../../../../utils/app_variables/app_vars.dart';
+import '../../newsfeed_page.dart';
+import '../../../widgets/appbar_default_widget.dart';
 
 class LeaveCards extends StatefulWidget {
   final String? title;

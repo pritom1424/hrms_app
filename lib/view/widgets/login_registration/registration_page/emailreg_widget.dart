@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hrms_app/utils/app_methods/app_methods.dart';
-import 'package:hrms_app/utils/app_variables/app_vars.dart';
+import '../../../../utils/app_methods/app_methods.dart';
+import '../../../../utils/app_variables/app_vars.dart';
 
 class EmailRegField extends StatelessWidget {
   final FocusNode focusNode, passwordFocusNode;

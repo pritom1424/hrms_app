@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hrms_app/utils/app_colors/app_colors.dart';
-import 'package:hrms_app/utils/app_variables/image_paths.dart';
-import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
+import '../../utils/app_colors/app_colors.dart';
+import '../../utils/app_variables/app_vars.dart';
+import '../../utils/app_variables/image_paths.dart';
+import '../widgets/appbar_default_widget.dart';
 
 class NoticeListPage extends StatelessWidget {
   final String? title;
@@ -11,57 +12,6 @@ class NoticeListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Map<String, String>> noticeData = [
-      {
-        'title':
-            "Scheduled meeting with Managing Director Sir regarding website",
-        'subtitle':
-            "Access to the office premises will now require the use of security badges. All employees must ensure they have their badges with them at all times."
-      },
-      {
-        'title':
-            "Scheduled meeting with Managing Director Sir regarding website",
-        'subtitle':
-            "Access to the office premises will now require the use of security badges. All employees must ensure they have their badges with them at all times."
-      },
-      {
-        'title':
-            "Scheduled meeting with Managing Director Sir regarding website",
-        'subtitle':
-            "Access to the office premises will now require the use of security badges. All employees must ensure they have their badges with them at all times."
-      },
-      {
-        'title':
-            "Scheduled meeting with Managing Director Sir regarding website",
-        'subtitle':
-            "Access to the office premises will now require the use of security badges. All employees must ensure they have their badges with them at all times."
-      },
-      {
-        'title':
-            "Scheduled meeting with Managing Director Sir regarding website",
-        'subtitle':
-            "Access to the office premises will now require the use of security badges. All employees must ensure they have their badges with them at all times."
-      },
-      {
-        'title':
-            "Scheduled meeting with Managing Director Sir regarding website",
-        'subtitle':
-            "Access to the office premises will now require the use of security badges. All employees must ensure they have their badges with them at all times."
-      },
-      {
-        'title':
-            "Scheduled meeting with Managing Director Sir regarding website",
-        'subtitle':
-            "Access to the office premises will now require the use of security badges. All employees must ensure they have their badges with them at all times."
-      },
-      {
-        'title':
-            "Scheduled meeting with Managing Director Sir regarding website",
-        'subtitle':
-            "Access to the office premises will now require the use of security badges. All employees must ensure they have their badges with them at all times."
-      }
-    ];
-
     Widget getListTile(String title, String subtitle) {
       return Container(
         margin: EdgeInsets.all(5),
@@ -121,10 +71,10 @@ class NoticeListPage extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 5),
           child: Column(
             children: List.generate(
-                noticeData.length,
+                AppVars.noticeData.length,
                 (index) => getListTile(
-                    noticeData[index].entries.toList()[0].value,
-                    noticeData[index].entries.toList()[1].value)),
+                    AppVars.noticeData[index].entries.toList()[0].value,
+                    AppVars.noticeData[index].entries.toList()[1].value)),
           ),
         )
 

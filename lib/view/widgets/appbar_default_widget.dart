@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/widgets.dart';
-import 'package:hrms_app/utils/app_variables/app_vars.dart';
-import 'package:hrms_app/utils/app_variables/image_paths.dart';
-import 'package:hrms_app/view/pages/notice_list_page.dart';
+import '../../utils/app_variables/app_vars.dart';
+import '../../utils/app_variables/image_paths.dart';
+import '../pages/notice_list_page.dart';
 
 class AppbarDefault extends StatelessWidget implements PreferredSize {
   final double? widthSize;
@@ -56,8 +55,8 @@ class AppbarDefault extends StatelessWidget implements PreferredSize {
         // Notification Icon
         Badge(
           largeSize: 13,
-          label: const Text(
-            "0",
+          label: Text(
+            AppVars.noticeData.length.toString(),
             style: TextStyle(fontSize: 10),
           ),
           offset: const Offset(-12, 6),

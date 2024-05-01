@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hrms_app/utils/app_variables/app_vars.dart';
+import '../app_variables/app_vars.dart';
 
 class AppMethods {
   // we will use this function to shift focus from one text field to another text field

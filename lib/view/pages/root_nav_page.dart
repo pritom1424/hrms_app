@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:hrms_app/utils/app_variables/app_vars.dart';
-import 'package:hrms_app/view/pages/employee_profile_page.dart';
-import 'package:hrms_app/view/pages/login_page.dart';
-import 'package:hrms_app/view/pages/navigation_pages/dashboard_page.dart';
-import 'package:hrms_app/view/pages/navigation_pages/employee_page.dart';
-import 'package:hrms_app/view/pages/navigation_pages/logout_page.dart';
-import 'package:hrms_app/view/pages/navigation_pages/settings_page.dart';
-import 'package:hrms_app/view/pages/navigation_pages/users_page.dart';
-import 'package:hrms_app/view/widgets/app_drawer/custom_app_drawer.dart';
-import 'package:hrms_app/view/widgets/app_drawer/drawer_with_menu.dart';
-import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
-import 'package:hrms_app/view/widgets/navbar_widget.dart';
+import '../../utils/app_variables/app_vars.dart';
+import 'employee_profile_page.dart';
+import 'login_page.dart';
+import 'navigation_pages/dashboard_page.dart';
+import 'navigation_pages/employee_page.dart';
+import 'navigation_pages/logout_page.dart';
+import 'navigation_pages/settings_page.dart';
+import 'navigation_pages/users_page.dart';
+import '../widgets/app_drawer/custom_app_drawer.dart';
+import '../widgets/app_drawer/drawer_with_menu.dart';
+import '../widgets/appbar_default_widget.dart';
+import '../widgets/navbar_widget.dart';
 
 class RootNavPage extends StatefulWidget {
   const RootNavPage({super.key});

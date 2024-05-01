@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hrms_app/utils/app_variables/image_paths.dart';
-import 'package:hrms_app/view/pages/notice_list_page.dart';
-import 'package:hrms_app/view/pages/notice_page.dart';
+import 'image_paths.dart';
+import '../../view/pages/notice_list_page.dart';
+import '../../view/pages/notice_page.dart';
 
 class AppVars {
   static Size screenSize = Size(600, 800);
@@ -55,4 +55,46 @@ class AppVars {
       )
     ]
   };
+  static List<Map<String, String>> noticeData = [
+    {
+      'title': "Scheduled meeting with Managing Director Sir regarding website",
+      'subtitle':
+          "Access to the office premises will now require the use of security badges. All employees must ensure they have their badges with them at all times."
+    },
+    {
+      'title': "Scheduled meeting with Managing Director Sir regarding website",
+      'subtitle':
+          "Access to the office premises will now require the use of security badges. All employees must ensure they have their badges with them at all times."
+    },
+    {
+      'title': "Scheduled meeting with Managing Director Sir regarding website",
+      'subtitle':
+          "Access to the office premises will now require the use of security badges. All employees must ensure they have their badges with them at all times."
+    },
+    {
+      'title': "Scheduled meeting with Managing Director Sir regarding website",
+      'subtitle':
+          "Access to the office premises will now require the use of security badges. All employees must ensure they have their badges with them at all times."
+    },
+    {
+      'title': "Scheduled meeting with Managing Director Sir regarding website",
+      'subtitle':
+          "Access to the office premises will now require the use of security badges. All employees must ensure they have their badges with them at all times."
+    },
+    {
+      'title': "Scheduled meeting with Managing Director Sir regarding website",
+      'subtitle':
+          "Access to the office premises will now require the use of security badges. All employees must ensure they have their badges with them at all times."
+    },
+    {
+      'title': "Scheduled meeting with Managing Director Sir regarding website",
+      'subtitle':
+          "Access to the office premises will now require the use of security badges. All employees must ensure they have their badges with them at all times."
+    },
+    {
+      'title': "Scheduled meeting with Managing Director Sir regarding website",
+      'subtitle':
+          "Access to the office premises will now require the use of security badges. All employees must ensure they have their badges with them at all times."
+    }
+  ];
 }

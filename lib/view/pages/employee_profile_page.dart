@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hrms_app/utils/app_variables/app_vars.dart';
-import 'package:hrms_app/utils/app_variables/image_paths.dart';
-import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
+import '../../utils/app_variables/app_vars.dart';
+import '../../utils/app_variables/image_paths.dart';
+import '../widgets/appbar_default_widget.dart';
 
 class EmployeeProfilePage extends StatefulWidget {
   final String id;
@@ -40,7 +40,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage>
       "Working Shift": "Regular",
       "Joining Date": "01.06.2021",
       "Gender": "Male",
-      "Position": "Sr. App Developer",
+      "Position": "App Developer",
       "General info1": "Demo info1",
       "General info2": "Demo info2s",
     };
@@ -187,7 +187,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage>
                 style: profileNameTextStyle,
               ),
               Text(
-                "Sr. Developer",
+                "App Developer",
                 style: profileDesignationTextStyle,
               ),
               TabBar(

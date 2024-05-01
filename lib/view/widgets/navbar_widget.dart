@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hrms_app/utils/app_colors/app_colors.dart';
-import 'package:hrms_app/utils/app_variables/app_vars.dart';
+import '../../utils/app_colors/app_colors.dart';
+import '../../utils/app_variables/app_vars.dart';
 
 class NavBarWidget extends StatelessWidget {
   final int currentIndex;

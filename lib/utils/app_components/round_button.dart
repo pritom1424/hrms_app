@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hrms_app/utils/app_variables/app_vars.dart';
+
+import '../app_variables/app_vars.dart';
 
 class RoundButton extends StatelessWidget {
   final String title;
