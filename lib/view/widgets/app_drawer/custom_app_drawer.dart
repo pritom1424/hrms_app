@@ -3,15 +3,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hrms_app/utils/app_colors/app_colors.dart';
-import 'package:hrms_app/utils/app_variables/app_vars.dart';
-import 'package:hrms_app/utils/app_variables/image_paths.dart';
-import 'package:hrms_app/view/pages/drawer_page/drawerpage_1.dart';
-import 'package:hrms_app/view/pages/drawer_page/drawerpage_2.dart';
-import 'package:hrms_app/view/pages/drawer_page/drawerpage_3.dart';
-import 'package:hrms_app/view/pages/drawer_page/drawerpage_4.dart';
-import 'package:hrms_app/view/pages/drawer_page/drawerpage_5.dart';
-import 'package:hrms_app/view/widgets/app_drawer/app_drawer_tile.dart';
+import '../../../utils/app_colors/app_colors.dart';
+import '../../../utils/app_variables/app_vars.dart';
+import '../../../utils/app_variables/image_paths.dart';
+import '../../pages/drawer_page/drawerpage_1.dart';
+import '../../pages/drawer_page/drawerpage_2.dart';
+import '../../pages/drawer_page/drawerpage_3.dart';
+import '../../pages/drawer_page/drawerpage_4.dart';
+import '../../pages/drawer_page/drawerpage_5.dart';
+import '../../pages/login_page.dart';
+import 'app_drawer_tile.dart';
 
 class CustomAppDrawer extends StatelessWidget {
   const CustomAppDrawer({super.key});
@@ -33,9 +34,10 @@ class CustomAppDrawer extends StatelessWidget {
         DrawerPage4(
           title: AppVars.appdrawerListData[index].entries.toList()[0].key,
         ),
-        DrawerPage5(
+        /* DrawerPage5(
           title: AppVars.appdrawerListData[index].entries.toList()[0].key,
-        ),
+        ), */
+        LoginForm()
       ];
     }
 

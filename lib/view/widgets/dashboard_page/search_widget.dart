@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hrms_app/utils/app_colors/app_colors.dart';
-import 'package:hrms_app/utils/app_variables/app_strings.dart';
+import '../../../utils/app_colors/app_colors.dart';
+import '../../../utils/app_variables/app_strings.dart';
 
 class SearcWidget extends StatefulWidget {
   const SearcWidget({super.key});
@@ -67,9 +67,10 @@ class _SearcWidgetState extends State<SearcWidget> {
                     decoration: InputDecoration(
                         filled: true,
                         fillColor: Appcolors.searchbarBgColor,
-                        /* focusedBorder: OutlineInputBorder(
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
                             borderSide: BorderSide(
-                                width: 1, color: Appcolors.searchbarBgColor)), */
+                                width: 1, color: Appcolors.searchbarBgColor)),
                         contentPadding:
                             const EdgeInsets.symmetric(horizontal: 5),
                         hintText: AppStrings.searchPlaceholderText,

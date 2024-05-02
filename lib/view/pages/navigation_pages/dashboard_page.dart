@@ -1,20 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:hrms_app/view/pages/admin_panel.dart';
+import 'package:hrms_app/view/pages/employee_management.dart';
+import 'package:hrms_app/view/pages/overview_page.dart';
+import 'package:hrms_app/view/pages/statistics_page.dart';
 
-import 'package:hrms_app/utils/app_variables/app_vars.dart';
-import 'package:hrms_app/view/pages/dashboard/add_new_application.dart';
+import '../../../utils/app_variables/app_vars.dart';
+import '../add_new_application.dart';
+import '../admin_notice_page.dart';
+import '../calender_page.dart';
 
-import 'package:hrms_app/view/pages/dashboard/attendance_page/attendance_page.dart';
-import 'package:hrms_app/view/pages/dashboard/files_page/files_page.dart';
-import 'package:hrms_app/view/pages/dashboard/leave_page/leave_page.dart';
-import 'package:hrms_app/view/pages/dashboard/organization_page/organization_page.dart';
-import 'package:hrms_app/view/pages/dashboard/performance_page/performance_page.dart';
-import 'package:hrms_app/view/pages/dashboard/timeSheet_page/time_sheet_page.dart';
-import 'package:hrms_app/view/pages/employee_profile_page.dart';
-import 'package:hrms_app/view/pages/leave_application.dart';
-import 'package:hrms_app/view/pages/notice_page.dart';
-import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
-import 'package:hrms_app/view/widgets/dashboard_page/dashboard_menu_tile.dart';
-import 'package:hrms_app/view/widgets/dashboard_page/search_widget.dart';
+import '../dashboard/attendance_page/attendance_page.dart';
+import '../dashboard/files_page/files_page.dart';
+import '../dashboard/leave_page/leave_page.dart';
+import '../dashboard/organization_page/organization_page.dart';
+import '../dashboard/performance_page/performance_page.dart';
+import '../dashboard/timeSheet_page/time_sheet_page.dart';
+import '../employee_profile_page.dart';
+import '../leave_application.dart';
+import '../notice_list_page.dart';
+import '../notice_page.dart';
+import '../status_page.dart';
+import '../user_table.dart';
+import '../../widgets/appbar_default_widget.dart';
+import '../../widgets/dashboard_page/dashboard_menu_tile.dart';
+import '../../widgets/dashboard_page/search_widget.dart';
+import '../datepicker_page.dart';
 
 class DashboardPage extends StatelessWidget {
   final String? title;
@@ -24,7 +34,9 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     List<dynamic> getdashRoutes(int index) {
       return [
-        AddNewApplicationForm(title: "Add new")
+        // AdminNoticePage(title: "Admin Notice")
+        MyDataTable()
+        // AddNewApplicationForm(title: "Add new")
         // LeaveFormPage("Leave Application Form")
         /* PerformancePage(
           title: AppVars.dashboardData[index].entries.toList()[0].key,
@@ -36,27 +48,50 @@ class DashboardPage extends StatelessWidget {
         /* OrganizationPage(
           title: AppVars.dashboardData[index].entries.toList()[0].key,
         ), */
-        LeaveFormPage("Leave Application Form"),
+        AdminPanel(
+          title: "Admin Panel",
+        ),
+        /* StatisticsPage(
+          title: "Statistics",
+        ), */ //LeaveFormPage("Leave Application Form"),
         /* TimeSheetPage(
           title: AppVars.dashboardData[index].entries.toList()[0].key,
         ) */
-        EmployeeProfilePage(id: "id", title: "Employee Profile"),
-        /* AttendancePage(
-          title: AppVars.dashboardData[index].entries.toList()[0].key,
-        ) */
-        NoticePage(title: "Notice"),
-        FilesPage(
-          title: AppVars.dashboardData[index].entries.toList()[0].key,
+        // EmployeeProfilePage(id: "id", title: "Employee Profile"),
+        AddNewApplicationForm(
+          title: "New Application",
         ),
+        /*   AttendancePage(
+          title: AppVars.dashboardData[index].entries.toList()[0].key,
+        ), */
+        /*  StatisticsPage(
+          title: "Statistics",
+        ), */
+        OverviewPage(
+          title: "Overview",
+        ),
+        /*  StatusPage(
+          title: "Status Page",
+        ), */
+        //CalendarScreen(title: "Calender Page"),
+        //datepicker_page
+        /* DateTimePickerScreen(), */
+        /* FilesPage(
+          title: AppVars.dashboardData[index].entries.toList()[0].key,
+        ), */
+        //NoticePage(title: "Notice"),
+        EmployeeManagement(
+          title: "Employee Management",
+        )
       ];
     }
 
     return Scaffold(
-      appBar: (title != null)
-          ? AppbarDefault(
+      appBar: (title == null)
+          ? null
+          : AppbarDefault(
               appbarName: title,
-            )
-          : null,
+            ),
       body: SingleChildScrollView(
         child: Column(
           children: [

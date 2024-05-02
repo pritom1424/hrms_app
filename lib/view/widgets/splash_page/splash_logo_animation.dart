@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hrms_app/utils/app_variables/app_vars.dart';
+import '../../../utils/app_variables/app_vars.dart';
 
 class SplashLogoAnimation extends StatefulWidget {
   final String imagePath;

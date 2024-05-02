@@ -1,10 +1,11 @@
-/* import 'package:dummy_app/Utils/generic_vars/generic_vars.dart';
-import 'package:dummy_app/Views/widgets/login_registration/registration_page/emailreg_widget.dart';
-import 'package:dummy_app/Views/widgets/login_registration/registration_page/namereg_widget.dart';
-import 'package:dummy_app/Views/widgets/login_registration/registration_page/passreg_widget.dart';
-import 'package:dummy_app/Views/widgets/login_registration/registration_page/phonereg_widget.dart';
-import 'package:dummy_app/Views/widgets/login_registration/registration_page/registerbutton_widget.dart';
 import 'package:flutter/material.dart';
+import '../../utils/app_variables/app_vars.dart';
+import '../../utils/app_variables/image_paths.dart';
+import '../widgets/login_registration/registration_page/emailreg_widget.dart';
+import '../widgets/login_registration/registration_page/namereg_widget.dart';
+import '../widgets/login_registration/registration_page/passreg_widget.dart';
+import '../widgets/login_registration/registration_page/phonereg_widget.dart';
+import '../widgets/login_registration/registration_page/registerbutton_widget.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -41,16 +42,16 @@ class _RegisterPageState extends State<RegisterPage> {
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
           child: Container(
-            height: GenericVars.scSize.height * 0.8,
+            height: AppVars.screenSize.height * 0.8,
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Image.asset(
-                  'assets/images/dhakaprokash_logo.png',
-                  width: GenericVars.scSize.width * 0.6, // Adjust as needed
-                  height: GenericVars.scSize.height * 0.06,
+                  ImagePath.splashLogoPath,
+                  width: AppVars.screenSize.width * 0.6, // Adjust as needed
+                  height: AppVars.screenSize.height * 0.06,
                 ),
                 SizedBox(
                   height: 20,
@@ -82,7 +83,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     print("google");
                   },
                   child: Container(
-                    height: GenericVars.scSize.height * 0.07,
+                    height: AppVars.screenSize.height * 0.07,
                     decoration: BoxDecoration(
                       border: Border.all(
                         width: 0.8,
@@ -118,7 +119,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     print('facebook');
                   },
                   child: Container(
-                    height: GenericVars.scSize.height * 0.07,
+                    height: AppVars.screenSize.height * 0.07,
                     decoration: BoxDecoration(
                       border: Border.all(
                         width: 0.8,
@@ -154,4 +155,3 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 }
- */

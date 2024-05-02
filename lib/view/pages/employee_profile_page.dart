@@ -1,15 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hrms_app/utils/app_variables/app_vars.dart';
-import 'package:hrms_app/utils/app_variables/image_paths.dart';
-import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
+import '../../utils/app_variables/app_vars.dart';
+import '../../utils/app_variables/image_paths.dart';
+import '../widgets/appbar_default_widget.dart';
 
 class EmployeeProfilePage extends StatefulWidget {
   final String id;
-  final String title;
+  final String? title;
 
-  const EmployeeProfilePage({super.key, required this.id, required this.title});
+  const EmployeeProfilePage({super.key, required this.id, this.title});
 
   @override
   State<EmployeeProfilePage> createState() => _EmployeeProfilePageState();
@@ -39,7 +40,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage>
       "Working Shift": "Regular",
       "Joining Date": "01.06.2021",
       "Gender": "Male",
-      "Position": "Sr. App Developer",
+      "Position": "App Developer",
       "General info1": "Demo info1",
       "General info2": "Demo info2s",
     };
@@ -51,6 +52,21 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage>
       "General info1": "Demo info1",
       "General info2": "Demo info2s",
     };
+    // form vars
+    EdgeInsetsGeometry contentPadding = const EdgeInsets.only(left: 60);
+
+    Color borderColor = const Color.fromARGB(255, 189, 183, 183);
+    double borderWidth = 1;
+
+    //font related
+    TextStyle textStyle =
+        const TextStyle(fontSize: 18, fontWeight: FontWeight.normal);
+
+    // profile
+    TextStyle profileNameTextStyle =
+        const TextStyle(fontSize: 25, fontWeight: FontWeight.bold);
+    TextStyle profileDesignationTextStyle = const TextStyle(
+        fontSize: 18, color: Colors.grey, fontWeight: FontWeight.bold);
 
     Widget officialTabWidget() {
       return Column(
@@ -58,30 +74,39 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage>
             formDataTab1.length,
             (index) => Container(
                   height: AppVars.screenSize.height * 0.06,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                       border: Border(
-                          bottom: BorderSide(width: 1, color: Colors.grey))),
+                          bottom: BorderSide(
+                              width: borderWidth, color: borderColor))),
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Expanded(
+                      Flexible(
                         child: Container(
-                          padding: EdgeInsets.all(8),
-                          child: Text(
-                            formDataTab1.entries.toList()[index].key,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                          alignment: Alignment.centerLeft,
+                          padding: contentPadding,
+                          child: Row(
+                            children: [
+                              Text(
+                                formDataTab1.entries.toList()[index].key,
+                                style: textStyle,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                      Expanded(
+                      Flexible(
                         child: Container(
-                          padding: EdgeInsets.all(8),
+                          padding: contentPadding,
+                          alignment: Alignment.centerLeft,
                           child: Text(
                             formDataTab1.entries.toList()[index].value,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                            overflow: TextOverflow.ellipsis,
+                            style: textStyle,
+                            maxLines: 1,
                           ),
                         ),
                       )
@@ -97,30 +122,39 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage>
             formDataTab1.length,
             (index) => Container(
                   height: AppVars.screenSize.height * 0.06,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                       border: Border(
-                          bottom: BorderSide(width: 1, color: Colors.grey))),
+                          bottom: BorderSide(
+                              width: borderWidth, color: borderColor))),
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Expanded(
                         child: Container(
-                          padding: EdgeInsets.all(8),
-                          child: Text(
-                            formDataTab2.entries.toList()[index].key,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                          alignment: Alignment.centerLeft,
+                          padding: contentPadding,
+                          child: FittedBox(
+                            child: Text(
+                              formDataTab2.entries.toList()[index].key,
+                              //  textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              style: textStyle,
+                            ),
                           ),
                         ),
                       ),
                       Expanded(
                         child: Container(
-                          padding: EdgeInsets.all(8),
-                          child: Text(
-                            formDataTab2.entries.toList()[index].value,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                          alignment: Alignment.centerLeft,
+                          padding: contentPadding,
+                          child: FittedBox(
+                            child: Text(
+                              formDataTab2.entries.toList()[index].value,
+                              //  textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              style: textStyle,
+                            ),
                           ),
                         ),
                       )
@@ -131,52 +165,54 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage>
     }
 
     return Scaffold(
-      appBar: AppbarDefault(
-        appbarName: widget.title,
-      ),
+      appBar: (widget.title == null)
+          ? null
+          : AppbarDefault(
+              appbarName: widget.title,
+            ),
       body: Container(
         height: AppVars.screenSize.height,
         width: double.infinity,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              backgroundImage: AssetImage(ImagePath.proPicPath),
-              radius: 50,
-            ),
-            Text(
-              "Sajjad Hossen",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              "Sr. Developer",
-              style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.bold),
-            ),
-            TabBar(
-                tabAlignment: TabAlignment.fill,
-                labelStyle:
-                    TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                controller: tabController,
-                isScrollable: false,
-                tabs: const [
-                  Tab(
-                    icon: Text('Official'),
-                  ),
-                  Tab(
-                    icon: Text('Personal'),
-                  ),
-                ]),
-            Container(
-              height: AppVars.screenSize.height * 0.6,
-              width: double.infinity,
-              child: TabBarView(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                backgroundImage: AssetImage(ImagePath.proPicPath),
+                radius: 50,
+              ),
+              Text(
+                "Sajjad Hossen",
+                style: profileNameTextStyle,
+              ),
+              Text(
+                "App Developer",
+                style: profileDesignationTextStyle,
+              ),
+              TabBar(
+                  tabAlignment: TabAlignment.fill,
+                  labelStyle:
+                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   controller: tabController,
-                  children: [officialTabWidget(), personalTabWidget()]),
-            )
-          ],
+                  isScrollable: false,
+                  tabs: const [
+                    Tab(
+                      icon: Text('Official'),
+                    ),
+                    Tab(
+                      icon: Text('Personal'),
+                    ),
+                  ]),
+              Container(
+                height: AppVars.screenSize.height * 0.6,
+                width: double.infinity,
+                child: TabBarView(
+                    controller: tabController,
+                    children: [officialTabWidget(), personalTabWidget()]),
+              )
+            ],
+          ),
         ),
       ),
     );

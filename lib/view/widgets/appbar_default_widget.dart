@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/widgets.dart';
-import 'package:hrms_app/utils/app_variables/app_vars.dart';
-import 'package:hrms_app/utils/app_variables/image_paths.dart';
+import '../../utils/app_variables/app_vars.dart';
+import '../../utils/app_variables/image_paths.dart';
+import '../pages/notice_list_page.dart';
 
 class AppbarDefault extends StatelessWidget implements PreferredSize {
   final double? widthSize;
   final String? appbarName;
-  const AppbarDefault({this.widthSize, super.key, this.appbarName});
+  final PreferredSizeWidget? bottomAppWidget;
+  const AppbarDefault(
+      {this.widthSize, super.key, this.appbarName, this.bottomAppWidget});
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +41,7 @@ class AppbarDefault extends StatelessWidget implements PreferredSize {
           ],
         ),
       ),
+      bottom: (bottomAppWidget != null) ? bottomAppWidget : null,
 
       /* Image.asset(
           "assets/images/dhakaprokash_logo.png",
@@ -52,8 +55,8 @@ class AppbarDefault extends StatelessWidget implements PreferredSize {
         // Notification Icon
         Badge(
           largeSize: 13,
-          label: const Text(
-            "0",
+          label: Text(
+            AppVars.noticeData.length.toString(),
             style: TextStyle(fontSize: 10),
           ),
           offset: const Offset(-12, 6),
@@ -63,6 +66,13 @@ class AppbarDefault extends StatelessWidget implements PreferredSize {
               CupertinoIcons.bell,
             ),
             onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const NoticeListPage(
+                          title: "Notifications",
+                        )),
+              );
               // Handle notification icon tap
             },
           ),

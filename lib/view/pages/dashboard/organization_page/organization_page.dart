@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
+
+import '../../../widgets/appbar_default_widget.dart';
 
 class OrganizationPage extends StatelessWidget {
   final String? title;
@@ -9,9 +9,11 @@ class OrganizationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppbarDefault(
-        appbarName: title,
-      ),
+      appBar: (title == null)
+          ? null
+          : AppbarDefault(
+              appbarName: title,
+            ),
       body: Center(
         child: Text("Organization"),
       ),

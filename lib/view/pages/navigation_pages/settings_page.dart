@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
+import '../../widgets/appbar_default_widget.dart';
 
 class SettingsPage extends StatelessWidget {
   final String? title;
@@ -8,11 +8,11 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: (title != null)
-          ? AppbarDefault(
+      appBar: (title == null)
+          ? null
+          : AppbarDefault(
               appbarName: title,
-            )
-          : null,
+            ),
       body: Center(
         child: Text("Settings_page"),
       ),

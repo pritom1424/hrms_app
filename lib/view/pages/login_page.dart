@@ -7,13 +7,14 @@ import 'package:flutter/widgets.dart';
 import 'package:hrms_app/utils/app_variables/app_vars.dart';
 import 'package:hrms_app/utils/app_variables/image_paths.dart';
 import 'package:hrms_app/view/pages/register_page.dart';
+import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
 import 'package:hrms_app/view/widgets/login_registration/login_page/emailfield_widget.dart';
 import 'package:hrms_app/view/widgets/login_registration/login_page/loginbutton_widget.dart';
 import 'package:hrms_app/view/widgets/login_registration/login_page/passwordfiled_widget.dart';
 
 class LoginForm extends StatefulWidget {
-  final bool? isAppbar;
-  const LoginForm({super.key, this.isAppbar});
+  final String? title;
+  const LoginForm({super.key, this.title});
 
   @override
   State<LoginForm> createState() => _LoginFormState();
@@ -35,14 +36,11 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: widget.isAppbar != null
-          ? AppBar(
-              title: Text(
-                "Login",
-                style: TextStyle(fontSize: 20),
-              ),
-            )
-          : null,
+      appBar: (widget.title == null)
+          ? null
+          : AppbarDefault(
+              appbarName: widget.title,
+            ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -81,8 +79,8 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      /*  Navigator.of(context).push(MaterialPageRoute(
-                          builder: (ctx) => const RegisterPage())); */
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (ctx) => const RegisterPage()));
                     },
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
