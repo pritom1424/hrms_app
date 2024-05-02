@@ -1,18 +1,40 @@
 import 'dart:ffi';
 
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hrms_app/utils/app_variables/image_paths.dart';
 
 import '../../utils/app_variables/app_vars.dart';
 import '../widgets/appbar_default_widget.dart';
 
-class StatisticsPage extends StatelessWidget {
+class AdminPanel extends StatefulWidget {
   final String? title;
-  const StatisticsPage({super.key, this.title});
+  const AdminPanel({super.key, this.title});
+
+  @override
+  State<AdminPanel> createState() => _AdminPanelState();
+}
+
+class _AdminPanelState extends State<AdminPanel> {
+  ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    List<Color> cardColors = [
+      Color(0xFFD8FFD4),
+      Color(0xFFFFCFDA),
+      Color(0xFFCFEFFF),
+      Color(0xFFFFF5CF)
+    ];
     final employeeData = {
       'total employee': 670,
       'total present': 600,
@@ -94,16 +116,103 @@ class StatisticsPage extends StatelessWidget {
       });
     }
 
+    Widget getListTile(String title, String subtitle) {
+      return Container(
+        height: AppVars.screenSize.height * 0.15,
+        width: AppVars.screenSize.width * 0.9,
+        margin: EdgeInsets.symmetric(horizontal: 5),
+        decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(66, 173, 163, 163),
+                /*  offset: Offset(
+                  4.0,
+                  4.0,
+                ), */
+                blurRadius: 5,
+                spreadRadius: 1,
+              ),
+            ],
+            color: Color.fromARGB(255, 240, 228, 172), //Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(width: 0.5, color: Colors.white)),
+        padding: EdgeInsets.all(5),
+        child: ListTile(
+          onTap: () => () {},
+          leading: CircleAvatar(
+            radius: 25,
+            backgroundImage: AssetImage(ImagePath.splashLogoPath),
+          ),
+          title: Text(
+            title,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
+          subtitle: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Divider(
+                thickness: 2.2,
+                color: Colors.black12,
+              ),
+              Text(
+                subtitle,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+              ),
+            ],
+          ),
+          titleTextStyle: Theme.of(context).textTheme.headlineMedium,
+        ),
+      );
+    }
+
     return Scaffold(
-      appBar: (title == null)
+      appBar: (widget.title == null)
           ? null
           : AppbarDefault(
-              appbarName: title,
+              appbarName: widget.title,
             ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 8),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Text(
+                "Recent News",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Container(
+              height: AppVars.screenSize.height * 0.15,
+              width: AppVars.screenSize.width,
+              child: RawScrollbar(
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                controller: _scrollController,
+                thumbColor: Colors.black, //Colors.blueAccent,
+                trackColor: Colors.black, //Colors.blueAccent,
+                radius: Radius.circular(10),
+                thickness: 4,
+                thumbVisibility: true,
+                child: ListView.builder(
+                  controller: _scrollController,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: AppVars.noticeData.length,
+                  itemBuilder: (ctx, index) => getListTile(
+                      AppVars.noticeData[index].entries.toList()[0].value,
+                      AppVars.noticeData[index].entries.toList()[1].value),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Text(
+                "Statistics",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
             Container(
               height: AppVars.screenSize.height * 0.22,
               child: GridView.count(
@@ -115,7 +224,7 @@ class StatisticsPage extends StatelessWidget {
                 children: List.generate(
                   employeeData.length,
                   (index) => ListTile(
-                    tileColor: Colors.white,
+                    tileColor: cardColors[index], //Colors.white,
                     titleTextStyle: TextStyle(color: Colors.grey, fontSize: 12),
                     subtitleTextStyle: TextStyle(
                         fontSize: 18,
@@ -152,7 +261,11 @@ class StatisticsPage extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Text("Employee Status"),
+                      Text(
+                        "Employee Status",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
                       Spacer(),
                       IconButton(onPressed: () {}, icon: Icon(Icons.more_horiz))
                     ],
@@ -234,7 +347,10 @@ class StatisticsPage extends StatelessWidget {
               child: Row(
                 // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text("Employees"),
+                  Text(
+                    "Employees",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
                   Spacer(),
                   TextButton(onPressed: () {}, child: Text("View all"))
                 ],

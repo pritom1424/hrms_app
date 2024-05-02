@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hrms_app/view/pages/admin_panel.dart';
+import 'package:hrms_app/view/pages/employee_management.dart';
 import 'package:hrms_app/view/pages/overview_page.dart';
 import 'package:hrms_app/view/pages/statistics_page.dart';
 
@@ -46,9 +48,12 @@ class DashboardPage extends StatelessWidget {
         /* OrganizationPage(
           title: AppVars.dashboardData[index].entries.toList()[0].key,
         ), */
-        StatisticsPage(
+        AdminPanel(
+          title: "Admin Panel",
+        ),
+        /* StatisticsPage(
           title: "Statistics",
-        ), //LeaveFormPage("Leave Application Form"),
+        ), */ //LeaveFormPage("Leave Application Form"),
         /* TimeSheetPage(
           title: AppVars.dashboardData[index].entries.toList()[0].key,
         ) */
@@ -74,7 +79,10 @@ class DashboardPage extends StatelessWidget {
         /* FilesPage(
           title: AppVars.dashboardData[index].entries.toList()[0].key,
         ), */
-        NoticePage(title: "Notice"),
+        //NoticePage(title: "Notice"),
+        EmployeeManagement(
+          title: "Employee Management",
+        )
       ];
     }
 

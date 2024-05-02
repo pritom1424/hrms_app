@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:hrms_app/utils/app_variables/app_vars.dart';
 
 import '../../../utils/app_colors/app_colors.dart';
 
@@ -32,13 +35,14 @@ class DashboardMenuTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Expanded(
-                child: Container(
-              //   padding: EdgeInsets.all(5),
-              child: Image.asset(
-                imagePath,
-                fit: BoxFit.contain,
+              child: Container(
+                padding: EdgeInsets.all(20),
+                child: Image.asset(
+                  imagePath,
+                  fit: BoxFit.contain,
+                ),
               ),
-            )),
+            ),
             Text(
               menuname,
               style: Theme.of(context).textTheme.labelMedium,

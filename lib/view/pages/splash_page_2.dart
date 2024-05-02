@@ -77,7 +77,7 @@ class _SplashPage2State extends State<SplashPage2> {
                         borderRadius: BorderRadius.all(Radius.circular(5)),
                         child: Image.asset(
                           images[pagePos],
-                          fit: BoxFit.fill,
+                          fit: BoxFit.cover,
                         ),
                       ),
                     );

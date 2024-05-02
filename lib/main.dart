@@ -32,6 +32,8 @@ class MyApp extends StatelessWidget {
                   TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
               headlineLarge:
                   TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              headlineMedium:
+                  TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               titleLarge: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             )
 //        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
