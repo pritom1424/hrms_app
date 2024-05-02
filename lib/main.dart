@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hrms_app/view/pages/splash_page.dart';
 import 'package:hrms_app/view/pages/splash_page_2.dart';
-
+import 'package:hrms_app/view/test/pdf_dowload.dart';
 import 'utils/app_colors/app_colors.dart';
-import 'view/pages/splash_page.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -39,7 +40,8 @@ class MyApp extends StatelessWidget {
 //        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             // useMaterial3: true,
             ),
-        home: SplashPage2() //SplashScreen(),
+        // home: SplashScreen() //SplashScreen(),
+        home: DocumentationPage() //SplashScreen(),
         );
   }
 }
