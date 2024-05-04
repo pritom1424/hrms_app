@@ -80,9 +80,10 @@ class DashboardPage extends StatelessWidget {
           title: AppVars.dashboardData[index].entries.toList()[0].key,
         ), */
         //NoticePage(title: "Notice"),
-        EmployeeManagement(
+        /*  EmployeeManagement(
           title: "Employee Management",
-        )
+        ) */
+        DateTimePickerScreen()
       ];
     }
 
