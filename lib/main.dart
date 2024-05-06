@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:hrms_app/controller/employee_data_controller.dart';
 import 'package:hrms_app/view/pages/splash_page_2.dart';
+import 'package:provider/provider.dart';
 
 import 'utils/app_colors/app_colors.dart';
 import 'view/pages/splash_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+      Provider<EmployeeDataController>(
+        create: (_) => EmployeeDataController(),
+      )
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

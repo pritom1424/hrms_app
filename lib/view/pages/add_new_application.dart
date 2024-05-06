@@ -1,23 +1,14 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
 import 'package:intl/intl.dart';
 import '../../utils/app_variables/app_vars.dart';
-import '../../utils/app_variables/image_paths.dart';
+
 import '../widgets/appbar_default_widget.dart';
 import 'package:image_picker/image_picker.dart';
-
-enum Gender { male, female }
-
-enum Nationality { bangladesh, india, pakistan }
-
-enum IdType { nid, birth_certificate, passport }
-
-enum Shift { morning, day, evening }
-
-enum Department { reporter, editor, designer }
+import '../../utils/enums/enums.dart';
 
 class AddNewApplicationForm extends StatefulWidget {
   final String? title;
@@ -88,6 +79,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
   //font related
   double smallLabelFontSize = 12;
   double labelFontSize = 18;
+  double mediumLabelFontSize = 15;
   Color labelFontColor = Colors.grey;
 
   TextStyle hintTextStyle = TextStyle(color: Colors.grey.withOpacity(0.5));
@@ -205,6 +197,426 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
     super.dispose();
   }
 
+  Widget educationInfoTab() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          margin: EdgeInsets.symmetric(vertical: marginHeight),
+          padding: EdgeInsets.only(left: leftPadding),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                "Gender",
+                style: TextStyle(
+                    fontSize: labelFontSize, fontWeight: FontWeight.bold),
+              ),
+              ToggleButtons(
+                isSelected: _selectedGender == Gender.male
+                    ? [true, false]
+                    : _selectedGender == Gender.female
+                        ? [false, true]
+                        : [false, false],
+                onPressed: (int index) {
+                  setState(() {
+                    _selectedGender = index == 0 ? Gender.male : Gender.female;
+                  });
+                },
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 5),
+                    padding: EdgeInsets.symmetric(horizontal: 5),
+                    child: Row(
+                      children: [Icon(Icons.male), Text("male")],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 5),
+                    margin: EdgeInsets.symmetric(horizontal: 5),
+                    child: Row(
+                      children: [Icon(Icons.female), Text("female")],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        Container(
+            margin: EdgeInsets.symmetric(vertical: marginHeight),
+            padding: EdgeInsets.only(left: leftPadding),
+            decoration: boxDecoration,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Date Of Birth: ${DateFormat.yMd().format(_selectedDate)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
+                  style: TextStyle(fontSize: mediumLabelFontSize),
+                ),
+                SizedBox(width: 20),
+                TextButton(
+                  onPressed: () => _selectDate(context, fDate: DateTime(1970)),
+                  child: Text(
+                    'Select Date',
+                    style: TextStyle(fontSize: mediumLabelFontSize),
+                  ),
+                ),
+              ],
+            )),
+        Container(
+          margin: EdgeInsets.symmetric(vertical: marginHeight),
+          decoration: boxDecoration,
+          child: TextFormField(
+            controller: _employeeNameController,
+            decoration: InputDecoration(
+              labelText: 'Employee Name',
+              contentPadding: contentPadding,
+              hintStyle: hintTextStyle,
+              /* prefixIcon: Icon(
+                Icons.abc,
+                color: iconColor,
+              ), */
+              border: InputBorder.none,
+              hintText: 'Employee Name',
+              labelStyle:
+                  TextStyle(fontSize: labelFontSize, color: labelFontColor),
+            ),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(vertical: marginHeight),
+          decoration: boxDecoration,
+          child: TextFormField(
+            controller: _employeeFatherNameController,
+            decoration: InputDecoration(
+              labelText: 'Employee Father Name',
+              contentPadding: contentPadding,
+              hintStyle: hintTextStyle,
+              /* prefixIcon: Icon(
+                Icons.abc,
+                color: iconColor,
+              ), */
+              border: InputBorder.none,
+              hintText: 'Employee Father Name',
+              labelStyle:
+                  TextStyle(fontSize: labelFontSize, color: labelFontColor),
+            ),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(vertical: marginHeight),
+          decoration: boxDecoration,
+          child: TextFormField(
+            controller: _employeeMotherNameController,
+            decoration: InputDecoration(
+              labelText: 'Employee Mother Name',
+              contentPadding: contentPadding,
+              hintStyle: hintTextStyle,
+              /* prefixIcon: Icon(
+                Icons.abc,
+                color: iconColor,
+              ), */
+              border: InputBorder.none,
+              hintText: 'Employee Mother Name',
+              labelStyle:
+                  TextStyle(fontSize: labelFontSize, color: labelFontColor),
+            ),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(vertical: marginHeight),
+          padding: EdgeInsets.only(left: leftPadding),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                "Gender",
+                style: TextStyle(
+                    fontSize: labelFontSize, fontWeight: FontWeight.bold),
+              ),
+              ToggleButtons(
+                isSelected: _selectedGender == Gender.male
+                    ? [true, false]
+                    : _selectedGender == Gender.female
+                        ? [false, true]
+                        : [false, false],
+                onPressed: (int index) {
+                  setState(() {
+                    _selectedGender = index == 0 ? Gender.male : Gender.female;
+                  });
+                },
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 5),
+                    padding: EdgeInsets.symmetric(horizontal: 5),
+                    child: Row(
+                      children: [Icon(Icons.male), Text("male")],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 5),
+                    margin: EdgeInsets.symmetric(horizontal: 5),
+                    child: Row(
+                      children: [Icon(Icons.female), Text("female")],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        Container(
+            margin: EdgeInsets.symmetric(vertical: marginHeight),
+            padding: EdgeInsets.only(left: leftPadding),
+            decoration: boxDecoration,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Date Of Birth: ${DateFormat.yMd().format(_selectedDate)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
+                  style: TextStyle(fontSize: mediumLabelFontSize),
+                ),
+                SizedBox(width: 20),
+                TextButton(
+                  onPressed: () => _selectDate(context, fDate: DateTime(1970)),
+                  child: Text(
+                    'Select Date',
+                    style: TextStyle(fontSize: mediumLabelFontSize),
+                  ),
+                ),
+              ],
+            )),
+        Container(
+          padding: EdgeInsets.only(left: leftPadding),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Nationality",
+                style: TextStyle(
+                    fontSize: labelFontSize, fontWeight: FontWeight.bold),
+              ),
+              DropdownButtonHideUnderline(
+                child: Container(
+                  width: AppVars.screenSize.width * 0.55,
+                  padding: contentPadding,
+                  decoration: BoxDecoration(border: Border.all(width: 0.4)),
+                  margin: EdgeInsets.symmetric(vertical: marginHeight),
+                  child: DropdownButton(
+                      hint: Text(
+                        "Choose nationality",
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: TextStyle(
+                            fontSize: mediumLabelFontSize,
+                            color: Colors.black54),
+                      ),
+                      value: _selectedNation,
+                      items: Nationality.values
+                          .map(
+                            (nationality) => DropdownMenuItem(
+                              value: nationality,
+                              child: Text(
+                                nationality.name.toUpperCase(),
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (val) {
+                        if (val == null) {
+                          return;
+                        }
+                        setState(() {
+                          _selectedNation = val;
+                        });
+                      }),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.only(left: leftPadding),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "ID Type",
+                style: TextStyle(
+                    fontSize: labelFontSize, fontWeight: FontWeight.bold),
+              ),
+              DropdownButtonHideUnderline(
+                child: Container(
+                  width: AppVars.screenSize.width * 0.55,
+                  padding: contentPadding,
+                  decoration: BoxDecoration(border: Border.all(width: 0.4)),
+                  margin: EdgeInsets.symmetric(vertical: marginHeight),
+                  child: DropdownButton(
+                      hint: Text(
+                        "Choose Id type",
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: TextStyle(
+                            fontSize: mediumLabelFontSize,
+                            color: Colors.black54),
+                      ),
+                      value: _selectedIdType,
+                      items: IdType.values
+                          .map(
+                            (idType) => DropdownMenuItem(
+                              value: idType,
+                              child: Text(
+                                idType.name.toUpperCase(),
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (val) {
+                        if (val == null) {
+                          return;
+                        }
+                        setState(() {
+                          _selectedIdType = val;
+                        });
+                      }),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(vertical: marginHeight),
+          decoration: boxDecoration,
+          child: TextFormField(
+            controller: _employeeIdController,
+            decoration: InputDecoration(
+              labelText: 'Id Number',
+              contentPadding: contentPadding,
+              /*  prefixIcon: Icon(
+                Icons.phone,
+                color: iconColor,
+              ), */
+              border: InputBorder.none,
+              hintText: 'Id Number',
+              hintStyle: hintTextStyle,
+              labelStyle:
+                  TextStyle(fontSize: labelFontSize, color: labelFontColor),
+            ),
+            validator: (value) {
+              if (value != null && value == "") {
+                return 'Please enter leave type';
+              }
+              return null;
+            },
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(vertical: marginHeight),
+          decoration: boxDecoration,
+          child: TextFormField(
+            controller: _employeePunchIdController,
+            decoration: InputDecoration(
+              labelText: 'Punch Id',
+              contentPadding: contentPadding,
+              /* prefixIcon: Icon(
+                Icons.phone,
+                color: iconColor,
+              ), */
+              border: InputBorder.none,
+              hintText: 'Punch Id',
+              hintStyle: hintTextStyle,
+              labelStyle:
+                  TextStyle(fontSize: labelFontSize, color: labelFontColor),
+            ),
+            validator: (value) {
+              if (value != null && value == "") {
+                return 'Please enter leave type';
+              }
+              return null;
+            },
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(vertical: marginHeight),
+          decoration: boxDecoration,
+          child: TextFormField(
+            controller: _employeePresentAddressController,
+            maxLines: 3,
+            decoration: InputDecoration(
+              labelText: 'Present Address',
+              contentPadding: contentPadding,
+              hintStyle: hintTextStyle,
+              /*  prefixIcon: Icon(
+                Icons.home,
+                color: iconColor,
+              ), */
+              border: InputBorder.none,
+              hintText: 'Present Address',
+              labelStyle:
+                  TextStyle(fontSize: labelFontSize, color: labelFontColor),
+            ),
+            validator: (value) {
+              if (value != null && value == "") {
+                return 'Please enter reason for leave';
+              }
+              return null;
+            },
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(vertical: marginHeight),
+          decoration: boxDecoration,
+          child: TextFormField(
+            controller: _employeePermanentAddressController,
+            maxLines: 3,
+            decoration: InputDecoration(
+              labelText: 'Permanent Address',
+              contentPadding: contentPadding,
+              hintStyle: hintTextStyle,
+              /* prefixIcon: Icon(
+                Icons.home,
+                color: iconColor,
+              ), */
+              border: InputBorder.none,
+              hintText: 'Permanent Address',
+              labelStyle:
+                  TextStyle(fontSize: labelFontSize, color: labelFontColor),
+            ),
+            validator: (value) {
+              if (value != null && value == "") {
+                return 'Please enter reason for leave';
+              }
+              return null;
+            },
+          ),
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: borderRadius,
+              ),
+              backgroundColor: actionButtonBgColor,
+              foregroundColor: actionButtonFgColor),
+          onPressed: () {
+            // Handle apply button press
+            // You can access the values using controller.text for each field
+          },
+          child: const Text(
+            'Create',
+            style: TextStyle(fontSize: 25),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget employeeInfoTab() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -319,15 +731,15 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Selected Date: ${DateFormat.yMd().format(_selectedDate)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
-                  style: TextStyle(fontSize: labelFontSize),
+                  'Date Of Birth: ${DateFormat.yMd().format(_selectedDate)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
+                  style: TextStyle(fontSize: mediumLabelFontSize),
                 ),
                 SizedBox(width: 20),
                 TextButton(
                   onPressed: () => _selectDate(context, fDate: DateTime(1970)),
                   child: Text(
                     'Select Date',
-                    style: TextStyle(fontSize: labelFontSize),
+                    style: TextStyle(fontSize: mediumLabelFontSize),
                   ),
                 ),
               ],
@@ -354,7 +766,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
             },
           ), */
             ),
-        Container(
+        /* Container(
           padding: EdgeInsets.only(left: leftPadding),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -374,8 +786,59 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                         "Choose nationality",
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
+                        style: TextStyle(fontSize: 14, color: Colors.black54),
+                      ),
+                      value: _selectedNation,
+                      items: Nationality.values
+                          .map(
+                            (nationality) => DropdownMenuItem(
+                              value: nationality,
+                              child: Text(
+                                nationality.name.toUpperCase(),
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (val) {
+                        if (val == null) {
+                          return;
+                        }
+                        setState(() {
+                          _selectedNation = val;
+                        });
+                      }),
+                ),
+              ),
+            ],
+          ),
+        ), */
+        Container(
+          padding: EdgeInsets.only(left: leftPadding),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Nationality",
+                style: TextStyle(
+                    fontSize: labelFontSize, fontWeight: FontWeight.bold),
+              ),
+              DropdownButtonHideUnderline(
+                child: Container(
+                  width: AppVars.screenSize.width * 0.55,
+                  padding: contentPadding,
+                  decoration: BoxDecoration(border: Border.all(width: 0.4)),
+                  margin: EdgeInsets.symmetric(vertical: marginHeight),
+                  child: DropdownButton(
+                      hint: Text(
+                        "Choose nationality",
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                         style: TextStyle(
-                            fontSize: labelFontSize, color: Colors.black54),
+                            fontSize: mediumLabelFontSize,
+                            color: Colors.black54),
                       ),
                       value: _selectedNation,
                       items: Nationality.values
@@ -416,6 +879,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
               ),
               DropdownButtonHideUnderline(
                 child: Container(
+                  width: AppVars.screenSize.width * 0.55,
                   padding: contentPadding,
                   decoration: BoxDecoration(border: Border.all(width: 0.4)),
                   margin: EdgeInsets.symmetric(vertical: marginHeight),
@@ -425,7 +889,8 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: TextStyle(
-                            fontSize: labelFontSize, color: Colors.black54),
+                            fontSize: mediumLabelFontSize,
+                            color: Colors.black54),
                       ),
                       value: _selectedIdType,
                       items: IdType.values
@@ -622,6 +1087,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
               ),
               DropdownButtonHideUnderline(
                 child: Container(
+                  width: AppVars.screenSize.width * 0.55,
                   padding: contentPadding,
                   margin: EdgeInsets.symmetric(vertical: marginHeight),
                   decoration: BoxDecoration(border: Border.all(width: 0.4)),
@@ -631,7 +1097,8 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: TextStyle(
-                            fontSize: labelFontSize, color: Colors.black54),
+                            fontSize: mediumLabelFontSize,
+                            color: Colors.black54),
                       ),
                       value: _selectedShift,
                       items: Shift.values
@@ -689,14 +1156,14 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
               children: [
                 Text(
                   'Joining Date: ${DateFormat.yMd().format(_selectedDate)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
-                  style: TextStyle(fontSize: labelFontSize),
+                  style: TextStyle(fontSize: mediumLabelFontSize),
                 ),
                 SizedBox(width: 20),
                 TextButton(
                   onPressed: () => _selectDate(context),
                   child: Text(
                     'Select Date',
-                    style: TextStyle(fontSize: labelFontSize),
+                    style: TextStyle(fontSize: mediumLabelFontSize),
                   ),
                 ),
               ],
@@ -732,7 +1199,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
               children: [
                 Text(
                   'Confirmation Date: ${DateFormat.yMd().format(_selectedDate)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
-                  style: TextStyle(fontSize: labelFontSize),
+                  style: TextStyle(fontSize: mediumLabelFontSize),
                 ),
                 SizedBox(width: 20),
                 TextButton(
@@ -741,7 +1208,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                   ),
                   child: Text(
                     'Select Date',
-                    style: TextStyle(fontSize: labelFontSize),
+                    style: TextStyle(fontSize: mediumLabelFontSize),
                   ),
                 ),
               ],
@@ -782,6 +1249,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
               ),
               DropdownButtonHideUnderline(
                 child: Container(
+                  width: AppVars.screenSize.width * 0.55,
                   padding: contentPadding,
                   decoration: BoxDecoration(border: Border.all(width: 0.4)),
                   margin: EdgeInsets.symmetric(vertical: marginHeight),
@@ -791,7 +1259,8 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: TextStyle(
-                            fontSize: labelFontSize, color: Colors.black54),
+                            fontSize: mediumLabelFontSize,
+                            color: Colors.black54),
                       ),
                       value: _selectedDepartment,
                       items: Department.values
@@ -953,6 +1422,8 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
           ? null
           : AppbarDefault(
               appbarName: widget.title,
+              isShowLeading: false,
+              isShowNotification: false,
             ),
       body: Container(
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
@@ -978,7 +1449,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                       (_storedImage == null)
                           ? "Add Profile Picture"
                           : "Update Profile Picture",
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Colors.grey,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
