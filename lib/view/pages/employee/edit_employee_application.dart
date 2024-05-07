@@ -4,21 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:intl/intl.dart';
-import '../../utils/app_variables/app_vars.dart';
+import '../../../utils/app_variables/app_vars.dart';
 
-import '../widgets/appbar_default_widget.dart';
+import '../../widgets/appbar_default_widget.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../utils/enums/enums.dart';
+import '../../../utils/enums/enums.dart';
 
-class AddNewApplicationForm extends StatefulWidget {
+class EditEmployeeApplicationForm extends StatefulWidget {
   final String? title;
-  const AddNewApplicationForm({super.key, this.title});
+  const EditEmployeeApplicationForm({super.key, this.title});
 
   @override
-  State<AddNewApplicationForm> createState() => _AddNewApplicationFormState();
+  State<EditEmployeeApplicationForm> createState() =>
+      _EditEmployeeApplicationFormState();
 }
 
-class _AddNewApplicationFormState extends State<AddNewApplicationForm>
+class _EditEmployeeApplicationFormState
+    extends State<EditEmployeeApplicationForm>
     with SingleTickerProviderStateMixin {
   final TextEditingController _employeeIdController = TextEditingController();
   final TextEditingController _employeePunchIdController =
@@ -201,7 +203,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Container(
+        /* Container(
           margin: EdgeInsets.symmetric(vertical: marginHeight),
           padding: EdgeInsets.only(left: leftPadding),
           child: Row(
@@ -239,6 +241,58 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                     ),
                   ),
                 ],
+              ),
+            ],
+          ),
+        ), */
+        Container(
+          padding: EdgeInsets.only(left: leftPadding),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Nationality",
+                style: TextStyle(
+                    fontSize: labelFontSize, fontWeight: FontWeight.bold),
+              ),
+              DropdownButtonHideUnderline(
+                child: Container(
+                  width: AppVars.screenSize.width * 0.55,
+                  padding: contentPadding,
+                  decoration: BoxDecoration(border: Border.all(width: 0.4)),
+                  margin: EdgeInsets.symmetric(vertical: marginHeight),
+                  child: DropdownButton(
+                      hint: Text(
+                        "Choose nationality",
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: TextStyle(
+                            fontSize: mediumLabelFontSize,
+                            color: Colors.black54),
+                      ),
+                      value: _selectedNation,
+                      items: Nationality.values
+                          .map(
+                            (nationality) => DropdownMenuItem(
+                              value: nationality,
+                              child: Text(
+                                nationality.name.toUpperCase(),
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (val) {
+                        if (val == null) {
+                          return;
+                        }
+                        setState(() {
+                          _selectedNation = val;
+                        });
+                      }),
+                ),
               ),
             ],
           ),

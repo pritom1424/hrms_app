@@ -1,10 +1,13 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hrms_app/utils/app_variables/app_vars.dart';
+import 'package:hrms_app/utils/app_variables/image_paths.dart';
 import 'package:hrms_app/utils/enums/enums.dart';
-import 'package:hrms_app/view/pages/add_new_application.dart';
+import 'package:hrms_app/view/pages/employee/add_new_application.dart';
+import 'package:hrms_app/view/pages/employee/edit_employee_application.dart';
 import 'package:hrms_app/view/widgets/dashboard_page/search_widget.dart';
 import 'package:intl/intl.dart';
 
@@ -24,7 +27,7 @@ class _MyDataTableState extends State<MyDataTable> {
       "gender": "Male",
       "dateOfBirth": "9-9-2000",
       "Nationality": "BD",
-      "image": ""
+      "image": ImagePath.proPicPath //""
     },
     {
       "id": 2,
@@ -260,16 +263,28 @@ class _MyDataTableState extends State<MyDataTable> {
                       DataCell(Text(users[index]["gender"].toString())),
                       DataCell(Text(users[index]["dateOfBirth"].toString())),
                       DataCell(Text(users[index]["nationality"].toString())),
-                      DataCell(Text(users[index]["image"].toString())),
+                      DataCell(CircleAvatar(
+                          backgroundImage:
+                              (users[index]["image"].toString().isNotEmpty)
+                                  ? AssetImage(users[index]["image"].toString())
+                                  : null,
+                          child: (users[index]["image"].toString().isNotEmpty)
+                              ? null
+                              : Icon(Icons
+                                  .person))), //Text(users[index]["image"].toString())
                       DataCell(Row(
                         children: [
                           IconButton(
                             icon: Icon(Icons.edit),
                             onPressed: () {
-                              _editUser(
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (ctx) => EditEmployeeApplicationForm(
+                                        title: "Edit employee",
+                                      )));
+                              /* _editUser(
                                   context,
                                   users[
-                                      index]); //_editName(context, users[index]);
+                                      index]);  */ //_editName(context, users[index]);
                             },
                           ),
                           IconButton(

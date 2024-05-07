@@ -20,6 +20,7 @@ class CustomAppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // String iconPath = "assets/images/dhakaprokash_icon.png";
+
     List<dynamic> getdrawerRoutes(int index) {
       return [
         DrawerPage1(
@@ -34,6 +35,12 @@ class CustomAppDrawer extends StatelessWidget {
         DrawerPage4(
           title: AppVars.appdrawerListData[index].entries.toList()[0].key,
         ),
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
         /* DrawerPage5(
           title: AppVars.appdrawerListData[index].entries.toList()[0].key,
         ), */
@@ -102,7 +109,7 @@ class CustomAppDrawer extends StatelessWidget {
                 color: Appcolors.appdrawerListBgColor,
                 child: ListView.builder(
                     padding: const EdgeInsets.all(0),
-                    itemCount: 5,
+                    itemCount: AppVars.appdrawerListData.length,
                     itemBuilder: (ctx, i) => AppDrawerListTile(
                           itemIndex: i,
                           route: getdrawerRoutes(i)[i],

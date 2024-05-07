@@ -5,7 +5,7 @@ import 'package:hrms_app/view/pages/overview_page.dart';
 import 'package:hrms_app/view/pages/statistics_page.dart';
 
 import '../../../utils/app_variables/app_vars.dart';
-import '../add_new_application.dart';
+import '../employee/add_new_application.dart';
 import '../admin_notice_page.dart';
 import '../calender_page.dart';
 

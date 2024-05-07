@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hrms_app/view/pages/shift/shift_config.dart';
 import 'image_paths.dart';
 import '../../view/pages/notice_list_page.dart';
 import '../../view/pages/notice_page.dart';
@@ -30,14 +31,24 @@ class AppVars {
     {"Dashboard": CupertinoIcons.globe},
     {
       "Employee": CupertinoIcons.person_2,
-      "first list": CupertinoIcons.add_circled,
-      "second lis": CupertinoIcons.app_badge
+      "Add Employee": CupertinoIcons.add_circled,
+      "Employee List": CupertinoIcons.person_3
     },
     {"Users": CupertinoIcons.person},
+    {"Shift": Icons.access_time, "Shift Config": Icons.sync},
     {
-      "Settings": CupertinoIcons.gear,
-      "top list": CupertinoIcons.today,
-      "bottom list": CupertinoIcons.thermometer
+      "User Role": Icons.supervised_user_circle,
+      "Role": Icons.supervisor_account,
+      "Role Assign": Icons.person_add
+    },
+    {"User Permission": Icons.security},
+    {
+      "Settings": Icons.settings,
+      "Office Shift": Icons.work,
+      "Identity Type": Icons.card_membership,
+      "Education": Icons.school,
+      "Country": Icons.public,
+      "Department": Icons.account_balance
     },
     {"Logout": Icons.logout},
   ];
@@ -48,12 +59,17 @@ class AppVars {
         title: "Notice",
       )
     ],
-    "Settings": [
+    "Shift": [
+      ShiftConfig(
+        title: "Shift Config",
+      )
+    ]
+    /* "Settings": [
       NoticeListPage(title: "Notifications"),
       NoticePage(
         title: "Notice",
       )
-    ]
+    ] */
   };
   static List<Map<String, String>> noticeData = [
     {

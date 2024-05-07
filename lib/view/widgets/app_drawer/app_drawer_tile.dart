@@ -97,10 +97,12 @@ class AppDrawerListTile extends StatelessWidget {
               ),
             )
           : ListTile(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => route),
-              ),
+              onTap: (route != null)
+                  ? () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => route),
+                      )
+                  : null,
               leading: Icon(
                 AppVars.appdrawerListData[itemIndex].entries.toList()[0].value,
                 color: Appcolors.appdrawerItemIconColor,
