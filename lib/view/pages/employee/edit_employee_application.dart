@@ -473,9 +473,7 @@ class _EditEmployeeApplicationFormState
                               value: nationality,
                               child: Text(
                                 nationality.name.toUpperCase(),
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                ),
+                                style: Theme.of(context).textTheme.labelSmall,
                               ),
                             ),
                           )
@@ -901,9 +899,7 @@ class _EditEmployeeApplicationFormState
                               value: nationality,
                               child: Text(
                                 nationality.name.toUpperCase(),
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                ),
+                                style: Theme.of(context).textTheme.labelSmall,
                               ),
                             ),
                           )
@@ -953,9 +949,7 @@ class _EditEmployeeApplicationFormState
                               value: idType,
                               child: Text(
                                 idType.name.toUpperCase(),
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                ),
+                                style: Theme.of(context).textTheme.labelSmall,
                               ),
                             ),
                           )
@@ -1161,9 +1155,7 @@ class _EditEmployeeApplicationFormState
                               value: shift,
                               child: Text(
                                 shift.name.toUpperCase(),
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                ),
+                                style: Theme.of(context).textTheme.labelSmall,
                               ),
                             ),
                           )
@@ -1323,9 +1315,7 @@ class _EditEmployeeApplicationFormState
                               value: department,
                               child: Text(
                                 department.name.toUpperCase(),
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                ),
+                                style: Theme.of(context).textTheme.labelSmall,
                               ),
                             ),
                           )

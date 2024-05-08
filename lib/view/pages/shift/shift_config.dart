@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hrms_app/utils/app_variables/app_vars.dart';
 import 'package:hrms_app/utils/enums/enums.dart';
+import 'package:hrms_app/view/pages/shift/shift_config_view.dart';
 import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
 import 'package:intl/intl.dart';
 
@@ -355,8 +356,10 @@ class _ShiftConfigState extends State<ShiftConfig> {
                 )),
             DataTable(
                 dataTextStyle: TextStyle(color: Colors.black),
-                headingTextStyle: TextStyle(color: Colors.white),
-                dividerThickness: 3,
+                headingTextStyle:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                dividerThickness: 1,
+                columnSpacing: 10,
                 headingRowColor: MaterialStateColor.resolveWith(
                     (states) => Color(0xFF7A59AD)), //Colors.blue.shade400
                 /*   dataRowColor:
@@ -364,8 +367,17 @@ class _ShiftConfigState extends State<ShiftConfig> {
                 sortAscending: true,
                 columns: [
                   DataColumn(label: Text('ID')),
-                  DataColumn(label: Text('Shift Name')),
-                  DataColumn(label: Text('Action'))
+                  DataColumn(
+                      label:
+                          Expanded(child: Center(child: Text('Shift Name')))),
+                  DataColumn(
+                      label: Expanded(
+                    child: Center(
+                      child: Text(
+                        'Action',
+                      ),
+                    ),
+                  ))
                 ],
                 rows: List.generate(
                     data.length,
@@ -377,26 +389,51 @@ class _ShiftConfigState extends State<ShiftConfig> {
                               ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       padding: EdgeInsets.zero,
-                                      backgroundColor: Colors.red,
+                                      backgroundColor: Color(0xFF1DC9B7),
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(10))),
+                                              BorderRadius.circular(5))),
                                   onPressed: () {},
                                   child: Text(
                                     'Edit',
+                                    style: TextStyle(color: Colors.white),
                                   )),
+                              SizedBox(
+                                width: 10,
+                              ),
                               ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                      padding: EdgeInsets.all(0),
-                                      shape: LinearBorder()),
-                                  onPressed: () {},
-                                  child: Text('View')),
+                                    padding: EdgeInsets.all(0),
+                                    backgroundColor: Color(0xFF886AB5),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5)),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                            builder: (ctx) => ShiftConfigView(
+                                                  title: "Shift Config View",
+                                                )));
+                                  },
+                                  child: Text(
+                                    'View',
+                                    style: TextStyle(color: Colors.white),
+                                  )),
+                              SizedBox(
+                                width: 10,
+                              ),
                               ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                      padding: EdgeInsets.all(0),
-                                      shape: LinearBorder()),
+                                    padding: EdgeInsets.all(0),
+                                    backgroundColor: Color(0xFFFD3995),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5)),
+                                  ),
                                   onPressed: () {},
-                                  child: Text('Delete'))
+                                  child: Text(
+                                    'Delete',
+                                    style: TextStyle(color: Colors.white),
+                                  ))
                             ],
                           ))
                         ])))

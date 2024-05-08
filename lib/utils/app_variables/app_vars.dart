@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hrms_app/view/pages/role/role_assigned_list.dart';
+import 'package:hrms_app/view/pages/role/role_create.dart';
 import 'package:hrms_app/view/pages/shift/shift_config.dart';
 import 'image_paths.dart';
 import '../../view/pages/notice_list_page.dart';
@@ -62,6 +64,14 @@ class AppVars {
     "Shift": [
       ShiftConfig(
         title: "Shift Config",
+      )
+    ],
+    "User Role": [
+      RoleCreate(
+        title: "Role Create",
+      ),
+      RoleAssignedList(
+        title: "Role Assign",
       )
     ]
     /* "Settings": [

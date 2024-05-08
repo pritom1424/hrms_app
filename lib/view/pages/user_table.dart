@@ -8,6 +8,7 @@ import 'package:hrms_app/utils/app_variables/image_paths.dart';
 import 'package:hrms_app/utils/enums/enums.dart';
 import 'package:hrms_app/view/pages/employee/add_new_application.dart';
 import 'package:hrms_app/view/pages/employee/edit_employee_application.dart';
+import 'package:hrms_app/view/pages/text_to_pdf.dart';
 import 'package:hrms_app/view/widgets/dashboard_page/search_widget.dart';
 import 'package:intl/intl.dart';
 
@@ -296,6 +297,10 @@ class _MyDataTableState extends State<MyDataTable> {
                           IconButton(
                             icon: Icon(Icons.picture_as_pdf),
                             onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (ctx) => TextToPdfConverter(
+                                        user: users[index],
+                                      )));
                               // Handle PDF download action
                             },
                           ),

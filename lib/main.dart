@@ -36,18 +36,25 @@ class MyApp extends StatelessWidget {
                   fontSize: 20),
             ),
             textTheme: const TextTheme(
-              //menu item
-              labelMedium:
-                  TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
-
-              headlineLarge:
-                  TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              headlineMedium:
-                  TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              headlineSmall:
-                  TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              titleLarge: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-            )
+                //menu item
+                labelSmall:
+                    TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                labelMedium:
+                    TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
+                headlineLarge:
+                    TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                headlineMedium:
+                    TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                headlineSmall:
+                    TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                titleLarge:
+                    TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                titleMedium:
+                    TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                /*    bodyMedium:
+                    TextStyle(fontSize: 18, fontWeight: FontWeight.normal), */
+                bodySmall:
+                    TextStyle(fontSize: 14, fontWeight: FontWeight.normal))
 //        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             // useMaterial3: true,
             ),

@@ -399,7 +399,6 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
               ),
               DropdownButtonHideUnderline(
                 child: Container(
-                  width: AppVars.screenSize.width * 0.55,
                   padding: contentPadding,
                   decoration: BoxDecoration(border: Border.all(width: 0.4)),
                   margin: EdgeInsets.symmetric(vertical: marginHeight),
@@ -409,7 +408,8 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: TextStyle(
-                            fontSize: mediumLabelFontSize,
+                            /*   fontSize:
+                                smallLabelFontSize, */ //mediumLabelFontSize,
                             color: Colors.black54),
                       ),
                       value: _selectedNation,
@@ -743,78 +743,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                   ),
                 ),
               ],
-            ) /* TextFormField(
-            controller: _employeeDOBController,
-            decoration: InputDecoration(
-              labelText: 'Date Of Birth',
-              contentPadding: contentPadding,
-              /* prefixIcon: Icon(
-                Icons.phone,
-                color: iconColor,
-              ), */
-              border: InputBorder.none,
-              hintText: 'Date Of Birth',
-              hintStyle: hintTextStyle,
-              labelStyle:
-                  TextStyle(fontSize: labelFontSize, color: labelFontColor),
-            ),
-            validator: (value) {
-              if (value != null && value == "") {
-                return 'Please enter leave type';
-              }
-              return null;
-            },
-          ), */
-            ),
-        /* Container(
-          padding: EdgeInsets.only(left: leftPadding),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Nationality",
-                style: TextStyle(
-                    fontSize: labelFontSize, fontWeight: FontWeight.bold),
-              ),
-              DropdownButtonHideUnderline(
-                child: Container(
-                  padding: contentPadding,
-                  margin: EdgeInsets.symmetric(vertical: marginHeight),
-                  decoration: BoxDecoration(border: Border.all(width: 0.4)),
-                  child: DropdownButton(
-                      hint: Text(
-                        "Choose nationality",
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(fontSize: 14, color: Colors.black54),
-                      ),
-                      value: _selectedNation,
-                      items: Nationality.values
-                          .map(
-                            (nationality) => DropdownMenuItem(
-                              value: nationality,
-                              child: Text(
-                                nationality.name.toUpperCase(),
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          )
-                          .toList(),
-                      onChanged: (val) {
-                        if (val == null) {
-                          return;
-                        }
-                        setState(() {
-                          _selectedNation = val;
-                        });
-                      }),
-                ),
-              ),
-            ],
-          ),
-        ), */
+            )),
         Container(
           padding: EdgeInsets.only(left: leftPadding),
           child: Row(
@@ -827,7 +756,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
               ),
               DropdownButtonHideUnderline(
                 child: Container(
-                  width: AppVars.screenSize.width * 0.55,
+                  width: AppVars.screenSize.width * 0.60,
                   padding: contentPadding,
                   decoration: BoxDecoration(border: Border.all(width: 0.4)),
                   margin: EdgeInsets.symmetric(vertical: marginHeight),
@@ -847,9 +776,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                               value: nationality,
                               child: Text(
                                 nationality.name.toUpperCase(),
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                ),
+                                style: Theme.of(context).textTheme.labelSmall,
                               ),
                             ),
                           )
@@ -873,13 +800,63 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
+                "Choose Id type",
+                style: TextStyle(
+                    fontSize: labelFontSize, fontWeight: FontWeight.bold),
+              ),
+              DropdownButtonHideUnderline(
+                child: Container(
+                  width: AppVars.screenSize.width * 0.60,
+                  padding: contentPadding,
+                  decoration: BoxDecoration(border: Border.all(width: 0.4)),
+                  margin: EdgeInsets.symmetric(vertical: marginHeight),
+                  child: DropdownButton(
+                      hint: Text(
+                        "Choose Id Type",
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: TextStyle(
+                            fontSize: mediumLabelFontSize,
+                            color: Colors.black54),
+                      ),
+                      value: _selectedIdType,
+                      items: IdType.values
+                          .map(
+                            (idtype) => DropdownMenuItem(
+                              value: idtype,
+                              child: Text(
+                                idtype.name.toUpperCase(),
+                                style: Theme.of(context).textTheme.labelSmall,
+                              ),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (val) {
+                        if (val == null) {
+                          return;
+                        }
+                        setState(() {
+                          _selectedIdType = val;
+                        });
+                      }),
+                ),
+              ),
+            ],
+          ),
+        ),
+        /* Container(
+          padding: EdgeInsets.only(left: leftPadding),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
                 "ID Type",
                 style: TextStyle(
                     fontSize: labelFontSize, fontWeight: FontWeight.bold),
               ),
               DropdownButtonHideUnderline(
                 child: Container(
-                  width: AppVars.screenSize.width * 0.55,
+                  width: AppVars.screenSize.width * 0.60,
                   padding: contentPadding,
                   decoration: BoxDecoration(border: Border.all(width: 0.4)),
                   margin: EdgeInsets.symmetric(vertical: marginHeight),
@@ -918,7 +895,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
               ),
             ],
           ),
-        ),
+        ), */
         Container(
           margin: EdgeInsets.symmetric(vertical: marginHeight),
           decoration: boxDecoration,
@@ -1107,9 +1084,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                               value: shift,
                               child: Text(
                                 shift.name.toUpperCase(),
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                ),
+                                style: Theme.of(context).textTheme.labelSmall,
                               ),
                             ),
                           )
@@ -1167,29 +1142,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                   ),
                 ),
               ],
-            ) /* TextFormField(
-            controller: _employeeJoiningDateController,
-            decoration: InputDecoration(
-              labelText: 'Joining Date',
-              contentPadding: contentPadding,
-              /* prefixIcon: Icon(
-                Icons.phone,
-                color: iconColor,
-              ), */
-              border: InputBorder.none,
-              hintText: 'Joining Date',
-              hintStyle: hintTextStyle,
-              labelStyle:
-                  TextStyle(fontSize: labelFontSize, color: labelFontColor),
-            ),
-            validator: (value) {
-              if (value != null && value == "") {
-                return 'Please enter leave type';
-              }
-              return null;
-            },
-          ), */
-            ),
+            )),
         Container(
             margin: EdgeInsets.symmetric(vertical: marginHeight),
             padding: EdgeInsets.only(left: leftPadding),
@@ -1212,31 +1165,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                   ),
                 ),
               ],
-            )
-
-            /* TextFormField(
-            controller: _employeeConfirmDateController,
-            decoration: InputDecoration(
-              labelText: 'Confirmation Date',
-              contentPadding: contentPadding,
-              /* prefixIcon: Icon(
-                Icons.phone,
-                color: iconColor,
-              ), */
-              border: InputBorder.none,
-              hintText: 'Confirmation Date',
-              hintStyle: hintTextStyle,
-              labelStyle:
-                  TextStyle(fontSize: labelFontSize, color: labelFontColor),
-            ),
-            validator: (value) {
-              if (value != null && value == "") {
-                return 'Please enter leave type';
-              }
-              return null;
-            },
-          ), */
-            ),
+            )),
         Container(
           padding: EdgeInsets.only(left: leftPadding),
           child: Row(
@@ -1269,9 +1198,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                               value: department,
                               child: Text(
                                 department.name.toUpperCase(),
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                ),
+                                style: Theme.of(context).textTheme.labelSmall,
                               ),
                             ),
                           )
