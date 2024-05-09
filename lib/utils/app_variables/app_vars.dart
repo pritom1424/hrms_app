@@ -1,14 +1,46 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hrms_app/view/pages/role/role_assigned_list.dart';
-import 'package:hrms_app/view/pages/role/role_create.dart';
-import 'package:hrms_app/view/pages/shift/shift_config.dart';
+import 'package:hrms_app/view/pages/admin_panel.dart';
+import 'package:hrms_app/view/pages/employee/add_new_application.dart';
+import 'package:hrms_app/view/pages/employee_profile_page.dart';
+import 'package:hrms_app/view/pages/employee_table.dart';
+import 'package:hrms_app/view/pages/settings/country_sett.dart';
+import 'package:hrms_app/view/pages/settings/department_sett.dart';
+import 'package:hrms_app/view/pages/settings/education_sett.dart';
+import 'package:hrms_app/view/pages/settings/identity_type_sett.dart';
+import '../../view/pages/drawer_page/drawerpage_1.dart';
+import '../../view/pages/drawer_page/drawerpage_2.dart';
+import '../../view/pages/login_page.dart';
+import '../../view/pages/role/role_assign.dart';
+import '../../view/pages/role/role_assigned_list.dart';
+import '../../view/pages/role/role_create.dart';
+import '../../view/pages/settings/office_shift_sett.dart';
+import '../../view/pages/shift/shift_config.dart';
+import '../../view/pages/user_permission/user_permission.dart';
 import 'image_paths.dart';
 import '../../view/pages/notice_list_page.dart';
 import '../../view/pages/notice_page.dart';
 
 class AppVars {
   static Size screenSize = Size(600, 800);
+
+  static BoxDecoration customInputboxDecoration = BoxDecoration(
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(10.0),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.grey.withOpacity(0.3),
+        spreadRadius: 2,
+        blurRadius: 5,
+        offset: Offset(0, 3),
+      ),
+    ],
+  );
+  static TextStyle customHintTextStyle =
+      TextStyle(color: Colors.grey.withOpacity(0.5), fontSize: 15);
+
+  static EdgeInsets inputContentPadding =
+      const EdgeInsets.symmetric(horizontal: 20);
 
 //navbar
   static List<Map<String, IconData>> navBarData = [
@@ -41,7 +73,8 @@ class AppVars {
     {
       "User Role": Icons.supervised_user_circle,
       "Role": Icons.supervisor_account,
-      "Role Assign": Icons.person_add
+      "Role Assign": Icons.person_add,
+      "Role Add": Icons.add
     },
     {"User Permission": Icons.security},
     {
@@ -54,12 +87,33 @@ class AppVars {
     },
     {"Logout": Icons.logout},
   ];
+  static Map<String, dynamic> appdrawerRoutes = {
+    /*  "Dashboard": DrawerPage1(
+      title: "Dashboard",
+    ) */
+    "Dashboard": AdminPanel(
+      title: "Dashboard",
+    ),
+
+    /* "Users": DrawerPage2(
+      title: "Users",
+    ) */
+
+    "Users": EmployeeProfilePage(
+      id: "",
+      title: "User",
+    ),
+    "User Permission": UserPermission(
+      title: "User Permission",
+    ),
+    "Logout": LoginForm()
+  };
   static Map<String, List<dynamic>> appsubDrawerListData = {
     "Employee": [
-      NoticeListPage(title: "Notifications"),
-      NoticePage(
-        title: "Notice",
-      )
+      AddNewApplicationForm(
+        title: "Add Employee",
+      ),
+      EmployeeList()
     ],
     "Shift": [
       ShiftConfig(
@@ -72,14 +126,28 @@ class AppVars {
       ),
       RoleAssignedList(
         title: "Role Assign",
+      ),
+      RoleAssign(
+        title: "Role Assign",
+      )
+    ],
+    "Settings": [
+      OfficeShiftSettings(
+        title: "Office Shift",
+      ),
+      IdentityTypeSettings(
+        title: "Identity Type",
+      ),
+      EducationSettings(
+        title: "Education",
+      ),
+      CountrySettings(
+        title: "Country",
+      ),
+      DepartmentSettings(
+        title: "Department",
       )
     ]
-    /* "Settings": [
-      NoticeListPage(title: "Notifications"),
-      NoticePage(
-        title: "Notice",
-      )
-    ] */
   };
   static List<Map<String, String>> noticeData = [
     {

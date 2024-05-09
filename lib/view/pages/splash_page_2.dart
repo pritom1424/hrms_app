@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hrms_app/utils/app_variables/app_vars.dart';
-import 'package:hrms_app/view/pages/login_page.dart';
+import '../../utils/app_variables/app_vars.dart';
+import 'login_page.dart';
 
 class SplashPage2 extends StatefulWidget {
   const SplashPage2({super.key});

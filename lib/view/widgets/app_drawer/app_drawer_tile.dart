@@ -4,11 +4,11 @@ import '../../../utils/app_variables/app_vars.dart';
 
 class AppDrawerListTile extends StatelessWidget {
   final int itemIndex;
-  final dynamic route;
+
   final bool? isReplacement;
 
   const AppDrawerListTile(
-      {super.key, required this.itemIndex, this.route, this.isReplacement});
+      {super.key, required this.itemIndex, this.isReplacement});
 
   @override
   Widget build(BuildContext context) {
@@ -97,10 +97,18 @@ class AppDrawerListTile extends StatelessWidget {
               ),
             )
           : ListTile(
-              onTap: (route != null)
+              onTap: (AppVars.appdrawerRoutes[AppVars
+                          .appdrawerListData[itemIndex].entries
+                          .toList()[0]
+                          .key] !=
+                      null)
                   ? () => Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => route),
+                        MaterialPageRoute(
+                            builder: (context) => AppVars.appdrawerRoutes[
+                                AppVars.appdrawerListData[itemIndex].entries
+                                    .toList()[0]
+                                    .key]),
                       )
                   : null,
               leading: Icon(

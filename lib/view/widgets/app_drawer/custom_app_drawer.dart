@@ -6,12 +6,6 @@ import 'package:flutter/widgets.dart';
 import '../../../utils/app_colors/app_colors.dart';
 import '../../../utils/app_variables/app_vars.dart';
 import '../../../utils/app_variables/image_paths.dart';
-import '../../pages/drawer_page/drawerpage_1.dart';
-import '../../pages/drawer_page/drawerpage_2.dart';
-import '../../pages/drawer_page/drawerpage_3.dart';
-import '../../pages/drawer_page/drawerpage_4.dart';
-import '../../pages/drawer_page/drawerpage_5.dart';
-import '../../pages/login_page.dart';
 import 'app_drawer_tile.dart';
 
 class CustomAppDrawer extends StatelessWidget {
@@ -20,33 +14,6 @@ class CustomAppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // String iconPath = "assets/images/dhakaprokash_icon.png";
-
-    List<dynamic> getdrawerRoutes(int index) {
-      return [
-        DrawerPage1(
-          title: AppVars.appdrawerListData[index].entries.toList()[0].key,
-        ),
-        DrawerPage2(
-          title: AppVars.appdrawerListData[index].entries.toList()[0].key,
-        ),
-        DrawerPage3(
-          title: AppVars.appdrawerListData[index].entries.toList()[0].key,
-        ),
-        DrawerPage4(
-          title: AppVars.appdrawerListData[index].entries.toList()[0].key,
-        ),
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        /* DrawerPage5(
-          title: AppVars.appdrawerListData[index].entries.toList()[0].key,
-        ), */
-        LoginForm()
-      ];
-    }
 
     return Drawer(
         backgroundColor: Appcolors.appdrawerBgColor, //AppColors.logoColorDeep
@@ -112,7 +79,6 @@ class CustomAppDrawer extends StatelessWidget {
                     itemCount: AppVars.appdrawerListData.length,
                     itemBuilder: (ctx, i) => AppDrawerListTile(
                           itemIndex: i,
-                          route: getdrawerRoutes(i)[i],
                         )),
               ),
               const FittedBox(

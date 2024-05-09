@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hrms_app/utils/app_variables/app_vars.dart';
-import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
+import '../../../utils/app_variables/app_vars.dart';
+import '../../widgets/appbar_default_widget.dart';
 
 class ShiftConfigView extends StatelessWidget {
   final String? title;

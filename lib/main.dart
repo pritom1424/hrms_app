@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hrms_app/controller/employee_data_controller.dart';
-import 'package:hrms_app/view/pages/splash_page_2.dart';
+import 'controller/employee_data_controller.dart';
+import 'view/pages/splash_page_2.dart';
 import 'package:provider/provider.dart';
 
 import 'utils/app_colors/app_colors.dart';
-import 'view/pages/splash_page.dart';
 
 void main() {
   runApp(MultiProvider(
@@ -51,7 +50,9 @@ class MyApp extends StatelessWidget {
                     TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 titleMedium:
                     TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                /*    bodyMedium:
+                /*   bodyLarge:
+                    TextStyle(fontSize: 25, fontWeight: FontWeight.normal), */
+                /*   bodyMedium:
                     TextStyle(fontSize: 18, fontWeight: FontWeight.normal), */
                 bodySmall:
                     TextStyle(fontSize: 14, fontWeight: FontWeight.normal))

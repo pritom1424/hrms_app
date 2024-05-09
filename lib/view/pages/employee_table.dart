@@ -3,21 +3,24 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hrms_app/utils/app_variables/app_vars.dart';
-import 'package:hrms_app/utils/app_variables/image_paths.dart';
-import 'package:hrms_app/utils/enums/enums.dart';
-import 'package:hrms_app/view/pages/employee/add_new_application.dart';
-import 'package:hrms_app/view/pages/employee/edit_employee_application.dart';
-import 'package:hrms_app/view/pages/text_to_pdf.dart';
-import 'package:hrms_app/view/widgets/dashboard_page/search_widget.dart';
+import '../../utils/app_variables/app_vars.dart';
+import '../../utils/app_variables/image_paths.dart';
+import '../../utils/enums/enums.dart';
+import 'employee/add_new_application.dart';
+import 'employee/edit_employee_application.dart';
+import 'text_to_pdf.dart';
+import '../widgets/dashboard_page/search_widget.dart';
 import 'package:intl/intl.dart';
 
-class MyDataTable extends StatefulWidget {
+class EmployeeList extends StatefulWidget {
+  final String? title;
+
+  const EmployeeList({super.key, this.title});
   @override
-  _MyDataTableState createState() => _MyDataTableState();
+  State<EmployeeList> createState() => _EmployeeListState();
 }
 
-class _MyDataTableState extends State<MyDataTable> {
+class _EmployeeListState extends State<EmployeeList> {
   Gender _selectedGender = Gender.male;
   final List<Map<String, dynamic>> users = [
     {
@@ -192,7 +195,9 @@ class _MyDataTableState extends State<MyDataTable> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Data Table'),
+        title: (widget.title != null)
+            ? Text(widget.title!)
+            : Text('Employee List'),
         actions: [
           Container(
             margin: EdgeInsets.symmetric(horizontal: 5),

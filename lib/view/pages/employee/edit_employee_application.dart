@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:intl/intl.dart';
 import '../../../utils/app_variables/app_vars.dart';
@@ -58,33 +57,17 @@ class _EditEmployeeApplicationFormState
   Shift? _selectedShift;
   Department? _selectedDepartment;
 
-  EdgeInsetsGeometry contentPadding =
-      const EdgeInsets.symmetric(horizontal: 20);
   BorderRadius borderRadius = const BorderRadius.all(Radius.circular(10));
   Color borderColor = const Color.fromARGB(255, 189, 183, 183);
   double borderWidth = 1;
   double marginHeight = 5;
   double leftPadding = 20;
-  BoxDecoration boxDecoration = BoxDecoration(
-    color: Colors.white,
-    borderRadius: BorderRadius.circular(10.0),
-    boxShadow: [
-      BoxShadow(
-        color: Colors.grey.withOpacity(0.3),
-        spreadRadius: 2,
-        blurRadius: 5,
-        offset: Offset(0, 3),
-      ),
-    ],
-  );
 
   //font related
   double smallLabelFontSize = 12;
   double labelFontSize = 18;
   double mediumLabelFontSize = 15;
   Color labelFontColor = Colors.grey;
-
-  TextStyle hintTextStyle = TextStyle(color: Colors.grey.withOpacity(0.5));
 
   Color iconColor = Colors.grey;
 
@@ -199,489 +182,19 @@ class _EditEmployeeApplicationFormState
     super.dispose();
   }
 
-  Widget educationInfoTab() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        /* Container(
-          margin: EdgeInsets.symmetric(vertical: marginHeight),
-          padding: EdgeInsets.only(left: leftPadding),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                "Gender",
-                style: TextStyle(
-                    fontSize: labelFontSize, fontWeight: FontWeight.bold),
-              ),
-              ToggleButtons(
-                isSelected: _selectedGender == Gender.male
-                    ? [true, false]
-                    : _selectedGender == Gender.female
-                        ? [false, true]
-                        : [false, false],
-                onPressed: (int index) {
-                  setState(() {
-                    _selectedGender = index == 0 ? Gender.male : Gender.female;
-                  });
-                },
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 5),
-                    padding: EdgeInsets.symmetric(horizontal: 5),
-                    child: Row(
-                      children: [Icon(Icons.male), Text("male")],
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 5),
-                    margin: EdgeInsets.symmetric(horizontal: 5),
-                    child: Row(
-                      children: [Icon(Icons.female), Text("female")],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ), */
-        Container(
-          padding: EdgeInsets.only(left: leftPadding),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Nationality",
-                style: TextStyle(
-                    fontSize: labelFontSize, fontWeight: FontWeight.bold),
-              ),
-              DropdownButtonHideUnderline(
-                child: Container(
-                  width: AppVars.screenSize.width * 0.55,
-                  padding: contentPadding,
-                  decoration: BoxDecoration(border: Border.all(width: 0.4)),
-                  margin: EdgeInsets.symmetric(vertical: marginHeight),
-                  child: DropdownButton(
-                      hint: Text(
-                        "Choose nationality",
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                            fontSize: mediumLabelFontSize,
-                            color: Colors.black54),
-                      ),
-                      value: _selectedNation,
-                      items: Nationality.values
-                          .map(
-                            (nationality) => DropdownMenuItem(
-                              value: nationality,
-                              child: Text(
-                                nationality.name.toUpperCase(),
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          )
-                          .toList(),
-                      onChanged: (val) {
-                        if (val == null) {
-                          return;
-                        }
-                        setState(() {
-                          _selectedNation = val;
-                        });
-                      }),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Container(
-            margin: EdgeInsets.symmetric(vertical: marginHeight),
-            padding: EdgeInsets.only(left: leftPadding),
-            decoration: boxDecoration,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Date Of Birth: ${DateFormat.yMd().format(_selectedDate)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
-                  style: TextStyle(fontSize: mediumLabelFontSize),
-                ),
-                SizedBox(width: 20),
-                TextButton(
-                  onPressed: () => _selectDate(context, fDate: DateTime(1970)),
-                  child: Text(
-                    'Select Date',
-                    style: TextStyle(fontSize: mediumLabelFontSize),
-                  ),
-                ),
-              ],
-            )),
-        Container(
-          margin: EdgeInsets.symmetric(vertical: marginHeight),
-          decoration: boxDecoration,
-          child: TextFormField(
-            controller: _employeeNameController,
-            decoration: InputDecoration(
-              labelText: 'Employee Name',
-              contentPadding: contentPadding,
-              hintStyle: hintTextStyle,
-              /* prefixIcon: Icon(
-                Icons.abc,
-                color: iconColor,
-              ), */
-              border: InputBorder.none,
-              hintText: 'Employee Name',
-              labelStyle:
-                  TextStyle(fontSize: labelFontSize, color: labelFontColor),
-            ),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.symmetric(vertical: marginHeight),
-          decoration: boxDecoration,
-          child: TextFormField(
-            controller: _employeeFatherNameController,
-            decoration: InputDecoration(
-              labelText: 'Employee Father Name',
-              contentPadding: contentPadding,
-              hintStyle: hintTextStyle,
-              /* prefixIcon: Icon(
-                Icons.abc,
-                color: iconColor,
-              ), */
-              border: InputBorder.none,
-              hintText: 'Employee Father Name',
-              labelStyle:
-                  TextStyle(fontSize: labelFontSize, color: labelFontColor),
-            ),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.symmetric(vertical: marginHeight),
-          decoration: boxDecoration,
-          child: TextFormField(
-            controller: _employeeMotherNameController,
-            decoration: InputDecoration(
-              labelText: 'Employee Mother Name',
-              contentPadding: contentPadding,
-              hintStyle: hintTextStyle,
-              /* prefixIcon: Icon(
-                Icons.abc,
-                color: iconColor,
-              ), */
-              border: InputBorder.none,
-              hintText: 'Employee Mother Name',
-              labelStyle:
-                  TextStyle(fontSize: labelFontSize, color: labelFontColor),
-            ),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.symmetric(vertical: marginHeight),
-          padding: EdgeInsets.only(left: leftPadding),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                "Gender",
-                style: TextStyle(
-                    fontSize: labelFontSize, fontWeight: FontWeight.bold),
-              ),
-              ToggleButtons(
-                isSelected: _selectedGender == Gender.male
-                    ? [true, false]
-                    : _selectedGender == Gender.female
-                        ? [false, true]
-                        : [false, false],
-                onPressed: (int index) {
-                  setState(() {
-                    _selectedGender = index == 0 ? Gender.male : Gender.female;
-                  });
-                },
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 5),
-                    padding: EdgeInsets.symmetric(horizontal: 5),
-                    child: Row(
-                      children: [Icon(Icons.male), Text("male")],
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 5),
-                    margin: EdgeInsets.symmetric(horizontal: 5),
-                    child: Row(
-                      children: [Icon(Icons.female), Text("female")],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        Container(
-            margin: EdgeInsets.symmetric(vertical: marginHeight),
-            padding: EdgeInsets.only(left: leftPadding),
-            decoration: boxDecoration,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Date Of Birth: ${DateFormat.yMd().format(_selectedDate)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
-                  style: TextStyle(fontSize: mediumLabelFontSize),
-                ),
-                SizedBox(width: 20),
-                TextButton(
-                  onPressed: () => _selectDate(context, fDate: DateTime(1970)),
-                  child: Text(
-                    'Select Date',
-                    style: TextStyle(fontSize: mediumLabelFontSize),
-                  ),
-                ),
-              ],
-            )),
-        Container(
-          padding: EdgeInsets.only(left: leftPadding),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Nationality",
-                style: TextStyle(
-                    fontSize: labelFontSize, fontWeight: FontWeight.bold),
-              ),
-              DropdownButtonHideUnderline(
-                child: Container(
-                  width: AppVars.screenSize.width * 0.55,
-                  padding: contentPadding,
-                  decoration: BoxDecoration(border: Border.all(width: 0.4)),
-                  margin: EdgeInsets.symmetric(vertical: marginHeight),
-                  child: DropdownButton(
-                      hint: Text(
-                        "Choose nationality",
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                            fontSize: mediumLabelFontSize,
-                            color: Colors.black54),
-                      ),
-                      value: _selectedNation,
-                      items: Nationality.values
-                          .map(
-                            (nationality) => DropdownMenuItem(
-                              value: nationality,
-                              child: Text(
-                                nationality.name.toUpperCase(),
-                                style: Theme.of(context).textTheme.labelSmall,
-                              ),
-                            ),
-                          )
-                          .toList(),
-                      onChanged: (val) {
-                        if (val == null) {
-                          return;
-                        }
-                        setState(() {
-                          _selectedNation = val;
-                        });
-                      }),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.only(left: leftPadding),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "ID Type",
-                style: TextStyle(
-                    fontSize: labelFontSize, fontWeight: FontWeight.bold),
-              ),
-              DropdownButtonHideUnderline(
-                child: Container(
-                  width: AppVars.screenSize.width * 0.55,
-                  padding: contentPadding,
-                  decoration: BoxDecoration(border: Border.all(width: 0.4)),
-                  margin: EdgeInsets.symmetric(vertical: marginHeight),
-                  child: DropdownButton(
-                      hint: Text(
-                        "Choose Id type",
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                            fontSize: mediumLabelFontSize,
-                            color: Colors.black54),
-                      ),
-                      value: _selectedIdType,
-                      items: IdType.values
-                          .map(
-                            (idType) => DropdownMenuItem(
-                              value: idType,
-                              child: Text(
-                                idType.name.toUpperCase(),
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          )
-                          .toList(),
-                      onChanged: (val) {
-                        if (val == null) {
-                          return;
-                        }
-                        setState(() {
-                          _selectedIdType = val;
-                        });
-                      }),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.symmetric(vertical: marginHeight),
-          decoration: boxDecoration,
-          child: TextFormField(
-            controller: _employeeIdController,
-            decoration: InputDecoration(
-              labelText: 'Id Number',
-              contentPadding: contentPadding,
-              /*  prefixIcon: Icon(
-                Icons.phone,
-                color: iconColor,
-              ), */
-              border: InputBorder.none,
-              hintText: 'Id Number',
-              hintStyle: hintTextStyle,
-              labelStyle:
-                  TextStyle(fontSize: labelFontSize, color: labelFontColor),
-            ),
-            validator: (value) {
-              if (value != null && value == "") {
-                return 'Please enter leave type';
-              }
-              return null;
-            },
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.symmetric(vertical: marginHeight),
-          decoration: boxDecoration,
-          child: TextFormField(
-            controller: _employeePunchIdController,
-            decoration: InputDecoration(
-              labelText: 'Punch Id',
-              contentPadding: contentPadding,
-              /* prefixIcon: Icon(
-                Icons.phone,
-                color: iconColor,
-              ), */
-              border: InputBorder.none,
-              hintText: 'Punch Id',
-              hintStyle: hintTextStyle,
-              labelStyle:
-                  TextStyle(fontSize: labelFontSize, color: labelFontColor),
-            ),
-            validator: (value) {
-              if (value != null && value == "") {
-                return 'Please enter leave type';
-              }
-              return null;
-            },
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.symmetric(vertical: marginHeight),
-          decoration: boxDecoration,
-          child: TextFormField(
-            controller: _employeePresentAddressController,
-            maxLines: 3,
-            decoration: InputDecoration(
-              labelText: 'Present Address',
-              contentPadding: contentPadding,
-              hintStyle: hintTextStyle,
-              /*  prefixIcon: Icon(
-                Icons.home,
-                color: iconColor,
-              ), */
-              border: InputBorder.none,
-              hintText: 'Present Address',
-              labelStyle:
-                  TextStyle(fontSize: labelFontSize, color: labelFontColor),
-            ),
-            validator: (value) {
-              if (value != null && value == "") {
-                return 'Please enter reason for leave';
-              }
-              return null;
-            },
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.symmetric(vertical: marginHeight),
-          decoration: boxDecoration,
-          child: TextFormField(
-            controller: _employeePermanentAddressController,
-            maxLines: 3,
-            decoration: InputDecoration(
-              labelText: 'Permanent Address',
-              contentPadding: contentPadding,
-              hintStyle: hintTextStyle,
-              /* prefixIcon: Icon(
-                Icons.home,
-                color: iconColor,
-              ), */
-              border: InputBorder.none,
-              hintText: 'Permanent Address',
-              labelStyle:
-                  TextStyle(fontSize: labelFontSize, color: labelFontColor),
-            ),
-            validator: (value) {
-              if (value != null && value == "") {
-                return 'Please enter reason for leave';
-              }
-              return null;
-            },
-          ),
-        ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: borderRadius,
-              ),
-              backgroundColor: actionButtonBgColor,
-              foregroundColor: actionButtonFgColor),
-          onPressed: () {
-            // Handle apply button press
-            // You can access the values using controller.text for each field
-          },
-          child: const Text(
-            'Create',
-            style: TextStyle(fontSize: 25),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget employeeInfoTab() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Container(
           margin: EdgeInsets.symmetric(vertical: marginHeight),
-          decoration: boxDecoration,
+          decoration: AppVars.customInputboxDecoration,
           child: TextFormField(
             controller: _employeeNameController,
             decoration: InputDecoration(
               labelText: 'Employee Name',
-              contentPadding: contentPadding,
-              hintStyle: hintTextStyle,
+              contentPadding: AppVars.inputContentPadding,
+              hintStyle: AppVars.customHintTextStyle,
               /* prefixIcon: Icon(
                 Icons.abc,
                 color: iconColor,
@@ -695,13 +208,13 @@ class _EditEmployeeApplicationFormState
         ),
         Container(
           margin: EdgeInsets.symmetric(vertical: marginHeight),
-          decoration: boxDecoration,
+          decoration: AppVars.customInputboxDecoration,
           child: TextFormField(
             controller: _employeeFatherNameController,
             decoration: InputDecoration(
               labelText: 'Employee Father Name',
-              contentPadding: contentPadding,
-              hintStyle: hintTextStyle,
+              contentPadding: AppVars.inputContentPadding,
+              hintStyle: AppVars.customHintTextStyle,
               /* prefixIcon: Icon(
                 Icons.abc,
                 color: iconColor,
@@ -715,13 +228,13 @@ class _EditEmployeeApplicationFormState
         ),
         Container(
           margin: EdgeInsets.symmetric(vertical: marginHeight),
-          decoration: boxDecoration,
+          decoration: AppVars.customInputboxDecoration,
           child: TextFormField(
             controller: _employeeMotherNameController,
             decoration: InputDecoration(
               labelText: 'Employee Mother Name',
-              contentPadding: contentPadding,
-              hintStyle: hintTextStyle,
+              contentPadding: AppVars.inputContentPadding,
+              hintStyle: AppVars.customHintTextStyle,
               /* prefixIcon: Icon(
                 Icons.abc,
                 color: iconColor,
@@ -778,7 +291,7 @@ class _EditEmployeeApplicationFormState
         Container(
             margin: EdgeInsets.symmetric(vertical: marginHeight),
             padding: EdgeInsets.only(left: leftPadding),
-            decoration: boxDecoration,
+            decoration: AppVars.customInputboxDecoration,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -795,78 +308,7 @@ class _EditEmployeeApplicationFormState
                   ),
                 ),
               ],
-            ) /* TextFormField(
-            controller: _employeeDOBController,
-            decoration: InputDecoration(
-              labelText: 'Date Of Birth',
-              contentPadding: contentPadding,
-              /* prefixIcon: Icon(
-                Icons.phone,
-                color: iconColor,
-              ), */
-              border: InputBorder.none,
-              hintText: 'Date Of Birth',
-              hintStyle: hintTextStyle,
-              labelStyle:
-                  TextStyle(fontSize: labelFontSize, color: labelFontColor),
-            ),
-            validator: (value) {
-              if (value != null && value == "") {
-                return 'Please enter leave type';
-              }
-              return null;
-            },
-          ), */
-            ),
-        /* Container(
-          padding: EdgeInsets.only(left: leftPadding),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Nationality",
-                style: TextStyle(
-                    fontSize: labelFontSize, fontWeight: FontWeight.bold),
-              ),
-              DropdownButtonHideUnderline(
-                child: Container(
-                  padding: contentPadding,
-                  margin: EdgeInsets.symmetric(vertical: marginHeight),
-                  decoration: BoxDecoration(border: Border.all(width: 0.4)),
-                  child: DropdownButton(
-                      hint: Text(
-                        "Choose nationality",
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(fontSize: 14, color: Colors.black54),
-                      ),
-                      value: _selectedNation,
-                      items: Nationality.values
-                          .map(
-                            (nationality) => DropdownMenuItem(
-                              value: nationality,
-                              child: Text(
-                                nationality.name.toUpperCase(),
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          )
-                          .toList(),
-                      onChanged: (val) {
-                        if (val == null) {
-                          return;
-                        }
-                        setState(() {
-                          _selectedNation = val;
-                        });
-                      }),
-                ),
-              ),
-            ],
-          ),
-        ), */
+            )),
         Container(
           padding: EdgeInsets.only(left: leftPadding),
           child: Row(
@@ -880,7 +322,7 @@ class _EditEmployeeApplicationFormState
               DropdownButtonHideUnderline(
                 child: Container(
                   width: AppVars.screenSize.width * 0.55,
-                  padding: contentPadding,
+                  padding: AppVars.inputContentPadding,
                   decoration: BoxDecoration(border: Border.all(width: 0.4)),
                   margin: EdgeInsets.symmetric(vertical: marginHeight),
                   child: DropdownButton(
@@ -930,7 +372,7 @@ class _EditEmployeeApplicationFormState
               DropdownButtonHideUnderline(
                 child: Container(
                   width: AppVars.screenSize.width * 0.55,
-                  padding: contentPadding,
+                  padding: AppVars.inputContentPadding,
                   decoration: BoxDecoration(border: Border.all(width: 0.4)),
                   margin: EdgeInsets.symmetric(vertical: marginHeight),
                   child: DropdownButton(
@@ -969,19 +411,19 @@ class _EditEmployeeApplicationFormState
         ),
         Container(
           margin: EdgeInsets.symmetric(vertical: marginHeight),
-          decoration: boxDecoration,
+          decoration: AppVars.customInputboxDecoration,
           child: TextFormField(
             controller: _employeeIdController,
             decoration: InputDecoration(
               labelText: 'Id Number',
-              contentPadding: contentPadding,
+              contentPadding: AppVars.inputContentPadding,
               /*  prefixIcon: Icon(
                 Icons.phone,
                 color: iconColor,
               ), */
               border: InputBorder.none,
               hintText: 'Id Number',
-              hintStyle: hintTextStyle,
+              hintStyle: AppVars.customHintTextStyle,
               labelStyle:
                   TextStyle(fontSize: labelFontSize, color: labelFontColor),
             ),
@@ -995,19 +437,19 @@ class _EditEmployeeApplicationFormState
         ),
         Container(
           margin: EdgeInsets.symmetric(vertical: marginHeight),
-          decoration: boxDecoration,
+          decoration: AppVars.customInputboxDecoration,
           child: TextFormField(
             controller: _employeePunchIdController,
             decoration: InputDecoration(
               labelText: 'Punch Id',
-              contentPadding: contentPadding,
+              contentPadding: AppVars.inputContentPadding,
               /* prefixIcon: Icon(
                 Icons.phone,
                 color: iconColor,
               ), */
               border: InputBorder.none,
               hintText: 'Punch Id',
-              hintStyle: hintTextStyle,
+              hintStyle: AppVars.customHintTextStyle,
               labelStyle:
                   TextStyle(fontSize: labelFontSize, color: labelFontColor),
             ),
@@ -1021,14 +463,14 @@ class _EditEmployeeApplicationFormState
         ),
         Container(
           margin: EdgeInsets.symmetric(vertical: marginHeight),
-          decoration: boxDecoration,
+          decoration: AppVars.customInputboxDecoration,
           child: TextFormField(
             controller: _employeePresentAddressController,
             maxLines: 3,
             decoration: InputDecoration(
               labelText: 'Present Address',
-              contentPadding: contentPadding,
-              hintStyle: hintTextStyle,
+              contentPadding: AppVars.inputContentPadding,
+              hintStyle: AppVars.customHintTextStyle,
               /*  prefixIcon: Icon(
                 Icons.home,
                 color: iconColor,
@@ -1048,14 +490,14 @@ class _EditEmployeeApplicationFormState
         ),
         Container(
           margin: EdgeInsets.symmetric(vertical: marginHeight),
-          decoration: boxDecoration,
+          decoration: AppVars.customInputboxDecoration,
           child: TextFormField(
             controller: _employeePermanentAddressController,
             maxLines: 3,
             decoration: InputDecoration(
               labelText: 'Permanent Address',
-              contentPadding: contentPadding,
-              hintStyle: hintTextStyle,
+              contentPadding: AppVars.inputContentPadding,
+              hintStyle: AppVars.customHintTextStyle,
               /* prefixIcon: Icon(
                 Icons.home,
                 color: iconColor,
@@ -1099,19 +541,19 @@ class _EditEmployeeApplicationFormState
       children: [
         Container(
           margin: EdgeInsets.symmetric(vertical: marginHeight),
-          decoration: boxDecoration,
+          decoration: AppVars.customInputboxDecoration,
           child: TextFormField(
             controller: _shiftDateController,
             decoration: InputDecoration(
               labelText: 'Shift Date',
-              contentPadding: contentPadding,
+              contentPadding: AppVars.inputContentPadding,
               /* prefixIcon: Icon(
                 Icons.phone,
                 color: iconColor,
               ), */
               border: InputBorder.none,
               hintText: 'Shift Date',
-              hintStyle: hintTextStyle,
+              hintStyle: AppVars.customHintTextStyle,
               labelStyle:
                   TextStyle(fontSize: labelFontSize, color: labelFontColor),
             ),
@@ -1136,7 +578,7 @@ class _EditEmployeeApplicationFormState
               DropdownButtonHideUnderline(
                 child: Container(
                   width: AppVars.screenSize.width * 0.55,
-                  padding: contentPadding,
+                  padding: AppVars.inputContentPadding,
                   margin: EdgeInsets.symmetric(vertical: marginHeight),
                   decoration: BoxDecoration(border: Border.all(width: 0.4)),
                   child: DropdownButton(
@@ -1175,13 +617,13 @@ class _EditEmployeeApplicationFormState
         ),
         Container(
           margin: EdgeInsets.symmetric(vertical: marginHeight),
-          decoration: boxDecoration,
+          decoration: AppVars.customInputboxDecoration,
           child: TextFormField(
             controller: _employeeDesignationController,
             decoration: InputDecoration(
               labelText: 'Designation',
-              contentPadding: contentPadding,
-              hintStyle: hintTextStyle,
+              contentPadding: AppVars.inputContentPadding,
+              hintStyle: AppVars.customHintTextStyle,
               /* prefixIcon: Icon(
                 Icons.abc,
                 color: iconColor,
@@ -1196,7 +638,7 @@ class _EditEmployeeApplicationFormState
         Container(
             margin: EdgeInsets.symmetric(vertical: marginHeight),
             padding: EdgeInsets.only(left: leftPadding),
-            decoration: boxDecoration,
+            decoration: AppVars.customInputboxDecoration,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -1213,33 +655,11 @@ class _EditEmployeeApplicationFormState
                   ),
                 ),
               ],
-            ) /* TextFormField(
-            controller: _employeeJoiningDateController,
-            decoration: InputDecoration(
-              labelText: 'Joining Date',
-              contentPadding: contentPadding,
-              /* prefixIcon: Icon(
-                Icons.phone,
-                color: iconColor,
-              ), */
-              border: InputBorder.none,
-              hintText: 'Joining Date',
-              hintStyle: hintTextStyle,
-              labelStyle:
-                  TextStyle(fontSize: labelFontSize, color: labelFontColor),
-            ),
-            validator: (value) {
-              if (value != null && value == "") {
-                return 'Please enter leave type';
-              }
-              return null;
-            },
-          ), */
-            ),
+            )),
         Container(
             margin: EdgeInsets.symmetric(vertical: marginHeight),
             padding: EdgeInsets.only(left: leftPadding),
-            decoration: boxDecoration,
+            decoration: AppVars.customInputboxDecoration,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -1258,31 +678,7 @@ class _EditEmployeeApplicationFormState
                   ),
                 ),
               ],
-            )
-
-            /* TextFormField(
-            controller: _employeeConfirmDateController,
-            decoration: InputDecoration(
-              labelText: 'Confirmation Date',
-              contentPadding: contentPadding,
-              /* prefixIcon: Icon(
-                Icons.phone,
-                color: iconColor,
-              ), */
-              border: InputBorder.none,
-              hintText: 'Confirmation Date',
-              hintStyle: hintTextStyle,
-              labelStyle:
-                  TextStyle(fontSize: labelFontSize, color: labelFontColor),
-            ),
-            validator: (value) {
-              if (value != null && value == "") {
-                return 'Please enter leave type';
-              }
-              return null;
-            },
-          ), */
-            ),
+            )),
         Container(
           padding: EdgeInsets.only(left: leftPadding),
           child: Row(
@@ -1296,7 +692,7 @@ class _EditEmployeeApplicationFormState
               DropdownButtonHideUnderline(
                 child: Container(
                   width: AppVars.screenSize.width * 0.55,
-                  padding: contentPadding,
+                  padding: AppVars.inputContentPadding,
                   decoration: BoxDecoration(border: Border.all(width: 0.4)),
                   margin: EdgeInsets.symmetric(vertical: marginHeight),
                   child: DropdownButton(
@@ -1335,19 +731,19 @@ class _EditEmployeeApplicationFormState
         ),
         Container(
           margin: EdgeInsets.symmetric(vertical: marginHeight),
-          decoration: boxDecoration,
+          decoration: AppVars.customInputboxDecoration,
           child: TextFormField(
             controller: _employeeIdController,
             decoration: InputDecoration(
               labelText: 'Id Number',
-              contentPadding: contentPadding,
+              contentPadding: AppVars.inputContentPadding,
               /*  prefixIcon: Icon(
                 Icons.phone,
                 color: iconColor,
               ), */
               border: InputBorder.none,
               hintText: 'Id Number',
-              hintStyle: hintTextStyle,
+              hintStyle: AppVars.customHintTextStyle,
               labelStyle:
                   TextStyle(fontSize: labelFontSize, color: labelFontColor),
             ),
@@ -1361,19 +757,19 @@ class _EditEmployeeApplicationFormState
         ),
         Container(
           margin: EdgeInsets.symmetric(vertical: marginHeight),
-          decoration: boxDecoration,
+          decoration: AppVars.customInputboxDecoration,
           child: TextFormField(
             controller: _employeePunchIdController,
             decoration: InputDecoration(
               labelText: 'Punch Id',
-              contentPadding: contentPadding,
+              contentPadding: AppVars.inputContentPadding,
               /* prefixIcon: Icon(
                 Icons.phone,
                 color: iconColor,
               ), */
               border: InputBorder.none,
               hintText: 'Punch Id',
-              hintStyle: hintTextStyle,
+              hintStyle: AppVars.customHintTextStyle,
               labelStyle:
                   TextStyle(fontSize: labelFontSize, color: labelFontColor),
             ),
@@ -1387,14 +783,14 @@ class _EditEmployeeApplicationFormState
         ),
         Container(
           margin: EdgeInsets.symmetric(vertical: marginHeight),
-          decoration: boxDecoration,
+          decoration: AppVars.customInputboxDecoration,
           child: TextFormField(
             controller: _employeePresentAddressController,
             maxLines: 3,
             decoration: InputDecoration(
               labelText: 'Present Address',
-              contentPadding: contentPadding,
-              hintStyle: hintTextStyle,
+              contentPadding: AppVars.inputContentPadding,
+              hintStyle: AppVars.customHintTextStyle,
               /*  prefixIcon: Icon(
                 Icons.home,
                 color: iconColor,
@@ -1414,14 +810,14 @@ class _EditEmployeeApplicationFormState
         ),
         Container(
           margin: EdgeInsets.symmetric(vertical: marginHeight),
-          decoration: boxDecoration,
+          decoration: AppVars.customInputboxDecoration,
           child: TextFormField(
             controller: _employeePermanentAddressController,
             maxLines: 3,
             decoration: InputDecoration(
               labelText: 'Permanent Address',
-              contentPadding: contentPadding,
-              hintStyle: hintTextStyle,
+              contentPadding: AppVars.inputContentPadding,
+              hintStyle: AppVars.customHintTextStyle,
               /* prefixIcon: Icon(
                 Icons.home,
                 color: iconColor,
@@ -1469,326 +865,77 @@ class _EditEmployeeApplicationFormState
               isShowLeading: false,
               isShowNotification: false,
             ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-        /*    
-        height: AppVars.screenSize.height * 0.9, */
-        child: Column(
-          //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundImage: (_storedImage != null)
-                        ? FileImage(_storedImage!)
-                        : null,
-                    backgroundColor: Color(0xFFFFCFDA),
-                  ),
-                  TextButton(
-                    onPressed: _pictureButtonMethod,
-                    child: Text(
-                      (_storedImage == null)
-                          ? "Add Profile Picture"
-                          : "Update Profile Picture",
-                      style: const TextStyle(
-                          color: Colors.grey,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            TabBar(
-                labelStyle: Theme.of(context)
-                    .textTheme
-                    .headlineSmall /* TextStyle(fontSize: 17, fontWeight: FontWeight.bold) */,
-                controller: tabController,
-                isScrollable: false,
-                tabs: const [
-                  Tab(
-                    icon: Text(
-                      'Employee Information',
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
-                  ),
-                  Tab(
-                    icon: Text(
-                      'Office Information',
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
-                  ),
-                ]),
-            Expanded(
-              //  height: AppVars.screenSize.height * 0.6,
-              child: TabBarView(
-                  physics: NeverScrollableScrollPhysics(),
-                  controller: tabController,
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+          height: AppVars.screenSize.height * 1,
+          child: Column(
+            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(
+                child: Column(
                   children: [
-                    SingleChildScrollView(child: employeeInfoTab()),
-                    SingleChildScrollView(child: officeInfoTab())
+                    CircleAvatar(
+                      radius: 50,
+                      backgroundImage: (_storedImage != null)
+                          ? FileImage(_storedImage!)
+                          : null,
+                      backgroundColor: Color(0xFFFFCFDA),
+                    ),
+                    TextButton(
+                      onPressed: _pictureButtonMethod,
+                      child: Text(
+                        (_storedImage == null)
+                            ? "Add Profile Picture"
+                            : "Update Profile Picture",
+                        style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              TabBar(
+                  labelStyle: Theme.of(context)
+                      .textTheme
+                      .headlineSmall /* TextStyle(fontSize: 17, fontWeight: FontWeight.bold) */,
+                  controller: tabController,
+                  isScrollable: false,
+                  tabs: const [
+                    Tab(
+                      icon: Text(
+                        'Employee Information',
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                    ),
+                    Tab(
+                      icon: Text(
+                        'Office Information',
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                    ),
                   ]),
-            ),
+              Expanded(
+                //  height: AppVars.screenSize.height * 0.6,
+                child: TabBarView(
+                    physics: NeverScrollableScrollPhysics(),
+                    controller: tabController,
+                    children: [
+                      SingleChildScrollView(child: employeeInfoTab()),
+                      SingleChildScrollView(child: officeInfoTab())
+                    ]),
+              ),
 
-            //              const SizedBox(height: 20),
-          ],
+              //              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );
   }
 }
- /* focusedBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)), */
- /* Container(
-                decoration: boxDecoration,
-                child: TextFormField(
-                  controller: _employeePhoneController,
-                  decoration: InputDecoration(
-                    labelText: 'Phone',
-                    contentPadding: contentPadding,
-                    prefixIcon: Icon(
-                      Icons.phone,
-                      color: iconColor,
-                    ),
-                    border: InputBorder.none,
-                    /*   focusedBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)), */
-                    hintText: 'Phone',
-                    hintStyle: hintTextStyle,
-                    labelStyle: TextStyle(
-                        fontSize: labelFontSize, color: labelFontColor),
-                  ),
-                  validator: (value) {
-                    if (value != null && value == "") {
-                      return 'Please enter leave type';
-                    }
-                    return null;
-                  },
-                ),
-              ), */
-              /* Container(
-                decoration: boxDecoration,
-                child: TextFormField(
-                  controller: _employeeEmailController,
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    contentPadding: contentPadding,
-                    prefixIcon: Icon(
-                      Icons.email,
-                      color: iconColor,
-                    ),
-                    border: InputBorder.none,
-                    /* focusedBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)), */
-                    hintText: 'Email',
-                    hintStyle: hintTextStyle,
-                    labelStyle: TextStyle(
-                        fontSize: labelFontSize, color: labelFontColor),
-                  ),
-                  validator: (value) {
-                    if (value != null && value == "") {
-                      return 'Please enter start date';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Container(
-                decoration: boxDecoration,
-                child: TextFormField(
-                  controller: _employeeWebsiteController,
-                  decoration: InputDecoration(
-                    labelText: 'Website',
-                    contentPadding: contentPadding,
-                    prefixIcon: Icon(
-                      Icons.web,
-                      color: iconColor,
-                    ),
-                    border: InputBorder.none,
-                    /* focusedBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)), */
-                    hintText: 'Website',
-                    hintStyle: hintTextStyle,
-                    labelStyle: TextStyle(
-                        fontSize: labelFontSize, color: labelFontColor),
-                  ),
-                  validator: (value) {
-                    if (value != null && value == "") {
-                      return 'Please enter end date';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Container(
-                decoration: boxDecoration,
-                child: TextFormField(
-                  controller: _responsibleEmployeeNameController,
-                  decoration: InputDecoration(
-                    labelText: 'Responsible Person',
-                    contentPadding: contentPadding,
-                    hintStyle: hintTextStyle,
-                    prefixIcon: Icon(
-                      Icons.group,
-                      color: iconColor,
-                    ),
-                    border: InputBorder.none,
-                    /* focusedBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)), */
-                    hintText: 'Responsible Person',
-                    labelStyle: TextStyle(
-                        fontSize: labelFontSize, color: labelFontColor),
-                  ),
-                  validator: (value) {
-                    if (value != null && value == "") {
-                      return 'Please enter total leave days';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Container(
-                decoration: boxDecoration,
-                child: TextFormField(
-                  controller: _responsibleEmployeePhoneController,
-                  decoration: InputDecoration(
-                    labelText: 'Responsible Person Number',
-                    contentPadding: contentPadding,
-                    prefixIcon: Icon(
-                      Icons.phone_android,
-                      color: iconColor,
-                    ),
-                    hintStyle: hintTextStyle,
-                    border: InputBorder.none,
-                    /* focusedBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)), */
-                    hintText: 'Address During Leave',
-                    labelStyle: TextStyle(
-                        fontSize: labelFontSize, color: labelFontColor),
-                  ),
-                ),
-              ), */
-
-               /*  SizedBox(
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        decoration: boxDecoration,
-                        child: TextFormField(
-                          controller: _employeeIdController,
-                          decoration: InputDecoration(
-                            labelText: 'Employee ID',
-                            contentPadding: contentPadding,
-                            prefixIcon: Icon(
-                              Icons.person,
-                              color: iconColor,
-                            ),
-                            hintStyle: hintTextStyle,
-                            border: InputBorder.none,
-                            /*  focusedBorder: OutlineInputBorder(
-                                borderRadius: borderRadius,
-                                borderSide: BorderSide(
-                                    color: borderColor, width: borderWidth)),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: borderRadius,
-                                borderSide: BorderSide(
-                                    color: borderColor, width: borderWidth)), */
-                            hintText: 'Employee ID',
-                            labelStyle: TextStyle(
-                                fontSize: smallLabelFontSize,
-                                color: labelFontColor),
-                          ),
-                          validator: (value) {
-                            if (value != null && value == "") {
-                              return 'Please enter employee ID';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Expanded(
-                      child: Container(
-                        decoration: boxDecoration,
-                        child: TextFormField(
-                          controller: _employeeCodeController,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            labelText: 'Employee Code',
-                            contentPadding: contentPadding,
-                            prefixIcon: Icon(
-                              Icons.code,
-                              color: iconColor,
-                            ),
-                            border: InputBorder.none,
-                            /* focusedBorder: OutlineInputBorder(
-                                borderRadius: borderRadius,
-                                borderSide: BorderSide(
-                                    color: borderColor, width: borderWidth)),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: borderRadius,
-                                borderSide: BorderSide(
-                                    color: borderColor, width: borderWidth)), */
-                            hintText: 'Employee Code',
-                            hintStyle: hintTextStyle,
-                            labelStyle: TextStyle(
-                                fontSize: smallLabelFontSize,
-                                color: labelFontColor),
-                          ),
-                          validator: (value) {
-                            if (value != null && value == "") {
-                              return 'Please enter contact number';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ), */

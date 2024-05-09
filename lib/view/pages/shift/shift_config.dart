@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hrms_app/utils/app_variables/app_vars.dart';
-import 'package:hrms_app/utils/enums/enums.dart';
-import 'package:hrms_app/view/pages/shift/shift_config_view.dart';
-import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
+import '../../../utils/app_variables/app_vars.dart';
+import '../../../utils/enums/enums.dart';
+import 'shift_config_view.dart';
+import '../../widgets/appbar_default_widget.dart';
 import 'package:intl/intl.dart';
 
 class ShiftConfig extends StatefulWidget {
@@ -194,9 +194,8 @@ class _ShiftConfigState extends State<ShiftConfig> {
                                   value: shift,
                                   child: Text(
                                     shift.name.toUpperCase(),
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                    ),
+                                    style:
+                                        Theme.of(context).textTheme.labelSmall,
                                   ),
                                 ),
                               )
