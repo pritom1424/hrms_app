@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hrms_app/view/pages/navigation_pages/dashboard_page_2.dart';
 import '../../utils/app_variables/app_vars.dart';
 import 'employee_profile_page.dart';
 import 'login_page.dart';
@@ -34,6 +35,7 @@ class _RootNavPageState extends State<RootNavPage> {
       return [
         //dashboard
         DashboardPage(),
+
         //employee list
         EmployeePage(),
         // users

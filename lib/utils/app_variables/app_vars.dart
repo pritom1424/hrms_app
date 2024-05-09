@@ -4,6 +4,7 @@ import 'package:hrms_app/view/pages/admin_panel.dart';
 import 'package:hrms_app/view/pages/employee/add_new_application.dart';
 import 'package:hrms_app/view/pages/employee_profile_page.dart';
 import 'package:hrms_app/view/pages/employee_table.dart';
+import 'package:hrms_app/view/pages/navigation_pages/dashboard_page_2.dart';
 import 'package:hrms_app/view/pages/settings/country_sett.dart';
 import 'package:hrms_app/view/pages/settings/department_sett.dart';
 import 'package:hrms_app/view/pages/settings/education_sett.dart';
@@ -44,7 +45,7 @@ class AppVars {
 
 //navbar
   static List<Map<String, IconData>> navBarData = [
-    {"Dashboard": Icons.grid_view},
+    {"Home": Icons.grid_view},
     {"Employee": CupertinoIcons.person_2},
     {"Users": CupertinoIcons.profile_circled},
     {"Settings": CupertinoIcons.gear},
@@ -91,7 +92,7 @@ class AppVars {
     /*  "Dashboard": DrawerPage1(
       title: "Dashboard",
     ) */
-    "Dashboard": AdminPanel(
+    "Dashboard": DashboardPage2(
       title: "Dashboard",
     ),
 
