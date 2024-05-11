@@ -142,6 +142,12 @@ class _ShiftConfigState extends State<ShiftConfig> {
     }
   }
 
+  void _deleteUser(int index) {
+    setState(() {
+      data.removeAt(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var now = DateTime.now();
@@ -428,7 +434,9 @@ class _ShiftConfigState extends State<ShiftConfig> {
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(5)),
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _deleteUser(index);
+                                  },
                                   child: Text(
                                     'Delete',
                                     style: TextStyle(color: Colors.white),

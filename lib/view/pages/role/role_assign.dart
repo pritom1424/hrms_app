@@ -4,24 +4,37 @@ import 'package:flutter/widgets.dart';
 import '../../../utils/app_variables/app_vars.dart';
 import '../../widgets/appbar_default_widget.dart';
 
-class RoleAssign extends StatelessWidget {
+class RoleAssign extends StatefulWidget {
   final String? title;
   const RoleAssign({super.key, this.title});
 
   @override
+  State<RoleAssign> createState() => _RoleAssignState();
+}
+
+class _RoleAssignState extends State<RoleAssign> {
+  ScrollController _scController = ScrollController();
+  List<String> dataList = [
+    "Robiul",
+    "Tanay",
+    "Roni",
+    "Partha",
+    "Saklain",
+    "Nahid"
+  ];
+  @override
+  void dispose() {
+    _scController.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    List<String> dataList = [
-      "Robiul",
-      "Tanay",
-      "Roni",
-      "Partha",
-      "Saklain",
-      "Nahid"
-    ];
     return Scaffold(
-      appBar: (title != null)
+      appBar: (widget.title != null)
           ? AppbarDefault(
-              appbarName: title,
+              appbarName: widget.title,
               isShowLeading: false,
               isShowNotification: false,
             )
@@ -47,16 +60,23 @@ class RoleAssign extends StatelessWidget {
             Container(
               height: AppVars.screenSize.height * 0.1,
               width: double.infinity,
-              child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: List.generate(
-                      dataList.length,
-                      (index) => Row(
-                            children: [
-                              Checkbox(value: false, onChanged: (val) {}),
-                              Text(dataList[index])
-                            ],
-                          ))),
+              child: RawScrollbar(
+                controller: _scController,
+                thumbColor: Colors.blueAccent,
+                trackColor: Colors.blueAccent,
+                thumbVisibility: true,
+                child: ListView(
+                    controller: _scController,
+                    scrollDirection: Axis.horizontal,
+                    children: List.generate(
+                        dataList.length,
+                        (index) => Row(
+                              children: [
+                                Checkbox(value: false, onChanged: (val) {}),
+                                Text(dataList[index])
+                              ],
+                            ))),
+              ),
             ),
             ElevatedButton(
                 style: ElevatedButton.styleFrom(

@@ -20,7 +20,7 @@ import '../leave_application.dart';
 import '../notice_list_page.dart';
 import '../notice_page.dart';
 import '../status_page.dart';
-import '../employee_table.dart';
+import '../employee/employee_table.dart';
 import '../../widgets/appbar_default_widget.dart';
 import '../../widgets/dashboard_page/dashboard_menu_tile.dart';
 import '../../widgets/dashboard_page/search_widget.dart';

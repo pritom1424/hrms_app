@@ -1,26 +1,26 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import '../../utils/app_variables/app_vars.dart';
-import '../../utils/app_variables/image_paths.dart';
-import '../../utils/enums/enums.dart';
-import 'employee/add_new_application.dart';
-import 'employee/edit_employee_application.dart';
-import 'text_to_pdf.dart';
-import '../widgets/dashboard_page/search_widget.dart';
+
+import '../../../utils/app_variables/app_vars.dart';
+import '../../../utils/app_variables/image_paths.dart';
+import '../../../utils/enums/enums.dart';
+import '../employee/add_new_application.dart';
+import '../employee/edit_employee_application.dart';
+import '../text_to_pdf.dart';
+import '../../widgets/dashboard_page/search_widget.dart';
 import 'package:intl/intl.dart';
 
-class EmployeeList extends StatefulWidget {
+class UsersList extends StatefulWidget {
   final String? title;
 
-  const EmployeeList({super.key, this.title});
+  const UsersList({super.key, this.title});
   @override
-  State<EmployeeList> createState() => _EmployeeListState();
+  State<UsersList> createState() => _UsersListState();
 }
 
-class _EmployeeListState extends State<EmployeeList> {
+class _UsersListState extends State<UsersList> {
+  List<bool> didEnable = [];
   Gender _selectedGender = Gender.male;
   final List<Map<String, dynamic>> users = [
     {
@@ -127,7 +127,7 @@ class _EmployeeListState extends State<EmployeeList> {
 
   String newName = '';
   String fatherName = '';
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   Nationality? _selectedNation;
 
   //date picker
@@ -148,6 +148,7 @@ class _EmployeeListState extends State<EmployeeList> {
     moNameController.dispose();
     employeeCodeController.dispose();
     punchIdController.dispose();
+    _scrollController.dispose();
     // TODO: implement dispose
     super.dispose();
   }
@@ -280,35 +281,19 @@ class _EmployeeListState extends State<EmployeeList> {
                                   .person))), //Text(users[index]["image"].toString())
                       DataCell(Row(
                         children: [
-                          IconButton(
-                            icon: Icon(Icons.edit),
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (ctx) => EditEmployeeApplicationForm(
-                                        title: "Edit employee",
-                                      )));
-                              /* _editUser(
-                                  context,
-                                  users[
-                                      index]);  */ //_editName(context, users[index]);
-                            },
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.delete),
-                            onPressed: () {
-                              _deleteUser(index);
-                            },
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.picture_as_pdf),
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (ctx) => TextToPdfConverter(
-                                        user: users[index],
-                                      )));
-                              // Handle PDF download action
-                            },
-                          ),
+                          Checkbox(
+                              value: didEnable.length > index
+                                  ? didEnable[index]
+                                  : false,
+                              onChanged: (val) {
+                                setState(() {
+                                  if (didEnable.length <= index) {
+                                    didEnable.add(false);
+                                  }
+                                  didEnable[index] = val ?? false;
+                                });
+                              }),
+                          Text("Enable")
                         ],
                       )),
                     ],

@@ -38,7 +38,7 @@ class _RootNavPageState extends State<RootNavPage> {
 
         //employee list
         EmployeePage(),
-        // users
+        // user
         EmployeeProfilePage(id: ""), // UsersPage(),
         // settings
         SettingsPage(),
