@@ -220,105 +220,110 @@ class _EmployeeListState extends State<EmployeeList> {
           )
         ],
       ),
-      body: Column(
-        children: [
-          SearcWidget(),
-          SizedBox(
-            height: 10,
-          ),
-          RawScrollbar(
-            thumbColor: Colors.blueAccent,
-            controller: _scrollController,
-            thumbVisibility: true,
-            child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SearcWidget(),
+            SizedBox(
+              height: 10,
+            ),
+            RawScrollbar(
+              thumbColor: Colors.blueAccent,
               controller: _scrollController,
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-                dataTextStyle: TextStyle(color: Colors.black),
-                dividerThickness: 3,
-                headingRowColor: MaterialStateColor.resolveWith(
-                    (states) => Colors.blue.shade400),
-                dataRowColor:
-                    MaterialStateColor.resolveWith((states) => Colors.black26),
-                sortAscending: true,
-                columns: const [
-                  DataColumn(
-                    label: Text('ID'),
-                  ),
-                  DataColumn(label: Text('Name')),
-                  DataColumn(label: Text('Employee Code')),
-                  DataColumn(label: Text('Punch Id')),
-                  DataColumn(label: Text('Father Name')),
-                  DataColumn(label: Text('Mother Name')),
-                  DataColumn(label: Text('Gender')),
-                  DataColumn(label: Text('Date of Birth')),
-                  DataColumn(label: Text('Nationality')),
-                  DataColumn(label: Text('Image')),
-                  DataColumn(label: Text('Action')),
-                ],
-                rows: List<DataRow>.generate(
-                  users.length,
-                  (index) => DataRow(
-                    color: getRandomColor(),
-                    cells: [
-                      DataCell(Text('${users[index]["id"]}')),
-                      DataCell(Text(users[index]["name"].toString())),
-                      DataCell(Text(users[index]["employeeCode"].toString())),
-                      DataCell(Text(users[index]["punchId"].toString())),
-                      DataCell(Text(users[index]["faName"].toString())),
-                      DataCell(Text(users[index]["maName"].toString())),
-                      DataCell(Text(users[index]["gender"].toString())),
-                      DataCell(Text(users[index]["dateOfBirth"].toString())),
-                      DataCell(Text(users[index]["nationality"].toString())),
-                      DataCell(CircleAvatar(
-                          backgroundImage:
-                              (users[index]["image"].toString().isNotEmpty)
-                                  ? AssetImage(users[index]["image"].toString())
-                                  : null,
-                          child: (users[index]["image"].toString().isNotEmpty)
-                              ? null
-                              : Icon(Icons
-                                  .person))), //Text(users[index]["image"].toString())
-                      DataCell(Row(
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.edit),
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (ctx) => EditEmployeeApplicationForm(
-                                        title: "Edit employee",
-                                      )));
-                              /* _editUser(
-                                  context,
-                                  users[
-                                      index]);  */ //_editName(context, users[index]);
-                            },
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.delete),
-                            onPressed: () {
-                              _deleteUser(index);
-                            },
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.picture_as_pdf),
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (ctx) => TextToPdfConverter(
-                                        user: users[index],
-                                      )));
-                              // Handle PDF download action
-                            },
-                          ),
-                        ],
-                      )),
-                    ],
+              thumbVisibility: true,
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                scrollDirection: Axis.horizontal,
+                child: DataTable(
+                  dataTextStyle: TextStyle(color: Colors.black),
+                  dividerThickness: 3,
+                  headingRowColor: MaterialStateColor.resolveWith(
+                      (states) => Colors.blue.shade400),
+                  dataRowColor: MaterialStateColor.resolveWith(
+                      (states) => Colors.black26),
+                  sortAscending: true,
+                  columns: const [
+                    DataColumn(
+                      label: Text('ID'),
+                    ),
+                    DataColumn(label: Text('Name')),
+                    DataColumn(label: Text('Employee Code')),
+                    DataColumn(label: Text('Punch Id')),
+                    DataColumn(label: Text('Father Name')),
+                    DataColumn(label: Text('Mother Name')),
+                    DataColumn(label: Text('Gender')),
+                    DataColumn(label: Text('Date of Birth')),
+                    DataColumn(label: Text('Nationality')),
+                    DataColumn(label: Text('Image')),
+                    DataColumn(
+                        label: Expanded(child: Center(child: Text('Action')))),
+                  ],
+                  rows: List<DataRow>.generate(
+                    users.length,
+                    (index) => DataRow(
+                      color: getRandomColor(),
+                      cells: [
+                        DataCell(Text('${users[index]["id"]}')),
+                        DataCell(Text(users[index]["name"].toString())),
+                        DataCell(Text(users[index]["employeeCode"].toString())),
+                        DataCell(Text(users[index]["punchId"].toString())),
+                        DataCell(Text(users[index]["faName"].toString())),
+                        DataCell(Text(users[index]["maName"].toString())),
+                        DataCell(Text(users[index]["gender"].toString())),
+                        DataCell(Text(users[index]["dateOfBirth"].toString())),
+                        DataCell(Text(users[index]["nationality"].toString())),
+                        DataCell(CircleAvatar(
+                            backgroundImage: (users[index]["image"]
+                                    .toString()
+                                    .isNotEmpty)
+                                ? AssetImage(users[index]["image"].toString())
+                                : null,
+                            child: (users[index]["image"].toString().isNotEmpty)
+                                ? null
+                                : Icon(Icons
+                                    .person))), //Text(users[index]["image"].toString())
+                        DataCell(Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.edit),
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (ctx) =>
+                                        EditEmployeeApplicationForm(
+                                          title: "Edit employee",
+                                        )));
+                                /* _editUser(
+                                    context,
+                                    users[
+                                        index]);  */ //_editName(context, users[index]);
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                _deleteUser(index);
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.picture_as_pdf),
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (ctx) => TextToPdfConverter(
+                                          user: users[index],
+                                        )));
+                                // Handle PDF download action
+                              },
+                            ),
+                          ],
+                        )),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

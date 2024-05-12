@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hrms_app/utils/app_variables/app_vars.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
@@ -304,10 +305,16 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
                   ),
                 ),
               ), */
-              /*  ElevatedButton(
+              /*   ElevatedButton(
                 onPressed: _generatePdf,
                 child: Text('Generate PDF'),
               ), */
+              /*  if (_pdfPath != null)
+                Container(
+                    height: AppVars.screenSize.height,
+                    width: double.infinity,
+                    child: SfPdfViewer.file(File(_pdfPath!))) */
+
               if (_pdfPath != null)
                 Container(
                   height: scSize.height * 1,

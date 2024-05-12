@@ -364,7 +364,7 @@ class _ShiftConfigState extends State<ShiftConfig> {
                 headingTextStyle:
                     TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 dividerThickness: 1,
-                columnSpacing: 10,
+                columnSpacing: 15,
                 headingRowColor: MaterialStateColor.resolveWith(
                     (states) => Color(0xFF7A59AD)), //Colors.blue.shade400
                 /*   dataRowColor:

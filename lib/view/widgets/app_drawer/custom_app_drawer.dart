@@ -24,62 +24,58 @@ class CustomAppDrawer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               /// Header of the Drawer
-              Expanded(
-                // borderOnForeground: false,
-                //color: AppColors.logoColorDeep,
-
-                child: InkWell(
-                  onTap: () {},
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        //  Image.asset("assets/images/dhakaprokash_logo.png"),
-                        FittedBox(
-                          child: CircleAvatar(
-                            radius: 20,
-                            backgroundImage: AssetImage(ImagePath.proPicPath),
-                            /* child: Icon(
-                              CupertinoIcons.profile_circled,
-                              size: 40,
-                            ), */
+              InkWell(
+                onTap: () {},
+                child: Container(
+                  height: AppVars.screenSize.height * 0.15,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      //  Image.asset("assets/images/dhakaprokash_logo.png"),
+                      FittedBox(
+                        child: CircleAvatar(
+                          radius: 20,
+                          backgroundImage: AssetImage(ImagePath.proPicPath),
+                          /* child: Icon(
+                            CupertinoIcons.profile_circled,
+                            size: 40,
+                          ), */
+                        ),
+                      ), // AssetImage("assets/images/character_placeholder.png")
+                      const SizedBox(
+                        width: 12,
+                      ),
+                      const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Admin',
+                            style: TextStyle(fontSize: 15, color: Colors.white),
                           ),
-                        ), // AssetImage("assets/images/character_placeholder.png")
-                        const SizedBox(
-                          width: 12,
-                        ),
-                        const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Admin',
-                              style:
-                                  TextStyle(fontSize: 15, color: Colors.white),
-                            ),
-                            Text(
-                              'admin@gmail.com',
-                              style:
-                                  TextStyle(fontSize: 12, color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          Text(
+                            'admin@gmail.com',
+                            style: TextStyle(fontSize: 12, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
-              Container(
-                height: AppVars.screenSize.height * 0.75,
-                color: Appcolors.appdrawerListBgColor,
-                child: ListView.builder(
-                    padding: const EdgeInsets.all(0),
-                    itemCount: AppVars.appdrawerListData.length,
-                    itemBuilder: (ctx, i) => AppDrawerListTile(
-                          itemIndex: i,
-                        )),
+              Expanded(
+                child: Container(
+                  //  height: AppVars.screenSize.height * 0.75,
+                  color: Appcolors.appdrawerListBgColor,
+                  child: ListView.builder(
+                      padding: const EdgeInsets.all(0),
+                      itemCount: AppVars.appdrawerListData.length,
+                      itemBuilder: (ctx, i) => AppDrawerListTile(
+                            itemIndex: i,
+                          )),
+                ),
               ),
               const FittedBox(
                 child: Text(

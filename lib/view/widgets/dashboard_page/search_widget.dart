@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hrms_app/utils/app_variables/app_vars.dart';
 import '../../../utils/app_colors/app_colors.dart';
 import '../../../utils/app_variables/app_strings.dart';
 
@@ -43,6 +44,19 @@ class _SearcWidgetState extends State<SearcWidget> {
               children: [
                 Expanded(
                   child: TextField(
+                    onChanged: (str) {
+                      setState(() {
+                        if (AppVars.filteredUserData
+                            .where((element) => element.containsValue(str))
+                            .toList()
+                            .isNotEmpty) {
+                          AppVars.filteredUserData.clear();
+                          AppVars.filteredUserData = AppVars.filteredUserData
+                              .where((element) => element.containsValue(str))
+                              .toList();
+                        }
+                      });
+                    },
                     onSubmitted: (value) {
                       didShowList = true;
                       textEditingController.text =

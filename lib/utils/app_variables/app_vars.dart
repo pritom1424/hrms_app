@@ -192,4 +192,5 @@ class AppVars {
           "Access to the office premises will now require the use of security badges. All employees must ensure they have their badges with them at all times."
     }
   ];
+  static List<Map<String, dynamic>> filteredUserData = [];
 }
