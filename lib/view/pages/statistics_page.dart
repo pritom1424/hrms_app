@@ -2,7 +2,7 @@ import 'dart:ffi';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:hrms_app/utils/app_variables/image_paths.dart';
+import '../../utils/app_variables/image_paths.dart';
 
 import '../../utils/app_variables/app_vars.dart';
 import '../widgets/appbar_default_widget.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hrms_app/utils/app_variables/app_vars.dart';
-import 'package:hrms_app/view/pages/login_page.dart';
+import '../../utils/app_variables/app_vars.dart';
+import 'login_page.dart';
 
 class SplashPage2 extends StatefulWidget {
   const SplashPage2({super.key});
@@ -28,6 +28,7 @@ class _SplashPage2State extends State<SplashPage2> {
 
   @override
   Widget build(BuildContext context) {
+    Size scSize = MediaQuery.of(context).size;
     List<String> images = [
       "assets/images/splash_carousel_1.jpg",
       "assets/images/splash_carousel_2.jpg",
@@ -48,7 +49,7 @@ class _SplashPage2State extends State<SplashPage2> {
 
     return Scaffold(
       body: Container(
-        height: AppVars.screenSize.height + kToolbarHeight + 10,
+        height: scSize.height,
         width: double.infinity,
         color: Color(0xFF242327),
         padding: EdgeInsets.symmetric(horizontal: 8),
@@ -57,7 +58,7 @@ class _SplashPage2State extends State<SplashPage2> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              height: AppVars.screenSize.height * 0.6,
+              height: scSize.height * 0.6,
               width: double.infinity,
               child: PageView.builder(
                   controller: _pageController,

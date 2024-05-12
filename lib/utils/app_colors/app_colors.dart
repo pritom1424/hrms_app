@@ -21,6 +21,11 @@ class Appcolors {
   //dashboard
   //search bar
   static Color searchbarBgColor = Colors.white;
+  //
+  static Color deleteButtonColor = Color(0xFFFD3995);
+  static Color assignButtonColor = Color(0xFF886AB5);
+  static Color editButtonColor = Color(0xFF1DC9B7);
+  static Color dataTableHeadingColor = Color(0xFF7A59AD);
 
 // saklain vai
   static const Color primary = contentColorCyan;

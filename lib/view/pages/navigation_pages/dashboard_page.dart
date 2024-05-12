@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hrms_app/view/pages/admin_panel.dart';
-import 'package:hrms_app/view/pages/employee_management.dart';
-import 'package:hrms_app/view/pages/overview_page.dart';
-import 'package:hrms_app/view/pages/statistics_page.dart';
+import '../admin_panel.dart';
+import '../employee_management.dart';
+import '../overview_page.dart';
+import '../statistics_page.dart';
 
 import '../../../utils/app_variables/app_vars.dart';
-import '../add_new_application.dart';
+import '../employee/add_new_application.dart';
 import '../admin_notice_page.dart';
 import '../calender_page.dart';
 
@@ -20,7 +20,7 @@ import '../leave_application.dart';
 import '../notice_list_page.dart';
 import '../notice_page.dart';
 import '../status_page.dart';
-import '../user_table.dart';
+import '../employee/employee_table.dart';
 import '../../widgets/appbar_default_widget.dart';
 import '../../widgets/dashboard_page/dashboard_menu_tile.dart';
 import '../../widgets/dashboard_page/search_widget.dart';
@@ -35,7 +35,7 @@ class DashboardPage extends StatelessWidget {
     List<dynamic> getdashRoutes(int index) {
       return [
         // AdminNoticePage(title: "Admin Notice")
-        MyDataTable()
+        EmployeeList()
         // AddNewApplicationForm(title: "Add new")
         // LeaveFormPage("Leave Application Form")
         /* PerformancePage(
@@ -80,9 +80,10 @@ class DashboardPage extends StatelessWidget {
           title: AppVars.dashboardData[index].entries.toList()[0].key,
         ), */
         //NoticePage(title: "Notice"),
-        EmployeeManagement(
+        /*  EmployeeManagement(
           title: "Employee Management",
-        )
+        ) */
+        DateTimePickerScreen()
       ];
     }
 

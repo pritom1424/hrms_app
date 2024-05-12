@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import '../../../../utils/app_methods/app_methods.dart';
 import '../../../../utils/app_variables/app_vars.dart';
-import '../../newsfeed_page.dart';
 import '../../../widgets/appbar_default_widget.dart';
+import '../../newsfeed_page.dart';
 
 class LeaveCards extends StatefulWidget {
   final String? title;
