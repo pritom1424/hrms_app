@@ -48,9 +48,11 @@ class AppVars {
   static List<Map<String, IconData>> navBarData = [
     {"Home": Icons.grid_view},
     {"Employee": CupertinoIcons.person_2},
+    {"Leave": Icons.flight_takeoff},
+    {"Attendance": Icons.calendar_month},
     {"Me": CupertinoIcons.profile_circled},
-    {"Settings": CupertinoIcons.gear},
-    {"Logout": Icons.logout},
+    // {"Settings": CupertinoIcons.gear},
+    // {"Logout": Icons.logout},
   ];
 
 // dashboard menu data
@@ -64,7 +66,7 @@ class AppVars {
   ];
 
   static List<Map<String, dynamic>> appdrawerListData = [
-    {"Dashboard": CupertinoIcons.globe},
+    // {"Dashboard": CupertinoIcons.globe},
     {
       "Employee": CupertinoIcons.person_2,
       "Add Employee": CupertinoIcons.add_circled,
@@ -93,9 +95,9 @@ class AppVars {
     /*  "Dashboard": DrawerPage1(
       title: "Dashboard",
     ) */
-    "Dashboard": DashboardPage2(
+    /*  "Dashboard": DashboardPage2(
       title: "Dashboard",
-    ),
+    ), */
 
     /* "Users": DrawerPage2(
       title: "Users",

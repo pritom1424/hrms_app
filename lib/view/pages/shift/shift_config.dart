@@ -162,7 +162,7 @@ class _ShiftConfigState extends State<ShiftConfig> {
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 8),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
               "Shift",
@@ -275,15 +275,16 @@ class _ShiftConfigState extends State<ShiftConfig> {
                 decoration: InputDecoration(
                   labelText: 'Grace Period (min)',
                   contentPadding: contentPadding,
+
                   /*  prefixIcon: Icon(
                 Icons.phone,
                 color: iconColor,
               ), */
                   border: InputBorder.none,
                   hintText: 'Grace Period (min)',
-                  hintStyle: hintTextStyle,
-                  labelStyle:
-                      TextStyle(fontSize: labelFontSize, color: labelFontColor),
+                  hintStyle: AppVars.customHintTextStyle,
+                  labelStyle: TextStyle(
+                      fontSize: mediumLabelFontSize, color: labelFontColor),
                 ),
                 validator: (value) {
                   if (value != null && value == "") {
@@ -359,6 +360,37 @@ class _ShiftConfigState extends State<ShiftConfig> {
                     ),
                   ],
                 )),
+            SizedBox(
+              height: 10,
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: borderRadius,
+                  ),
+                  backgroundColor: actionButtonBgColor,
+                  foregroundColor: actionButtonFgColor),
+              onPressed: () {
+                /* if (_formPersonalInfoKey.currentState == null) {
+                return;
+              }
+              if (_formPersonalInfoKey.currentState!.validate()) {
+                _formPersonalInfoKey.currentState!.save();
+                // Do something with the validated data
+                // print('Name: $_name');
+              } */
+
+                // Handle apply button press
+                // You can access the values using controller.text for each field
+              },
+              child: const Text(
+                'Save',
+                style: TextStyle(fontSize: 25),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
             DataTable(
                 dataTextStyle: TextStyle(color: Colors.black),
                 headingTextStyle:

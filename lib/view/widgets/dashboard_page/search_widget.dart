@@ -45,7 +45,7 @@ class _SearcWidgetState extends State<SearcWidget> {
                 Expanded(
                   child: TextField(
                     onChanged: (str) {
-                      setState(() {
+                      /* setState(() {
                         if (AppVars.filteredUserData
                             .where((element) => element.containsValue(str))
                             .toList()
@@ -55,7 +55,7 @@ class _SearcWidgetState extends State<SearcWidget> {
                               .where((element) => element.containsValue(str))
                               .toList();
                         }
-                      });
+                      }); */
                     },
                     onSubmitted: (value) {
                       didShowList = true;

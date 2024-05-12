@@ -10,7 +10,7 @@ import '../widgets/appbar_default_widget.dart';
 
 class LeaveFormPage extends StatefulWidget {
   final String? title;
-  const LeaveFormPage(this.title, {super.key});
+  const LeaveFormPage({this.title, super.key});
   @override
   State<LeaveFormPage> createState() => _LeaveFormPageState();
 }
