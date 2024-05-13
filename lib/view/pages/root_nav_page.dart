@@ -34,13 +34,13 @@ class _RootNavPageState extends State<RootNavPage> {
   @override
   Widget build(BuildContext context) {
     AppVars.screenSize = MediaQuery.of(context).size;
-    List<Widget> navViews() {
+    List<Widget?> navViews() {
       return [
         //dashboard
         //DashboardPage(),
         DashboardPage2(),
         //employee list
-        EmployeePage(),
+        //  EmployeePage(),
 
         LeaveFormPage(),
 
@@ -79,23 +79,25 @@ class _RootNavPageState extends State<RootNavPage> {
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (ctx) => AddNewApplicationForm(
-                      title: "Add Employee",
-                    )));
-          },
-          foregroundColor: Colors.greenAccent,
-          backgroundColor: Colors.deepPurple,
-          // shape: customizations[index].$3,
-          child: const Icon(
-            Icons.add,
-            size: 24,
-          ),
-        ),
+        floatingActionButton: (_selectedNavIndex == 0)
+            ? FloatingActionButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50)),
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (ctx) => AddNewApplicationForm(
+                            title: "Add Employee",
+                          )));
+                },
+                foregroundColor: Colors.greenAccent,
+                backgroundColor: Colors.deepPurple,
+                // shape: customizations[index].$3,
+                child: const Icon(
+                  Icons.add,
+                  size: 24,
+                ),
+              )
+            : null,
         body: navViews()[_selectedNavIndex],
       ),
     );

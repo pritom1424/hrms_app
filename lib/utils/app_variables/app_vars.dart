@@ -47,7 +47,7 @@ class AppVars {
 //navbar
   static List<Map<String, IconData>> navBarData = [
     {"Home": Icons.grid_view},
-    {"Employee": CupertinoIcons.person_2},
+    //  {"Employee": CupertinoIcons.person_2},
     {"Leave": Icons.flight_takeoff},
     {"Attendance": Icons.calendar_month},
     {"Me": CupertinoIcons.profile_circled},

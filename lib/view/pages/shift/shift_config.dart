@@ -160,7 +160,7 @@ class _ShiftConfigState extends State<ShiftConfig> {
             )
           : null,
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 8),
+        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -396,7 +396,7 @@ class _ShiftConfigState extends State<ShiftConfig> {
                 headingTextStyle:
                     TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 dividerThickness: 1,
-                columnSpacing: 15,
+                columnSpacing: 5,
                 headingRowColor: MaterialStateColor.resolveWith(
                     (states) => Color(0xFF7A59AD)), //Colors.blue.shade400
                 /*   dataRowColor:

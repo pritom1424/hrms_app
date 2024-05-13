@@ -124,7 +124,7 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
                       hintText: 'Employee ID',
                       labelStyle: TextStyle(
                           fontSize: labelFontSize, color: labelFontColor),
-                      hintStyle: hintTextStyle),
+                      hintStyle: AppVars.customHintTextStyle),
                   validator: (value) {
                     if (value != null && value == "") {
                       return 'Please enter employee ID';
@@ -157,7 +157,7 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
                       hintText: 'Contact No',
                       labelStyle: TextStyle(
                           fontSize: labelFontSize, color: labelFontColor),
-                      hintStyle: hintTextStyle),
+                      hintStyle: AppVars.customHintTextStyle),
                   validator: (value) {
                     if (value != null && value == "") {
                       return 'Please enter contact number';
@@ -189,7 +189,7 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
                       hintText: 'Responsible Employee ID',
                       labelStyle: TextStyle(
                           fontSize: labelFontSize, color: labelFontColor),
-                      hintStyle: hintTextStyle),
+                      hintStyle: AppVars.customHintTextStyle),
                 ),
               ),
               Container(
@@ -215,7 +215,7 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
                       hintText: 'Leave Type',
                       labelStyle: TextStyle(
                           fontSize: labelFontSize, color: labelFontColor),
-                      hintStyle: hintTextStyle),
+                      hintStyle: AppVars.customHintTextStyle),
                   validator: (value) {
                     if (value != null && value == "") {
                       return 'Please enter leave type';
@@ -247,7 +247,7 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
                       hintText: 'Start Date',
                       labelStyle: TextStyle(
                           fontSize: labelFontSize, color: labelFontColor),
-                      hintStyle: hintTextStyle),
+                      hintStyle: AppVars.customHintTextStyle),
                   validator: (value) {
                     if (value != null && value == "") {
                       return 'Please enter start date';
@@ -279,7 +279,7 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
                       hintText: 'End Date',
                       labelStyle: TextStyle(
                           fontSize: labelFontSize, color: labelFontColor),
-                      hintStyle: hintTextStyle),
+                      hintStyle: AppVars.customHintTextStyle),
                   validator: (value) {
                     if (value != null && value == "") {
                       return 'Please enter end date';
@@ -311,7 +311,7 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
                       hintText: 'Total Leave Days',
                       labelStyle: TextStyle(
                           fontSize: labelFontSize, color: labelFontColor),
-                      hintStyle: hintTextStyle),
+                      hintStyle: AppVars.customHintTextStyle),
                   validator: (value) {
                     if (value != null && value == "") {
                       return 'Please enter total leave days';
@@ -343,7 +343,7 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
                       hintText: 'Address During Leave',
                       labelStyle: TextStyle(
                           fontSize: labelFontSize, color: labelFontColor),
-                      hintStyle: hintTextStyle),
+                      hintStyle: AppVars.customHintTextStyle),
                 ),
               ),
               Container(
@@ -369,7 +369,7 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
                       hintText: 'Reason for Leave',
                       labelStyle: TextStyle(
                           fontSize: labelFontSize, color: labelFontColor),
-                      hintStyle: hintTextStyle),
+                      hintStyle: AppVars.customHintTextStyle),
                   validator: (value) {
                     if (value != null && value == "") {
                       return 'Please enter reason for leave';
@@ -401,7 +401,7 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
                       hintText: 'Remarks',
                       labelStyle: TextStyle(
                           fontSize: labelFontSize, color: labelFontColor),
-                      hintStyle: hintTextStyle),
+                      hintStyle: AppVars.customHintTextStyle),
                 ),
               ),
 //              const SizedBox(height: 20),

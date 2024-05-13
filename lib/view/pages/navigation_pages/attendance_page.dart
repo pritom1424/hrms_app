@@ -1,6 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:hrms_app/utils/app_colors/app_colors.dart';
+import 'package:hrms_app/utils/app_variables/app_strings.dart';
+import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
 
 import '../../../utils/app_variables/app_vars.dart';
 import '../../../utils/app_variables/image_paths.dart';
@@ -18,107 +21,90 @@ class AttendancePage extends StatefulWidget {
 }
 
 class _AttendancePageState extends State<AttendancePage> {
+  //search
+  late List<Map<String, dynamic>> filteredUsers;
+  TextEditingController searchController = TextEditingController();
   Gender _selectedGender = Gender.male;
   final List<Map<String, dynamic>> users = [
     {
       "id": 1,
-      "name": "Tanay Sayed",
-      "employeeCode": "###",
-      "faName": "New York",
-      "gender": "Male",
-      "dateOfBirth": "9-9-2000",
-      "Nationality": "BD",
-      "image": ImagePath.proPicPath //""
+      "name": "employee 1",
+      "employeeCode": "211",
+      "status": "on time",
+      "intime": "9.00 am",
+      "outtime": "6.00 pm",
     },
     {
       "id": 2,
-      "name": "Bkash Nahid",
-      "employeeCode": "###",
-      "faName": "New York",
-      "gender": "Male",
-      "dateOfBirth": "9-9-2000",
-      "Nationality": "BD",
-      "image": ""
+      "name": "employee 2",
+      "employeeCode": "122",
+      "status": "on time",
+      "intime": "9.00 am",
+      "outtime": "6.00 pm",
     },
     {
       "id": 3,
-      "name": "Pitom Ahmed",
-      "employeeCode": "###",
-      "faName": "New York",
-      "gender": "Male",
-      "dateOfBirth": "9-9-2000",
-      "Nationality": "BD",
-      "image": ""
+      "name": "employee 3",
+      "employeeCode": "322",
+      "status": "on time",
+      "intime": "9.00 am",
+      "outtime": "6.00 pm",
     },
     {
       "id": 4,
-      "name": "Roni From Noakhali",
-      "employeeCode": "###",
-      "faName": "New York",
-      "gender": "Male",
-      "dateOfBirth": "9-9-2000",
-      "Nationality": "BD",
-      "image": ""
+      "name": "employee 4",
+      "employeeCode": "007",
+      "status": "absent",
+      "intime": "-",
+      "outtime": "-",
     },
     {
       "id": 5,
-      "name": "Partho Das",
-      "employeeCode": "###",
-      "faName": "New York",
-      "gender": "Male",
-      "dateOfBirth": "9-9-2000",
-      "Nationality": "BD",
-      "image": ""
+      "name": "employee 5",
+      "employeeCode": "325",
+      "status": "late",
+      "intime": "9.30 am",
+      "outtime": "6.00 pm",
     },
     {
       "id": 6,
-      "name": "Bkash Naiii",
-      "employeeCode": "###",
-      "faName": "New York",
-      "gender": "Male",
-      "dateOfBirth": "9-9-2000",
-      "Nationality": "BD",
-      "image": ""
+      "name": "employee 6",
+      "employeeCode": "324",
+      "status": "on time",
+      "intime": "9.00 am",
+      "outtime": "6.00 pm",
     },
     {
       "id": 7,
-      "name": "Bkash Nahid",
-      "employeeCode": "###",
-      "faName": "New York",
-      "gender": "Male",
-      "dateOfBirth": "9-9-2000",
-      "Nationality": "BD",
-      "image": ""
+      "name": "employee 7",
+      "employeeCode": "246",
+      "status": "on time",
+      "intime": "9.00 am",
+      "outtime": "6.00 pm",
     },
     {
       "id": 8,
-      "name": "Nahid Bkash",
-      "employeeCode": "###",
-      "faName": "New York",
-      "gender": "Male",
-      "dateOfBirth": "9-9-2000",
-      "Nationality": "BD",
-      "image": ""
+      "name": "employee 8",
+      "employeeCode": "778",
+      "status": "on time",
+      "intime": "9.00 am",
+      "outtime": "6.00 pm",
     },
     {
       "id": 9,
-      "name": "Bkash Bolci",
-      "employeeCode": "###",
-      "faName": "New York",
-      "gender": "Male",
-      "dateOfBirth": "9-9-2000",
-      "Nationality": "BD",
-      "image": ""
+      "name": "employee 9",
+      "employeeCode": "153",
+      "status": "on time",
+      "intime": "9.00 am",
+      "outtime": "6.00 pm",
     },
     {
       "id": 10,
-      "name": "Tanay Sayed",
-      "employeeCode": "###",
-      "faName": "New York",
-      "gender": "Male",
-      "dateOfBirth": "9-9-2000",
-      "Nationality": "BD",
-      "image": ""
+      "name": "employee 10",
+      "employeeCode": "999",
+      "status": "on time",
+      "intime": "9.00 am",
+      "outtime": "6.00 pm",
     },
   ];
 
@@ -137,6 +123,13 @@ class _AttendancePageState extends State<AttendancePage> {
   TextEditingController moNameController = TextEditingController();
   TextEditingController employeeCodeController = TextEditingController();
   TextEditingController punchIdController = TextEditingController();
+  @override
+  void initState() {
+    filteredUsers = [];
+    filteredUsers = users;
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -146,8 +139,28 @@ class _AttendancePageState extends State<AttendancePage> {
     employeeCodeController.dispose();
     punchIdController.dispose();
     _scrollController.dispose();
+    searchController.dispose();
     // TODO: implement dispose
     super.dispose();
+  }
+
+  void filterUsers(String query) {
+    setState(() {
+      filteredUsers = users.where((user) {
+        bool matchFound = false;
+        user.forEach((key, value) {
+          if (value.toString().toLowerCase().contains(query.toLowerCase())) {
+            matchFound = true;
+          }
+        });
+        return matchFound;
+
+        /* user['name']
+            .toString()
+            .toLowerCase()
+            .contains(query.toLowerCase()); */
+      }).toList();
+    });
   }
 
   MaterialStateColor getRandomColor() {
@@ -192,16 +205,43 @@ class _AttendancePageState extends State<AttendancePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: (widget.title != null)
-            ? Text(widget.title!)
-            : Text('Attendance Page'),
-        actions: [],
-      ),
+      appBar: (widget.title == null)
+          ? null
+          : AppbarDefault(
+              appbarName: widget.title,
+            ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SearcWidget(),
+            // SearcWidget(),
+
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: searchController,
+                decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Appcolors.searchbarBgColor,
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                            width: 1, color: Appcolors.searchbarBgColor)),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+                    hintText: AppStrings.searchPlaceholderText,
+                    prefixIcon: Icon(Icons.search),
+                    hintStyle: const TextStyle(
+                        fontSize: 18,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.normal),
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                            width: 1, color: Appcolors.searchbarBgColor))),
+                onChanged: (value) {
+                  filterUsers(value);
+                },
+              ),
+            ),
             SizedBox(
               height: 10,
             ),
@@ -233,60 +273,33 @@ class _AttendancePageState extends State<AttendancePage> {
                     // DataColumn(label: Text('Date of Birth')),
                     //DataColumn(label: Text('Nationality')),
                     //  DataColumn(label: Text('Image')),
-                    DataColumn(
-                        label: Expanded(child: Center(child: Text('Status')))),
+                    DataColumn(label: Text('Status')),
+                    DataColumn(label: Text('In time')),
+                    DataColumn(label: Text('Out time')),
                   ],
                   rows: List<DataRow>.generate(
-                    users.length,
+                    filteredUsers.length,
                     (index) => DataRow(
                       color: getRandomColor(),
                       cells: [
-                        DataCell(Text('${users[index]["id"]}')),
+                        DataCell(Text('${filteredUsers[index]["id"]}')),
+                        DataCell(Text(filteredUsers[index]["name"].toString())),
+                        DataCell(Center(
+                          child: Text(
+                              filteredUsers[index]["employeeCode"].toString()),
+                        )),
+                        DataCell(
+                            Text(filteredUsers[index]["status"].toString())),
+                        DataCell(
+                            Text(filteredUsers[index]["intime"].toString())),
+                        DataCell(
+                            Text(filteredUsers[index]["outtime"].toString())),
+                        /* DataCell(Text('${users[index]["id"]}')),
                         DataCell(Text(users[index]["name"].toString())),
                         DataCell(Text(users[index]["employeeCode"].toString())),
-                        /*   DataCell(Text(users[index]["punchId"].toString())),
-                        DataCell(Text(users[index]["faName"].toString())),
-                        DataCell(Text(users[index]["maName"].toString())),
-                        DataCell(Text(users[index]["gender"].toString())),
-                        DataCell(Text(users[index]["dateOfBirth"].toString())),
-                        DataCell(Text(users[index]["nationality"].toString())),
-                        DataCell(CircleAvatar(
-                            backgroundImage: (users[index]["image"]
-                                    .toString()
-                                    .isNotEmpty)
-                                ? AssetImage(users[index]["image"].toString())
-                                : null,
-                            child: (users[index]["image"].toString().isNotEmpty)
-                                ? null
-                                : Icon(Icons
-                                    .person))), */ //Text(users[index]["image"].toString())
-                        DataCell(Row(
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.edit),
-                              onPressed: () {
-                                /* _editUser(
-                                    context,
-                                    users[
-                                        index]);  */ //_editName(context, users[index]);
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.delete),
-                              onPressed: () {},
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.picture_as_pdf),
-                              onPressed: () {
-                                /*   Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (ctx) => TextToPdfConverter(
-                                          user: users[index],
-                                        ))); */
-                                // Handle PDF download action
-                              },
-                            ),
-                          ],
-                        )),
+                        DataCell(Text(users[index]["status"].toString())),
+                        DataCell(Text(users[index]["intime"].toString())),
+                        DataCell(Text(users[index]["outtime"].toString())), */
                       ],
                     ),
                   ),

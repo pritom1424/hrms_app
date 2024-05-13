@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hrms_app/utils/app_colors/app_colors.dart';
+import 'package:hrms_app/utils/app_variables/app_strings.dart';
 import '../../../utils/app_variables/app_vars.dart';
 import '../../../utils/app_variables/image_paths.dart';
 import '../../../utils/enums/enums.dart';
@@ -21,12 +23,15 @@ class EmployeeList extends StatefulWidget {
 }
 
 class _EmployeeListState extends State<EmployeeList> {
+  //search
+  late List<Map<String, dynamic>> filteredUsers;
+  TextEditingController searchController = TextEditingController();
   Gender _selectedGender = Gender.male;
   final List<Map<String, dynamic>> users = [
     {
       "id": 1,
       "name": "Tanay Sayed",
-      "employeeCode": "###",
+      "employeeCode": "007",
       "faName": "New York",
       "gender": "Male",
       "dateOfBirth": "9-9-2000",
@@ -36,17 +41,17 @@ class _EmployeeListState extends State<EmployeeList> {
     {
       "id": 2,
       "name": "Bkash Nahid",
-      "employeeCode": "###",
-      "faName": "New York",
+      "employeeCode": "008",
+      "faName": "London",
       "gender": "Male",
-      "dateOfBirth": "9-9-2000",
+      "dateOfBirth": "5-12-1998",
       "Nationality": "BD",
       "image": ""
     },
     {
       "id": 3,
       "name": "Pitom Ahmed",
-      "employeeCode": "###",
+      "employeeCode": "012",
       "faName": "New York",
       "gender": "Male",
       "dateOfBirth": "9-9-2000",
@@ -56,10 +61,10 @@ class _EmployeeListState extends State<EmployeeList> {
     {
       "id": 4,
       "name": "Roni From Noakhali",
-      "employeeCode": "###",
-      "faName": "New York",
+      "employeeCode": "024",
+      "faName": "Father",
       "gender": "Male",
-      "dateOfBirth": "9-9-2000",
+      "dateOfBirth": "2-5-2005",
       "Nationality": "BD",
       "image": ""
     },
@@ -69,7 +74,7 @@ class _EmployeeListState extends State<EmployeeList> {
       "employeeCode": "###",
       "faName": "New York",
       "gender": "Male",
-      "dateOfBirth": "9-9-2000",
+      "dateOfBirth": "2-3-1995",
       "Nationality": "BD",
       "image": ""
     },
@@ -79,7 +84,7 @@ class _EmployeeListState extends State<EmployeeList> {
       "employeeCode": "###",
       "faName": "New York",
       "gender": "Male",
-      "dateOfBirth": "9-9-2000",
+      "dateOfBirth": "12-8-2011",
       "Nationality": "BD",
       "image": ""
     },
@@ -89,7 +94,7 @@ class _EmployeeListState extends State<EmployeeList> {
       "employeeCode": "###",
       "faName": "New York",
       "gender": "Male",
-      "dateOfBirth": "9-9-2000",
+      "dateOfBirth": "5-9-2001",
       "Nationality": "BD",
       "image": ""
     },
@@ -99,7 +104,7 @@ class _EmployeeListState extends State<EmployeeList> {
       "employeeCode": "###",
       "faName": "New York",
       "gender": "Male",
-      "dateOfBirth": "9-9-2000",
+      "dateOfBirth": "1-2-2002",
       "Nationality": "BD",
       "image": ""
     },
@@ -109,17 +114,17 @@ class _EmployeeListState extends State<EmployeeList> {
       "employeeCode": "###",
       "faName": "New York",
       "gender": "Male",
-      "dateOfBirth": "9-9-2000",
+      "dateOfBirth": "1-2-2009",
       "Nationality": "BD",
       "image": ""
     },
     {
       "id": 10,
-      "name": "Tanay Sayed",
+      "name": "Sajjad hasan",
       "employeeCode": "###",
-      "faName": "New York",
+      "faName": "father",
       "gender": "Male",
-      "dateOfBirth": "9-9-2000",
+      "dateOfBirth": "9-9-2002",
       "Nationality": "BD",
       "image": ""
     },
@@ -140,6 +145,13 @@ class _EmployeeListState extends State<EmployeeList> {
   TextEditingController moNameController = TextEditingController();
   TextEditingController employeeCodeController = TextEditingController();
   TextEditingController punchIdController = TextEditingController();
+  @override
+  void initState() {
+    filteredUsers = [];
+    filteredUsers = users;
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -149,8 +161,29 @@ class _EmployeeListState extends State<EmployeeList> {
     employeeCodeController.dispose();
     punchIdController.dispose();
     _scrollController.dispose();
+
+    searchController.dispose();
     // TODO: implement dispose
     super.dispose();
+  }
+
+  void filterUsers(String query) {
+    setState(() {
+      filteredUsers = users.where((user) {
+        bool matchFound = false;
+        user.forEach((key, value) {
+          if (value.toString().toLowerCase().contains(query.toLowerCase())) {
+            matchFound = true;
+          }
+        });
+        return matchFound;
+
+        /* user['name']
+            .toString()
+            .toLowerCase()
+            .contains(query.toLowerCase()); */
+      }).toList();
+    });
   }
 
   MaterialStateColor getRandomColor() {
@@ -223,7 +256,39 @@ class _EmployeeListState extends State<EmployeeList> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SearcWidget(),
+            // SearcWidget(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: searchController,
+                decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Appcolors.searchbarBgColor,
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                            width: 1, color: Appcolors.searchbarBgColor)),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+                    hintText: AppStrings.searchPlaceholderText,
+                    prefixIcon: Icon(Icons.search),
+                    hintStyle: const TextStyle(
+                        fontSize: 18,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.normal),
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                            width: 1, color: Appcolors.searchbarBgColor))),
+                /* InputDecoration(
+                  labelText: 'Search',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(),
+                ), */
+                onChanged: (value) {
+                  filterUsers(value);
+                },
+              ),
+            ),
             SizedBox(
               height: 10,
             ),
@@ -259,11 +324,39 @@ class _EmployeeListState extends State<EmployeeList> {
                         label: Expanded(child: Center(child: Text('Action')))),
                   ],
                   rows: List<DataRow>.generate(
-                    users.length,
+                    filteredUsers.length, //users.length,
                     (index) => DataRow(
                       color: getRandomColor(),
                       cells: [
-                        DataCell(Text('${users[index]["id"]}')),
+                        DataCell(Text('${filteredUsers[index]["id"]}')),
+                        DataCell(Text(filteredUsers[index]["name"].toString())),
+                        DataCell(Text(
+                            filteredUsers[index]["employeeCode"].toString())),
+                        DataCell(
+                            Text(filteredUsers[index]["punchId"].toString())),
+                        DataCell(
+                            Text(filteredUsers[index]["faName"].toString())),
+                        DataCell(
+                            Text(filteredUsers[index]["maName"].toString())),
+                        DataCell(
+                            Text(filteredUsers[index]["gender"].toString())),
+                        DataCell(Text(
+                            filteredUsers[index]["dateOfBirth"].toString())),
+                        DataCell(Text(
+                            filteredUsers[index]["nationality"].toString())),
+                        DataCell(CircleAvatar(
+                            backgroundImage: (filteredUsers[index]["image"]
+                                    .toString()
+                                    .isNotEmpty)
+                                ? AssetImage(
+                                    filteredUsers[index]["image"].toString())
+                                : null,
+                            child: (filteredUsers[index]["image"]
+                                    .toString()
+                                    .isNotEmpty)
+                                ? null
+                                : Icon(Icons.person))),
+                        /* DataCell(Text('${users[index]["id"]}')),
                         DataCell(Text(users[index]["name"].toString())),
                         DataCell(Text(users[index]["employeeCode"].toString())),
                         DataCell(Text(users[index]["punchId"].toString())),
@@ -271,7 +364,7 @@ class _EmployeeListState extends State<EmployeeList> {
                         DataCell(Text(users[index]["maName"].toString())),
                         DataCell(Text(users[index]["gender"].toString())),
                         DataCell(Text(users[index]["dateOfBirth"].toString())),
-                        DataCell(Text(users[index]["nationality"].toString())),
+                        DataCell(Text(users[index]["nationality"].toString())), 
                         DataCell(CircleAvatar(
                             backgroundImage: (users[index]["image"]
                                     .toString()
@@ -281,7 +374,7 @@ class _EmployeeListState extends State<EmployeeList> {
                             child: (users[index]["image"].toString().isNotEmpty)
                                 ? null
                                 : Icon(Icons
-                                    .person))), //Text(users[index]["image"].toString())
+                                    .person))), */ //Text(users[index]["image"].toString())
                         DataCell(Row(
                           children: [
                             IconButton(
@@ -645,7 +738,8 @@ class _EmployeeListState extends State<EmployeeList> {
 
   void _deleteUser(int index) {
     setState(() {
-      users.removeAt(index);
+      filteredUsers.removeAt(index);
+      //users.removeAt(index);
     });
   }
 }

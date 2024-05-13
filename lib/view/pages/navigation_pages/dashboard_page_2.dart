@@ -67,6 +67,7 @@ class DashboardPage2 extends StatelessWidget {
             )
           : null,
       body: SingleChildScrollView(
+        padding: EdgeInsets.only(bottom: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -197,15 +198,16 @@ class DashboardPage2 extends StatelessWidget {
                 headingTextStyle:
                     TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 dividerThickness: 1,
-                columnSpacing: 10,
+                columnSpacing: 5,
                 headingRowColor: MaterialStateColor.resolveWith(
                     (states) => Color(0xFF7A59AD)), //Colors.blue.shade400
                 /*   dataRowColor:
                       MaterialStateColor.resolveWith((states) => Colors.black26), */
                 sortAscending: true,
                 columns: [
-                  DataColumn(label: Text('Department')),
-                  DataColumn(label: Expanded(child: Text('Total'))),
+                  DataColumn(label: Expanded(child: Text('Department'))),
+                  DataColumn(
+                      label: Expanded(child: Center(child: Text('Total')))),
                   DataColumn(
                       label: Expanded(
                     child: Center(
@@ -227,9 +229,12 @@ class DashboardPage2 extends StatelessWidget {
                     data.length,
                     (index) => DataRow(cells: [
                           DataCell(Text('${data[index]["dept"]}')),
-                          DataCell(Text('${data[index]["total"]}')),
-                          DataCell(Text('${data[index]["present"]}')),
-                          DataCell(Text('${data[index]["absent"]}')),
+                          DataCell(
+                              Center(child: Text('${data[index]["total"]}'))),
+                          DataCell(
+                              Center(child: Text('${data[index]["present"]}'))),
+                          DataCell(
+                              Center(child: Text('${data[index]["absent"]}'))),
                         ])))
           ],
         ),
