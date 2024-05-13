@@ -16,6 +16,7 @@ class LeaveFormPage extends StatefulWidget {
 }
 
 class _LeaveFormPageState extends State<LeaveFormPage> {
+  final _formKey = GlobalKey<FormState>();
   // Define controllers for text fields
   final TextEditingController _employeeIdController = TextEditingController();
   final TextEditingController _contactNoController = TextEditingController();
@@ -95,332 +96,348 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
           color: Appcolors.appBgColor,
           padding: const EdgeInsets.all(16),
           height: AppVars.screenSize.height * 0.9,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
-                decoration: boxDecoration,
-                child: TextFormField(
-                  autofocus: false,
-                  controller: _employeeIdController,
-                  decoration: InputDecoration(
-                      floatingLabelBehavior: FloatingLabelBehavior.auto,
-                      labelText: 'Employee ID',
-                      contentPadding: contentPadding,
-                      border: InputBorder.none,
-                      prefixIcon: Icon(
-                        Icons.person,
-                        color: iconColor,
-                      ),
-                      /* focusedBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)), */
-                      hintText: 'Employee ID',
-                      labelStyle: TextStyle(
-                          fontSize: labelFontSize, color: labelFontColor),
-                      hintStyle: AppVars.customHintTextStyle),
-                  validator: (value) {
-                    if (value != null && value == "") {
-                      return 'Please enter employee ID';
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  decoration: boxDecoration,
+                  child: TextFormField(
+                    autofocus: false,
+                    controller: _employeeIdController,
+                    decoration: InputDecoration(
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                        labelText: 'Employee ID',
+                        contentPadding: contentPadding,
+                        border: InputBorder.none,
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: iconColor,
+                        ),
+                        /* focusedBorder: OutlineInputBorder(
+                          borderRadius: borderRadius,
+                          borderSide:
+                              BorderSide(color: borderColor, width: borderWidth)),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: borderRadius,
+                          borderSide:
+                              BorderSide(color: borderColor, width: borderWidth)), */
+                        hintText: 'Employee ID',
+                        labelStyle: TextStyle(
+                            fontSize: labelFontSize, color: labelFontColor),
+                        hintStyle: AppVars.customHintTextStyle),
+                    validator: (value) {
+                      if (value != null && value == "") {
+                        return 'Please enter employee ID';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Container(
+                  decoration: boxDecoration,
+                  child: TextFormField(
+                    controller: _contactNoController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                        labelText: 'Contact No',
+                        border: InputBorder.none,
+                        prefixIcon: Icon(
+                          Icons.phone,
+                          color: iconColor,
+                        ),
+                        contentPadding: contentPadding,
+                        /* focusedBorder: OutlineInputBorder(
+                          borderRadius: borderRadius,
+                          borderSide:
+                              BorderSide(color: borderColor, width: borderWidth)),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: borderRadius,
+                          borderSide:
+                              BorderSide(color: borderColor, width: borderWidth)), */
+                        hintText: 'Contact No',
+                        labelStyle: TextStyle(
+                            fontSize: labelFontSize, color: labelFontColor),
+                        hintStyle: AppVars.customHintTextStyle),
+                    validator: (value) {
+                      if (value != null && value == "") {
+                        return 'Please enter contact number';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                /*  Container(
+                  decoration: boxDecoration,
+                  child: TextFormField(
+                    controller: _responsibleEmployeeIdController,
+                    decoration: InputDecoration(
+                        labelText: 'Responsible Employee ID',
+                        contentPadding: contentPadding,
+                        prefixIcon: Icon(
+                          Icons.group,
+                          color: iconColor,
+                        ),
+                        border: InputBorder.none,
+                        /*  focusedBorder: OutlineInputBorder(
+                          borderRadius: borderRadius,
+                          borderSide:
+                              BorderSide(color: borderColor, width: borderWidth)),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: borderRadius,
+                          borderSide:
+                              BorderSide(color: borderColor, width: borderWidth)), */
+                        hintText: 'Responsible Employee ID',
+                        labelStyle: TextStyle(
+                            fontSize: labelFontSize, color: labelFontColor),
+                        hintStyle: AppVars.customHintTextStyle),
+                        
+                  ),
+                ), */
+                Container(
+                  decoration: boxDecoration,
+                  child: TextFormField(
+                    controller: _leaveTypeController,
+                    decoration: InputDecoration(
+                        labelText: 'Leave Type',
+                        contentPadding: contentPadding,
+                        prefixIcon: Icon(
+                          Icons.type_specimen,
+                          color: iconColor,
+                        ),
+                        border: InputBorder.none,
+                        /*  focusedBorder: OutlineInputBorder(
+                          borderRadius: borderRadius,
+                          borderSide:
+                              BorderSide(color: borderColor, width: borderWidth)),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: borderRadius,
+                          borderSide:
+                              BorderSide(color: borderColor, width: borderWidth)), */
+                        hintText: 'Leave Type',
+                        labelStyle: TextStyle(
+                            fontSize: labelFontSize, color: labelFontColor),
+                        hintStyle: AppVars.customHintTextStyle),
+                    validator: (value) {
+                      if (value != null && value == "") {
+                        return 'Please enter leave type';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Container(
+                  decoration: boxDecoration,
+                  child: TextFormField(
+                    controller: _startDateController,
+                    decoration: InputDecoration(
+                        labelText: 'Start Date',
+                        contentPadding: contentPadding,
+                        prefixIcon: Icon(
+                          Icons.calendar_month,
+                          color: iconColor,
+                        ),
+                        border: InputBorder.none,
+                        /* focusedBorder: OutlineInputBorder(
+                          borderRadius: borderRadius,
+                          borderSide:
+                              BorderSide(color: borderColor, width: borderWidth)),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: borderRadius,
+                          borderSide:
+                              BorderSide(color: borderColor, width: borderWidth)), */
+                        hintText: 'Start Date',
+                        labelStyle: TextStyle(
+                            fontSize: labelFontSize, color: labelFontColor),
+                        hintStyle: AppVars.customHintTextStyle),
+                    validator: (value) {
+                      if (value != null && value == "") {
+                        return 'Please enter start date';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Container(
+                  decoration: boxDecoration,
+                  child: TextFormField(
+                    controller: _endDateController,
+                    decoration: InputDecoration(
+                        labelText: 'End Date',
+                        contentPadding: contentPadding,
+                        prefixIcon: Icon(
+                          Icons.calendar_month,
+                          color: iconColor,
+                        ),
+                        border: InputBorder.none,
+                        /* focusedBorder: OutlineInputBorder(
+                          borderRadius: borderRadius,
+                          borderSide:
+                              BorderSide(color: borderColor, width: borderWidth)),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: borderRadius,
+                          borderSide:
+                              BorderSide(color: borderColor, width: borderWidth)), */
+                        hintText: 'End Date',
+                        labelStyle: TextStyle(
+                            fontSize: labelFontSize, color: labelFontColor),
+                        hintStyle: AppVars.customHintTextStyle),
+                    validator: (value) {
+                      if (value != null && value == "") {
+                        return 'Please enter end date';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Container(
+                  decoration: boxDecoration,
+                  child: TextFormField(
+                    controller: _totalLeaveDaysController,
+                    decoration: InputDecoration(
+                        labelText: 'Total Leave Days',
+                        contentPadding: contentPadding,
+                        prefixIcon: Icon(
+                          Icons.calendar_view_day,
+                          color: iconColor,
+                        ),
+                        border: InputBorder.none,
+                        /* focusedBorder: OutlineInputBorder(
+                          borderRadius: borderRadius,
+                          borderSide:
+                              BorderSide(color: borderColor, width: borderWidth)),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: borderRadius,
+                          borderSide:
+                              BorderSide(color: borderColor, width: borderWidth)), */
+                        hintText: 'Total Leave Days',
+                        labelStyle: TextStyle(
+                            fontSize: labelFontSize, color: labelFontColor),
+                        hintStyle: AppVars.customHintTextStyle),
+                    validator: (value) {
+                      if (value != null && value == "") {
+                        return 'Please enter total leave days';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Container(
+                  decoration: boxDecoration,
+                  child: TextFormField(
+                    controller: _addressDuringLeaveController,
+                    decoration: InputDecoration(
+                        labelText: 'Address During Leave',
+                        contentPadding: contentPadding,
+                        prefixIcon: Icon(
+                          Icons.calendar_today,
+                          color: iconColor,
+                        ),
+                        border: InputBorder.none,
+                        /* focusedBorder: OutlineInputBorder(
+                          borderRadius: borderRadius,
+                          borderSide:
+                              BorderSide(color: borderColor, width: borderWidth)),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: borderRadius,
+                          borderSide:
+                              BorderSide(color: borderColor, width: borderWidth)), */
+                        hintText: 'Address During Leave',
+                        labelStyle: TextStyle(
+                            fontSize: labelFontSize, color: labelFontColor),
+                        hintStyle: AppVars.customHintTextStyle),
+                  ),
+                ),
+                Container(
+                  decoration: boxDecoration,
+                  child: TextFormField(
+                    controller: _reasonForLeaveController,
+                    decoration: InputDecoration(
+                        labelText: 'Reason for Leave',
+                        contentPadding: contentPadding,
+                        prefixIcon: Icon(
+                          Icons.time_to_leave,
+                          color: iconColor,
+                        ),
+                        border: InputBorder.none,
+                        /* focusedBorder: OutlineInputBorder(
+                          borderRadius: borderRadius,
+                          borderSide:
+                              BorderSide(color: borderColor, width: borderWidth)),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: borderRadius,
+                          borderSide:
+                              BorderSide(color: borderColor, width: borderWidth)), */
+                        hintText: 'Reason for Leave',
+                        labelStyle: TextStyle(
+                            fontSize: labelFontSize, color: labelFontColor),
+                        hintStyle: AppVars.customHintTextStyle),
+                    validator: (value) {
+                      if (value != null && value == "") {
+                        return 'Please enter reason for leave';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Container(
+                  decoration: boxDecoration,
+                  child: TextFormField(
+                    controller: _remarksController,
+                    decoration: InputDecoration(
+                        labelText: 'Remarks',
+                        contentPadding: contentPadding,
+                        prefixIcon: Icon(
+                          CupertinoIcons.pen,
+                          color: iconColor,
+                        ),
+                        border: InputBorder.none,
+                        /* focusedBorder: OutlineInputBorder(
+                          borderRadius: borderRadius,
+                          borderSide:
+                              BorderSide(color: borderColor, width: borderWidth)),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: borderRadius,
+                          borderSide:
+                              BorderSide(color: borderColor, width: borderWidth)), */
+                        hintText: 'Remarks',
+                        labelStyle: TextStyle(
+                            fontSize: labelFontSize, color: labelFontColor),
+                        hintStyle: AppVars.customHintTextStyle),
+                    validator: (value) {
+                      if (value != null && value == "") {
+                        return 'Please enter proper remarks';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                //              const SizedBox(height: 20),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15)),
+                      backgroundColor: actionButtonBgColor,
+                      foregroundColor: actionButtonFgColor),
+                  onPressed: () {
+                    if (_formKey.currentState == null) {
+                      return;
                     }
-                    return null;
-                  },
-                ),
-              ),
-              Container(
-                decoration: boxDecoration,
-                child: TextFormField(
-                  controller: _contactNoController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                      labelText: 'Contact No',
-                      border: InputBorder.none,
-                      prefixIcon: Icon(
-                        Icons.phone,
-                        color: iconColor,
-                      ),
-                      contentPadding: contentPadding,
-                      /* focusedBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)), */
-                      hintText: 'Contact No',
-                      labelStyle: TextStyle(
-                          fontSize: labelFontSize, color: labelFontColor),
-                      hintStyle: AppVars.customHintTextStyle),
-                  validator: (value) {
-                    if (value != null && value == "") {
-                      return 'Please enter contact number';
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
                     }
-                    return null;
+                    // Handle apply button press
+                    // You can access the values using controller.text for each field
                   },
+                  child: const Text(
+                    'Apply',
+                    style: TextStyle(fontSize: 25),
+                  ),
                 ),
-              ),
-              Container(
-                decoration: boxDecoration,
-                child: TextFormField(
-                  controller: _responsibleEmployeeIdController,
-                  decoration: InputDecoration(
-                      labelText: 'Responsible Employee ID',
-                      contentPadding: contentPadding,
-                      prefixIcon: Icon(
-                        Icons.group,
-                        color: iconColor,
-                      ),
-                      border: InputBorder.none,
-                      /*  focusedBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)), */
-                      hintText: 'Responsible Employee ID',
-                      labelStyle: TextStyle(
-                          fontSize: labelFontSize, color: labelFontColor),
-                      hintStyle: AppVars.customHintTextStyle),
-                ),
-              ),
-              Container(
-                decoration: boxDecoration,
-                child: TextFormField(
-                  controller: _leaveTypeController,
-                  decoration: InputDecoration(
-                      labelText: 'Leave Type',
-                      contentPadding: contentPadding,
-                      prefixIcon: Icon(
-                        Icons.type_specimen,
-                        color: iconColor,
-                      ),
-                      border: InputBorder.none,
-                      /*  focusedBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)), */
-                      hintText: 'Leave Type',
-                      labelStyle: TextStyle(
-                          fontSize: labelFontSize, color: labelFontColor),
-                      hintStyle: AppVars.customHintTextStyle),
-                  validator: (value) {
-                    if (value != null && value == "") {
-                      return 'Please enter leave type';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Container(
-                decoration: boxDecoration,
-                child: TextFormField(
-                  controller: _startDateController,
-                  decoration: InputDecoration(
-                      labelText: 'Start Date',
-                      contentPadding: contentPadding,
-                      prefixIcon: Icon(
-                        Icons.calendar_month,
-                        color: iconColor,
-                      ),
-                      border: InputBorder.none,
-                      /* focusedBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)), */
-                      hintText: 'Start Date',
-                      labelStyle: TextStyle(
-                          fontSize: labelFontSize, color: labelFontColor),
-                      hintStyle: AppVars.customHintTextStyle),
-                  validator: (value) {
-                    if (value != null && value == "") {
-                      return 'Please enter start date';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Container(
-                decoration: boxDecoration,
-                child: TextFormField(
-                  controller: _endDateController,
-                  decoration: InputDecoration(
-                      labelText: 'End Date',
-                      contentPadding: contentPadding,
-                      prefixIcon: Icon(
-                        Icons.calendar_month,
-                        color: iconColor,
-                      ),
-                      border: InputBorder.none,
-                      /* focusedBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)), */
-                      hintText: 'End Date',
-                      labelStyle: TextStyle(
-                          fontSize: labelFontSize, color: labelFontColor),
-                      hintStyle: AppVars.customHintTextStyle),
-                  validator: (value) {
-                    if (value != null && value == "") {
-                      return 'Please enter end date';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Container(
-                decoration: boxDecoration,
-                child: TextFormField(
-                  controller: _totalLeaveDaysController,
-                  decoration: InputDecoration(
-                      labelText: 'Total Leave Days',
-                      contentPadding: contentPadding,
-                      prefixIcon: Icon(
-                        Icons.calendar_view_day,
-                        color: iconColor,
-                      ),
-                      border: InputBorder.none,
-                      /* focusedBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)), */
-                      hintText: 'Total Leave Days',
-                      labelStyle: TextStyle(
-                          fontSize: labelFontSize, color: labelFontColor),
-                      hintStyle: AppVars.customHintTextStyle),
-                  validator: (value) {
-                    if (value != null && value == "") {
-                      return 'Please enter total leave days';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Container(
-                decoration: boxDecoration,
-                child: TextFormField(
-                  controller: _addressDuringLeaveController,
-                  decoration: InputDecoration(
-                      labelText: 'Address During Leave',
-                      contentPadding: contentPadding,
-                      prefixIcon: Icon(
-                        Icons.calendar_today,
-                        color: iconColor,
-                      ),
-                      border: InputBorder.none,
-                      /* focusedBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)), */
-                      hintText: 'Address During Leave',
-                      labelStyle: TextStyle(
-                          fontSize: labelFontSize, color: labelFontColor),
-                      hintStyle: AppVars.customHintTextStyle),
-                ),
-              ),
-              Container(
-                decoration: boxDecoration,
-                child: TextFormField(
-                  controller: _reasonForLeaveController,
-                  decoration: InputDecoration(
-                      labelText: 'Reason for Leave',
-                      contentPadding: contentPadding,
-                      prefixIcon: Icon(
-                        Icons.time_to_leave,
-                        color: iconColor,
-                      ),
-                      border: InputBorder.none,
-                      /* focusedBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)), */
-                      hintText: 'Reason for Leave',
-                      labelStyle: TextStyle(
-                          fontSize: labelFontSize, color: labelFontColor),
-                      hintStyle: AppVars.customHintTextStyle),
-                  validator: (value) {
-                    if (value != null && value == "") {
-                      return 'Please enter reason for leave';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Container(
-                decoration: boxDecoration,
-                child: TextFormField(
-                  controller: _remarksController,
-                  decoration: InputDecoration(
-                      labelText: 'Remarks',
-                      contentPadding: contentPadding,
-                      prefixIcon: Icon(
-                        CupertinoIcons.pen,
-                        color: iconColor,
-                      ),
-                      border: InputBorder.none,
-                      /* focusedBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: borderRadius,
-                        borderSide:
-                            BorderSide(color: borderColor, width: borderWidth)), */
-                      hintText: 'Remarks',
-                      labelStyle: TextStyle(
-                          fontSize: labelFontSize, color: labelFontColor),
-                      hintStyle: AppVars.customHintTextStyle),
-                ),
-              ),
-//              const SizedBox(height: 20),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
-                    backgroundColor: actionButtonBgColor,
-                    foregroundColor: actionButtonFgColor),
-                onPressed: () {
-                  // Handle apply button press
-                  // You can access the values using controller.text for each field
-                },
-                child: const Text(
-                  'Apply',
-                  style: TextStyle(fontSize: 25),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

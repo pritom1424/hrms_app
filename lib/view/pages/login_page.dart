@@ -74,7 +74,7 @@ class _LoginFormState extends State<LoginForm> {
                   TextButton(
                       onPressed: () {},
                       child: const Text("Forgotten Password?")),
-                  const SizedBox(
+                  /*  const SizedBox(
                     height: 20,
                   ),
                   ElevatedButton(
@@ -93,7 +93,7 @@ class _LoginFormState extends State<LoginForm> {
                       "Create New Account",
                       style: TextStyle(fontSize: 18),
                     ),
-                  )
+                  ) */
                 ],
               ),
             ),

@@ -104,7 +104,7 @@ class AppVars {
     ) */
 
     "Users": UsersList(
-      title: "Users",
+      title: "User List",
     ),
     /*  "User Permission": UserPermission(
       title: "User Permission",
