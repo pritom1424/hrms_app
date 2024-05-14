@@ -15,4 +15,5 @@ class ImagePath {
 
   //app bar
   static String proPicPath = "assets/images/profile_pic.png";
+  static String proPicPlaceholderPath = "assets/images/propic_placeholder.png";
 }

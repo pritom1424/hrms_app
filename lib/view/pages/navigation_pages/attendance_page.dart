@@ -255,8 +255,10 @@ class _AttendancePageState extends State<AttendancePage> {
                 child: DataTable(
                   dataTextStyle: TextStyle(color: Colors.black),
                   dividerThickness: 3,
+                  headingTextStyle: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
                   headingRowColor: MaterialStateColor.resolveWith(
-                      (states) => Colors.blue.shade400),
+                      (states) => Appcolors.dataTableHeadingColor),
                   dataRowColor: MaterialStateColor.resolveWith(
                       (states) => Colors.black26),
                   sortAscending: true,
@@ -280,7 +282,10 @@ class _AttendancePageState extends State<AttendancePage> {
                   rows: List<DataRow>.generate(
                     filteredUsers.length,
                     (index) => DataRow(
-                      color: getRandomColor(),
+                      color: MaterialStateColor.resolveWith((states) =>
+                          (index % 2 == 0)
+                              ? Color.fromARGB(223, 179, 157, 219)
+                              : Colors.deepPurple.shade100),
                       cells: [
                         DataCell(Text('${filteredUsers[index]["id"]}')),
                         DataCell(Text(filteredUsers[index]["name"].toString())),

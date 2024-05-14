@@ -16,6 +16,7 @@ class CustomAppDrawer extends StatelessWidget {
     // String iconPath = "assets/images/dhakaprokash_icon.png";
 
     return Drawer(
+        width: AppVars.screenSize.width * 0.7,
         backgroundColor: Appcolors.appdrawerBgColor, //AppColors.logoColorDeep
         child: Container(
           //height: GenericVars.scSize.height,

@@ -193,8 +193,9 @@ class _UsersListState extends State<UsersList> {
   MaterialStateColor getRandomColor() {
     // Generate random RGB values
     final random = Random();
-    final int minBrightness = 200; // Minimum brightness value
-    final int maxBrightness = 255; // Maximum brightness value
+
+    final int minBrightness = 210; // Minimum brightness value
+    final int maxBrightness = 220; // Maximum brightness value
     final int r = minBrightness + random.nextInt(maxBrightness - minBrightness);
     final int g = minBrightness + random.nextInt(maxBrightness - minBrightness);
     final int b = minBrightness + random.nextInt(maxBrightness - minBrightness);
@@ -299,10 +300,13 @@ class _UsersListState extends State<UsersList> {
                 controller: _scrollController,
                 scrollDirection: Axis.horizontal,
                 child: DataTable(
+                  headingRowHeight: AppVars.screenSize.height * 0.06,
                   dataTextStyle: TextStyle(color: Colors.black),
                   dividerThickness: 3,
+                  headingTextStyle: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
                   headingRowColor: MaterialStateColor.resolveWith(
-                      (states) => Colors.blue.shade400),
+                      (states) => Appcolors.dataTableHeadingColor),
                   dataRowColor: MaterialStateColor.resolveWith(
                       (states) => Colors.black26),
                   sortAscending: true,
@@ -325,7 +329,10 @@ class _UsersListState extends State<UsersList> {
                   rows: List<DataRow>.generate(
                     filteredUsers.length, // users.length,
                     (index) => DataRow(
-                      color: getRandomColor(),
+                      color: MaterialStateColor.resolveWith((states) =>
+                          (index % 2 == 0)
+                              ? Color.fromARGB(223, 179, 157, 219)
+                              : Colors.deepPurple.shade100), //getRandomColor(),
                       cells: [
                         DataCell(Text(filteredUsers[index]["id"].toString())),
                         DataCell(Text(filteredUsers[index]["name"].toString())),

@@ -417,9 +417,10 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
                 //              const SizedBox(height: 20),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(vertical: 5),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15)),
-                      backgroundColor: actionButtonBgColor,
+                      backgroundColor: Appcolors.assignButtonColor,
                       foregroundColor: actionButtonFgColor),
                   onPressed: () {
                     if (_formKey.currentState == null) {
@@ -431,7 +432,7 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
                     // Handle apply button press
                     // You can access the values using controller.text for each field
                   },
-                  child: const Text(
+                  child: Text(
                     'Apply',
                     style: TextStyle(fontSize: 25),
                   ),

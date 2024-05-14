@@ -34,7 +34,7 @@ class NoticeListPage extends StatelessWidget {
         child: ListTile(
           onTap: () => () {},
           leading: CircleAvatar(
-            radius: 25,
+            radius: 20,
             backgroundImage: AssetImage(ImagePath.splashLogoPath),
           ),
           title: Text(
@@ -45,18 +45,19 @@ class NoticeListPage extends StatelessWidget {
           subtitle: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Divider(
+              /*  const Divider(
                 thickness: 2.2,
                 color: Colors.black12,
-              ),
+              ), */
               Text(
                 subtitle,
                 overflow: TextOverflow.ellipsis,
-                maxLines: 3,
+                maxLines: 1,
               ),
             ],
           ),
-          titleTextStyle: Theme.of(context).textTheme.headlineLarge,
+          titleTextStyle: Theme.of(context).textTheme.labelMedium,
+          subtitleTextStyle: Theme.of(context).textTheme.bodySmall,
         ),
       );
     }

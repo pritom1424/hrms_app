@@ -12,4 +12,6 @@ class AppStrings {
   static const motherNameErrorText = "Please enter your mother name!";
   static const nameErrorText = "Please enter your name!";
   static const designationErrorText = "Please enter your designation!";
+  //
+  static const currentFontFamily = "Poppins";
 }

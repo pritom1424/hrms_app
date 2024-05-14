@@ -67,7 +67,7 @@ class DashboardPage2 extends StatelessWidget {
             )
           : null,
       body: SingleChildScrollView(
-        padding: EdgeInsets.only(bottom: 20),
+        padding: EdgeInsets.only(bottom: 40),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -227,15 +227,20 @@ class DashboardPage2 extends StatelessWidget {
                 ],
                 rows: List.generate(
                     data.length,
-                    (index) => DataRow(cells: [
-                          DataCell(Text('${data[index]["dept"]}')),
-                          DataCell(
-                              Center(child: Text('${data[index]["total"]}'))),
-                          DataCell(
-                              Center(child: Text('${data[index]["present"]}'))),
-                          DataCell(
-                              Center(child: Text('${data[index]["absent"]}'))),
-                        ])))
+                    (index) => DataRow(
+                            color: MaterialStateColor.resolveWith((states) =>
+                                (index % 2 == 0)
+                                    ? Color.fromARGB(223, 179, 157, 219)
+                                    : Colors.deepPurple.shade100),
+                            cells: [
+                              DataCell(Text('${data[index]["dept"]}')),
+                              DataCell(Center(
+                                  child: Text('${data[index]["total"]}'))),
+                              DataCell(Center(
+                                  child: Text('${data[index]["present"]}'))),
+                              DataCell(Center(
+                                  child: Text('${data[index]["absent"]}'))),
+                            ])))
           ],
         ),
       ),
