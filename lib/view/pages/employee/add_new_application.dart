@@ -865,7 +865,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
               ],
             ),
           ),
-          Container(
+          /*  Container(
             margin: EdgeInsets.symmetric(vertical: marginHeight),
             decoration: AppVars.customInputboxDecoration,
             child: TextFormField(
@@ -943,8 +943,8 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                 return null;
               },
             ),
-          ),
-          Container(
+          ), */
+          /* Container(
             margin: EdgeInsets.symmetric(vertical: marginHeight),
             decoration: AppVars.customInputboxDecoration,
             child: TextFormField(
@@ -970,7 +970,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                 return null;
               },
             ),
-          ),
+          ), */
           ElevatedButton(
             style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 5),

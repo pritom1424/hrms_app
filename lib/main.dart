@@ -10,7 +10,7 @@ import 'utils/app_colors/app_colors.dart';
 void main() {
   runApp(MultiProvider(
     providers: [
-      Provider<EmployeeDataController>(
+      ChangeNotifierProvider<EmployeeDataController>(
         create: (_) => EmployeeDataController(),
       )
     ],

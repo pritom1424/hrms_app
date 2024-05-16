@@ -1,11 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:hrms_app/controller/employee_data_controller.dart';
+import 'package:hrms_app/model/hrms_employee_model.dart';
 import 'package:hrms_app/utils/app_colors/app_colors.dart';
+import 'package:hrms_app/utils/app_variables/api_links.dart';
 import 'package:hrms_app/utils/app_variables/app_strings.dart';
 import 'package:hrms_app/utils/app_variables/image_paths.dart';
 
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '../../../utils/app_variables/app_vars.dart';
 
 import '../../widgets/appbar_default_widget.dart';
@@ -14,7 +18,9 @@ import '../../../utils/enums/enums.dart';
 
 class EditEmployeeApplicationForm extends StatefulWidget {
   final String? title;
-  const EditEmployeeApplicationForm({super.key, this.title});
+  final EmployeeDatum employeeDatum;
+  const EditEmployeeApplicationForm(
+      {super.key, this.title, required this.employeeDatum});
 
   @override
   State<EditEmployeeApplicationForm> createState() =>
@@ -58,10 +64,10 @@ class _EditEmployeeApplicationFormState
 
 // form vars
   Gender _selectedGender = Gender.male;
-  Nationality? _selectedNation;
-  IdType? _selectedIdType;
-  Shift? _selectedShift;
-  Department? _selectedDepartment;
+  String? _selectedNation;
+  String? _selectedIdType;
+  String? _selectedShift;
+  String? _selectedDepartment;
 
   BorderRadius borderRadius = const BorderRadius.all(Radius.circular(10));
   Color borderColor = const Color.fromARGB(255, 189, 183, 183);
@@ -166,6 +172,31 @@ class _EditEmployeeApplicationFormState
   @override
   void initState() {
     tabController = TabController(length: 2, vsync: this);
+    _employeeNameController.text = widget.employeeDatum.employeeName ?? "";
+    _employeeFatherNameController.text =
+        widget.employeeDatum.employeeFather ?? "";
+    _employeeMotherNameController.text =
+        widget.employeeDatum.employeeMother ?? "";
+    _employeeIdController.text = widget.employeeDatum.idNumber ?? "";
+    _employeePunchIdController.text = widget.employeeDatum.punchId ?? "";
+    _employeePresentAddressController.text =
+        widget.employeeDatum.presentAddress ?? "";
+    _employeePermanentAddressController.text =
+        widget.employeeDatum.permanentAddress ?? "";
+    if (widget.employeeDatum.gender?.toLowerCase() == "female") {
+      _selectedGender = Gender.female;
+    } else {
+      _selectedGender = Gender.male;
+    }
+
+    _selectedDate = widget.employeeDatum.dateOfBirth ?? DateTime.now();
+    /*   _selectedNation = Nationality.values.firstWhere((element) => element.name
+        .toUpperCase()
+        .contains(widget.employeeDatum.nationality?.toUpperCase() ?? "")); */
+/*     _selectedIdType = IdType.values.firstWhere((element) => element.name
+        .toUpperCase()
+        .contains(widget.employeeDatum.idType?.toUpperCase() ?? "")); */
+
     // TODO: implement initState
     super.initState();
   }
@@ -188,7 +219,7 @@ class _EditEmployeeApplicationFormState
     super.dispose();
   }
 
-  Widget employeeInfoTab() {
+  Widget employeeInfoTab(EmployeeDataController eControl) {
     return Form(
       key: _formPersonalInfoKey,
       child: Column(
@@ -366,37 +397,59 @@ class _EditEmployeeApplicationFormState
                       decoration: AppVars
                           .customInputboxDecoration, // BoxDecoration(border: Border.all(width: 0.4)),
                       margin: EdgeInsets.symmetric(vertical: marginHeight),
-                      child: DropdownButton(
-                          padding: EdgeInsets.all(0),
-                          hint: Text(
-                            "Choose nationality",
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(
-                                fontSize: mediumLabelFontSize,
-                                color: Colors.black54),
-                          ),
-                          value: _selectedNation,
-                          items: Nationality.values
-                              .map(
-                                (nationality) => DropdownMenuItem(
-                                  value: nationality,
-                                  child: Text(
-                                    nationality.name.toUpperCase(),
-                                    style:
-                                        Theme.of(context).textTheme.labelSmall,
-                                  ),
+                      child: FutureBuilder(
+                        future: eControl
+                            .getNationalityList(ApiLinks.nationalityLink),
+                        builder: (ctx, nationSnap) => (!nationSnap.hasData)
+                            ? SizedBox.shrink()
+                            : /* Text(nationSnap.data!.data[3].countryName!) */
+
+                            DropdownButton(
+                                padding: EdgeInsets.all(0),
+                                hint: Text(
+                                  "Choose nationality",
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      fontSize: mediumLabelFontSize,
+                                      color: Colors.black54),
                                 ),
-                              )
-                              .toList(),
-                          onChanged: (val) {
-                            if (val == null) {
-                              return;
-                            }
-                            setState(() {
-                              _selectedNation = val;
-                            });
-                          }),
+                                value: _selectedNation,
+                                items: List.generate(
+                                    nationSnap.data!.data.length,
+                                    (index) => DropdownMenuItem(
+                                        value: nationSnap
+                                            .data!.data[index].countryName,
+                                        child: Text(
+                                          nationSnap
+                                              .data!.data[index].countryName
+                                              .toString(),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelSmall,
+                                        ))),
+
+                                /* Nationality.values
+                                .map(
+                                  (nationality) => DropdownMenuItem(
+                                    value: nationality,
+                                    child: Text(
+                                      nationality.name.toUpperCase(),
+                                      style:
+                                          Theme.of(context).textTheme.labelSmall,
+                                    ),
+                                  ),
+                                )
+                                .toList() */
+                                onChanged: (val) {
+                                  if (val == null) {
+                                    return;
+                                  }
+                                  setState(() {
+                                    _selectedNation = val;
+                                  });
+                                }),
+                      ),
                     ),
                   ),
                 ),
@@ -424,36 +477,40 @@ class _EditEmployeeApplicationFormState
                       decoration: AppVars
                           .customInputboxDecoration, //BoxDecoration(border: Border.all(width: 0.4)),
                       margin: EdgeInsets.symmetric(vertical: marginHeight),
-                      child: DropdownButton(
-                          hint: Text(
-                            "Choose Id Type",
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(
-                                fontSize: mediumLabelFontSize,
-                                color: Colors.black54),
-                          ),
-                          value: _selectedIdType,
-                          items: IdType.values
-                              .map(
-                                (idtype) => DropdownMenuItem(
-                                  value: idtype,
-                                  child: Text(
-                                    idtype.name.toUpperCase(),
-                                    style:
-                                        Theme.of(context).textTheme.labelSmall,
-                                  ),
+                      child: FutureBuilder(
+                        future: eControl.getIdTypeList(ApiLinks.idTypeLink),
+                        builder: (ctx, snapShot) => (!snapShot.hasData)
+                            ? SizedBox.shrink()
+                            : DropdownButton(
+                                hint: Text(
+                                  "Choose Id Type",
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      fontSize: mediumLabelFontSize,
+                                      color: Colors.black54),
                                 ),
-                              )
-                              .toList(),
-                          onChanged: (val) {
-                            if (val == null) {
-                              return;
-                            }
-                            setState(() {
-                              _selectedIdType = val;
-                            });
-                          }),
+                                value: _selectedIdType,
+                                items: List.generate(
+                                    snapShot.data!.data.length,
+                                    (index) => DropdownMenuItem(
+                                        value:
+                                            snapShot.data!.data[index].idType,
+                                        child: Text(
+                                          snapShot.data!.data[index].idType,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelSmall,
+                                        ))),
+                                onChanged: (val) {
+                                  if (val == null) {
+                                    return;
+                                  }
+                                  setState(() {
+                                    _selectedIdType = val;
+                                  });
+                                }),
+                      ),
                     ),
                   ),
                 ),
@@ -654,7 +711,7 @@ class _EditEmployeeApplicationFormState
     );
   }
 
-  Widget officeInfoTab() {
+  Widget officeInfoTab(EmployeeDataController econtrol) {
     return Form(
       key: _formOfficialInfoKey,
       child: Column(
@@ -702,36 +759,40 @@ class _EditEmployeeApplicationFormState
                       margin: EdgeInsets.symmetric(vertical: marginHeight),
                       decoration: AppVars
                           .customInputboxDecoration, //BoxDecoration(border: Border.all(width: 0.4),),
-                      child: DropdownButton(
-                          hint: Text(
-                            "Choose shift",
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(
-                                fontSize: mediumLabelFontSize,
-                                color: Colors.black54),
-                          ),
-                          value: _selectedShift,
-                          items: Shift.values
-                              .map(
-                                (shift) => DropdownMenuItem(
-                                  value: shift,
-                                  child: Text(
-                                    shift.name.toUpperCase(),
-                                    style:
-                                        Theme.of(context).textTheme.labelSmall,
-                                  ),
+                      child: FutureBuilder(
+                        future: econtrol.getShiftList(ApiLinks.shiftTypeLink),
+                        builder: (ctx, snapshot) => (!snapshot.hasData)
+                            ? SizedBox.shrink()
+                            : DropdownButton(
+                                hint: Text(
+                                  "Choose shift",
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      fontSize: mediumLabelFontSize,
+                                      color: Colors.black54),
                                 ),
-                              )
-                              .toList(),
-                          onChanged: (val) {
-                            if (val == null) {
-                              return;
-                            }
-                            setState(() {
-                              _selectedShift = val;
-                            });
-                          }),
+                                value: _selectedShift,
+                                items: List.generate(
+                                    snapshot.data!.data.length,
+                                    (index) => DropdownMenuItem(
+                                        value: snapshot
+                                            .data!.data[index].shiftName,
+                                        child: Text(
+                                          snapshot.data!.data[index].shiftName,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelSmall,
+                                        ))),
+                                onChanged: (val) {
+                                  if (val == null) {
+                                    return;
+                                  }
+                                  setState(() {
+                                    _selectedShift = val;
+                                  });
+                                }),
+                      ),
                     ),
                   ),
                 ),
@@ -865,112 +926,6 @@ class _EditEmployeeApplicationFormState
               ],
             ),
           ),
-          Container(
-            margin: EdgeInsets.symmetric(vertical: marginHeight),
-            decoration: AppVars.customInputboxDecoration,
-            child: TextFormField(
-              controller: _employeeIdController,
-              decoration: InputDecoration(
-                labelText: 'Id Number',
-                contentPadding: AppVars.inputContentPadding,
-                /*  prefixIcon: Icon(
-                  Icons.phone,
-                  color: iconColor,
-                ), */
-                border: InputBorder.none,
-                hintText: 'Id Number',
-                hintStyle: AppVars.customHintTextStyle,
-                labelStyle:
-                    TextStyle(fontSize: labelFontSize, color: labelFontColor),
-              ),
-              validator: (value) {
-                if (value != null && value == "") {
-                  return AppStrings.idNumberErrorText;
-                }
-                return null;
-              },
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(vertical: marginHeight),
-            decoration: AppVars.customInputboxDecoration,
-            child: TextFormField(
-              controller: _employeePunchIdController,
-              decoration: InputDecoration(
-                labelText: 'Punch Id',
-                contentPadding: AppVars.inputContentPadding,
-                /* prefixIcon: Icon(
-                  Icons.phone,
-                  color: iconColor,
-                ), */
-                border: InputBorder.none,
-                hintText: 'Punch Id',
-                hintStyle: AppVars.customHintTextStyle,
-                labelStyle:
-                    TextStyle(fontSize: labelFontSize, color: labelFontColor),
-              ),
-              validator: (value) {
-                if (value != null && value == "") {
-                  return AppStrings.punchIdErrorText;
-                }
-                return null;
-              },
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(vertical: marginHeight),
-            decoration: AppVars.customInputboxDecoration,
-            child: TextFormField(
-              controller: _employeePresentAddressController,
-              maxLines: 1,
-              decoration: InputDecoration(
-                labelText: 'Present Address',
-                contentPadding: AppVars.inputContentPadding,
-                hintStyle: AppVars.customHintTextStyle,
-                /*  prefixIcon: Icon(
-                  Icons.home,
-                  color: iconColor,
-                ), */
-                border: InputBorder.none,
-                hintText: 'Present Address',
-                labelStyle:
-                    TextStyle(fontSize: labelFontSize, color: labelFontColor),
-              ),
-              validator: (value) {
-                if (value != null && value == "") {
-                  return AppStrings.presentAddressErrorText;
-                }
-                return null;
-              },
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(vertical: marginHeight),
-            decoration: AppVars.customInputboxDecoration,
-            child: TextFormField(
-              controller: _employeePermanentAddressController,
-              maxLines: 1,
-              decoration: InputDecoration(
-                labelText: 'Permanent Address',
-                contentPadding: AppVars.inputContentPadding,
-                hintStyle: AppVars.customHintTextStyle,
-                /* prefixIcon: Icon(
-                  Icons.home,
-                  color: iconColor,
-                ), */
-                border: InputBorder.none,
-                hintText: 'Permanent Address',
-                labelStyle:
-                    TextStyle(fontSize: labelFontSize, color: labelFontColor),
-              ),
-              validator: (value) {
-                if (value != null && value == "") {
-                  return AppStrings.permanentAddressErrorText;
-                }
-                return null;
-              },
-            ),
-          ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 5),
@@ -1003,6 +958,8 @@ class _EditEmployeeApplicationFormState
 
   @override
   Widget build(BuildContext context) {
+    EmployeeDataController employeeDataController =
+        Provider.of<EmployeeDataController>(context, listen: false);
     return Scaffold(
       appBar: (widget.title == null)
           ? null
@@ -1072,8 +1029,10 @@ class _EditEmployeeApplicationFormState
                   physics: NeverScrollableScrollPhysics(),
                   controller: tabController,
                   children: [
-                    SingleChildScrollView(child: employeeInfoTab()),
-                    SingleChildScrollView(child: officeInfoTab())
+                    SingleChildScrollView(
+                        child: employeeInfoTab(employeeDataController)),
+                    SingleChildScrollView(
+                        child: officeInfoTab(employeeDataController))
                   ]),
             ),
 
