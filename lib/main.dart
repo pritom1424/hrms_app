@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hrms_app/utils/app_variables/app_strings.dart';
-import 'package:hrms_app/utils/app_variables/app_vars.dart';
+import 'package:hrms_app/controller/employee_edit_data_controller.dart';
+import 'utils/app_variables/app_strings.dart';
+import 'utils/app_variables/app_vars.dart';
 import 'controller/employee_data_controller.dart';
 import 'view/pages/splash_page_2.dart';
 import 'package:provider/provider.dart';
@@ -12,6 +13,9 @@ void main() {
     providers: [
       ChangeNotifierProvider<EmployeeDataController>(
         create: (_) => EmployeeDataController(),
+      ),
+      ChangeNotifierProvider<EmployeeEditDataController>(
+        create: (_) => EmployeeEditDataController(),
       )
     ],
     child: const MyApp(),

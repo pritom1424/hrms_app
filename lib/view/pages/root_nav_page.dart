@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hrms_app/view/pages/employee/add_new_application.dart';
-import 'package:hrms_app/view/pages/leave_application.dart';
-import 'package:hrms_app/view/pages/navigation_pages/attendance_page.dart';
-import 'package:hrms_app/view/pages/navigation_pages/dashboard_page_2.dart';
+import 'employee/add_new_application.dart';
+import 'leave_application.dart';
+import 'navigation_pages/attendance_page.dart';
+import 'navigation_pages/dashboard_page_2.dart';
 
 import '../../utils/app_variables/app_vars.dart';
 import 'employee_profile_page.dart';

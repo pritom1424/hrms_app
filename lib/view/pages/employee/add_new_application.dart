@@ -1,11 +1,15 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:hrms_app/utils/app_colors/app_colors.dart';
-import 'package:hrms_app/utils/app_variables/app_strings.dart';
-import 'package:hrms_app/utils/app_variables/image_paths.dart';
+
+import 'package:hrms_app/controller/employee_data_controller.dart';
+import 'package:hrms_app/model/hrms_employee_model.dart';
+import 'package:hrms_app/utils/app_variables/api_links.dart';
+import 'package:hrms_app/view/pages/employee/employee_table.dart';
+import 'package:provider/provider.dart';
+import '../../../utils/app_colors/app_colors.dart';
+import '../../../utils/app_variables/app_strings.dart';
+import '../../../utils/app_variables/image_paths.dart';
 
 import 'package:intl/intl.dart';
 import '../../../utils/app_variables/app_vars.dart';
@@ -26,7 +30,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
     with SingleTickerProviderStateMixin {
   final _formPersonalInfoKey = GlobalKey<FormState>();
   final _formOfficialInfoKey = GlobalKey<FormState>();
-  //.........................................................///
+
   final TextEditingController _employeeIdController = TextEditingController();
   final TextEditingController _employeePunchIdController =
       TextEditingController();
@@ -58,10 +62,10 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
 
 // form vars
   Gender _selectedGender = Gender.male;
-  Nationality? _selectedNation;
-  IdType? _selectedIdType;
-  Shift? _selectedShift;
-  Department? _selectedDepartment;
+  String? _selectedNation;
+  String? _selectedIdType;
+  String? _selectedShift;
+  String? _selectedDepartment;
 
   BorderRadius borderRadius = const BorderRadius.all(Radius.circular(10));
   Color borderColor = const Color.fromARGB(255, 189, 183, 183);
@@ -84,6 +88,9 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
 //date picker
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedTime = TimeOfDay.now();
+  DateTime _selectedShiftDate = DateTime.now();
+  DateTime _selectedJoiningDate = DateTime.now();
+  DateTime _selectedConfirmationDate = DateTime.now();
 
   File? _storedImage;
   Future<void> _clickOrChoosePhoto(ImageSource imageSource) async {
@@ -163,10 +170,52 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
       });
   }
 
+  Future<void> _selectJoiningDate(BuildContext context,
+      {DateTime? fDate, DateTime? lDate}) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedJoiningDate,
+      firstDate: (fDate != null) ? fDate : DateTime(2015, 8),
+      lastDate: (lDate != null) ? lDate : DateTime(2101),
+    );
+    if (picked != null && picked != _selectedDate)
+      setState(() {
+        _selectedJoiningDate = picked;
+      });
+  }
+
+  Future<void> _selectShiftDate(BuildContext context,
+      {DateTime? fDate, DateTime? lDate}) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedShiftDate,
+      firstDate: (fDate != null) ? fDate : DateTime(2015, 8),
+      lastDate: (lDate != null) ? lDate : DateTime(2101),
+    );
+    if (picked != null && picked != _selectedDate)
+      setState(() {
+        _selectedShiftDate = picked;
+      });
+  }
+
+  Future<void> _selectConfirmDate(BuildContext context,
+      {DateTime? fDate, DateTime? lDate}) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedConfirmationDate,
+      firstDate: (fDate != null) ? fDate : DateTime(2015, 8),
+      lastDate: (lDate != null) ? lDate : DateTime(2101),
+    );
+    if (picked != null && picked != _selectedDate)
+      setState(() {
+        _selectedConfirmationDate = picked;
+      });
+  }
+
   @override
   void initState() {
     tabController = TabController(length: 2, vsync: this);
-    // TODO: implement initState
+
     super.initState();
   }
 
@@ -188,7 +237,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
     super.dispose();
   }
 
-  Widget employeeInfoTab() {
+  Widget employeeInfoTab(EmployeeDataController eControl) {
     return Form(
       key: _formPersonalInfoKey,
       child: Column(
@@ -366,37 +415,46 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                       decoration: AppVars
                           .customInputboxDecoration, // BoxDecoration(border: Border.all(width: 0.4)),
                       margin: EdgeInsets.symmetric(vertical: marginHeight),
-                      child: DropdownButton(
-                          padding: EdgeInsets.all(0),
-                          hint: Text(
-                            "Choose nationality",
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(
-                                fontSize: mediumLabelFontSize,
-                                color: Colors.black54),
-                          ),
-                          value: _selectedNation,
-                          items: Nationality.values
-                              .map(
-                                (nationality) => DropdownMenuItem(
-                                  value: nationality,
-                                  child: Text(
-                                    nationality.name.toUpperCase(),
-                                    style:
-                                        Theme.of(context).textTheme.labelSmall,
-                                  ),
+                      child: FutureBuilder(
+                        future: eControl
+                            .getNationalityList(ApiLinks.nationalityLink),
+                        builder: (ctx, nationSnap) => (!nationSnap.hasData)
+                            ? SizedBox.shrink()
+                            : /* Text(nationSnap.data!.data[3].countryName!) */
+
+                            DropdownButton(
+                                padding: EdgeInsets.all(0),
+                                hint: Text(
+                                  "Choose nationality",
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      fontSize: mediumLabelFontSize,
+                                      color: Colors.black54),
                                 ),
-                              )
-                              .toList(),
-                          onChanged: (val) {
-                            if (val == null) {
-                              return;
-                            }
-                            setState(() {
-                              _selectedNation = val;
-                            });
-                          }),
+                                value: _selectedNation,
+                                items: List.generate(
+                                    nationSnap.data!.data.length,
+                                    (index) => DropdownMenuItem(
+                                        value: nationSnap
+                                            .data!.data[index].countryName,
+                                        child: Text(
+                                          nationSnap
+                                              .data!.data[index].countryName
+                                              .toString(),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelSmall,
+                                        ))),
+                                onChanged: (val) {
+                                  if (val == null) {
+                                    return;
+                                  }
+                                  setState(() {
+                                    _selectedNation = val;
+                                  });
+                                }),
+                      ),
                     ),
                   ),
                 ),
@@ -419,41 +477,43 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                   child: Expanded(
                     flex: 2,
                     child: Container(
-                      //   width: AppVars.screenSize.width * 0.60,
                       padding: AppVars.inputContentPadding,
-                      decoration: AppVars
-                          .customInputboxDecoration, //BoxDecoration(border: Border.all(width: 0.4)),
+                      decoration: AppVars.customInputboxDecoration,
                       margin: EdgeInsets.symmetric(vertical: marginHeight),
-                      child: DropdownButton(
-                          hint: Text(
-                            "Choose Id Type",
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(
-                                fontSize: mediumLabelFontSize,
-                                color: Colors.black54),
-                          ),
-                          value: _selectedIdType,
-                          items: IdType.values
-                              .map(
-                                (idtype) => DropdownMenuItem(
-                                  value: idtype,
-                                  child: Text(
-                                    idtype.name.toUpperCase(),
-                                    style:
-                                        Theme.of(context).textTheme.labelSmall,
-                                  ),
+                      child: FutureBuilder(
+                        future: eControl.getIdTypeList(ApiLinks.idTypeLink),
+                        builder: (ctx, snapShot) => (!snapShot.hasData)
+                            ? const SizedBox.shrink()
+                            : DropdownButton(
+                                hint: Text(
+                                  "Choose Id Type",
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      fontSize: mediumLabelFontSize,
+                                      color: Colors.black54),
                                 ),
-                              )
-                              .toList(),
-                          onChanged: (val) {
-                            if (val == null) {
-                              return;
-                            }
-                            setState(() {
-                              _selectedIdType = val;
-                            });
-                          }),
+                                value: _selectedIdType,
+                                items: List.generate(
+                                    snapShot.data!.data.length,
+                                    (index) => DropdownMenuItem(
+                                        value:
+                                            snapShot.data!.data[index].idType,
+                                        child: Text(
+                                          snapShot.data!.data[index].idType,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelSmall,
+                                        ))),
+                                onChanged: (val) {
+                                  if (val == null) {
+                                    return;
+                                  }
+                                  setState(() {
+                                    _selectedIdType = val;
+                                  });
+                                }),
+                      ),
                     ),
                   ),
                 ),
@@ -625,7 +685,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 5),
+                padding: const EdgeInsets.symmetric(vertical: 5),
                 shape: RoundedRectangleBorder(
                   borderRadius: borderRadius,
                 ),
@@ -636,16 +696,14 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                 return;
               }
               if (_formPersonalInfoKey.currentState!.validate()) {
+                if (_formPersonalInfoKey.currentState!.validate()) {
+                  tabController.index = 1;
+                }
                 _formPersonalInfoKey.currentState!.save();
-                // Do something with the validated data
-                // print('Name: $_name');
               }
-
-              // Handle apply button press
-              // You can access the values using controller.text for each field
             },
             child: const Text(
-              'Create',
+              'Next',
               style: TextStyle(fontSize: 25),
             ),
           ),
@@ -654,7 +712,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
     );
   }
 
-  Widget officeInfoTab() {
+  Widget officeInfoTab(EmployeeDataController econtrol) {
     return Form(
       key: _formOfficialInfoKey,
       child: Column(
@@ -668,12 +726,12 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Shift Date: ${DateFormat.yMd().format(_selectedDate)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
+                    'Shift Date: ${DateFormat.yMd().format(_selectedShiftDate)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
                     style: TextStyle(fontSize: mediumLabelFontSize),
                   ),
-                  SizedBox(width: 20),
+                  const SizedBox(width: 20),
                   TextButton(
-                    onPressed: () => _selectDate(context),
+                    onPressed: () => _selectShiftDate(context),
                     child: Text(
                       'Select Date',
                       style: TextStyle(fontSize: mediumLabelFontSize),
@@ -702,36 +760,40 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                       margin: EdgeInsets.symmetric(vertical: marginHeight),
                       decoration: AppVars
                           .customInputboxDecoration, //BoxDecoration(border: Border.all(width: 0.4),),
-                      child: DropdownButton(
-                          hint: Text(
-                            "Choose shift",
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(
-                                fontSize: mediumLabelFontSize,
-                                color: Colors.black54),
-                          ),
-                          value: _selectedShift,
-                          items: Shift.values
-                              .map(
-                                (shift) => DropdownMenuItem(
-                                  value: shift,
-                                  child: Text(
-                                    shift.name.toUpperCase(),
-                                    style:
-                                        Theme.of(context).textTheme.labelSmall,
-                                  ),
+                      child: FutureBuilder(
+                        future: econtrol.getShiftList(ApiLinks.shiftTypeLink),
+                        builder: (ctx, snapshot) => (!snapshot.hasData)
+                            ? const SizedBox.shrink()
+                            : DropdownButton(
+                                hint: Text(
+                                  "Choose shift",
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      fontSize: mediumLabelFontSize,
+                                      color: Colors.black54),
                                 ),
-                              )
-                              .toList(),
-                          onChanged: (val) {
-                            if (val == null) {
-                              return;
-                            }
-                            setState(() {
-                              _selectedShift = val;
-                            });
-                          }),
+                                value: _selectedShift,
+                                items: List.generate(
+                                    snapshot.data!.data.length,
+                                    (index) => DropdownMenuItem(
+                                        value: snapshot
+                                            .data!.data[index].shiftName,
+                                        child: Text(
+                                          snapshot.data!.data[index].shiftName,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelSmall,
+                                        ))),
+                                onChanged: (val) {
+                                  if (val == null) {
+                                    return;
+                                  }
+                                  setState(() {
+                                    _selectedShift = val;
+                                  });
+                                }),
+                      ),
                     ),
                   ),
                 ),
@@ -772,12 +834,12 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Joining Date: ${DateFormat.yMd().format(_selectedDate)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
+                    'Joining Date: ${DateFormat.yMd().format(_selectedJoiningDate)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
                     style: TextStyle(fontSize: mediumLabelFontSize),
                   ),
-                  SizedBox(width: 20),
+                  const SizedBox(width: 20),
                   TextButton(
-                    onPressed: () => _selectDate(context),
+                    onPressed: () => _selectJoiningDate(context),
                     child: Text(
                       'Select Date',
                       style: TextStyle(fontSize: mediumLabelFontSize),
@@ -793,12 +855,12 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Confirmation Date: ${DateFormat.yMd().format(_selectedDate)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
+                    'Confirmation Date: ${DateFormat.yMd().format(_selectedConfirmationDate)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
                     style: TextStyle(fontSize: mediumLabelFontSize),
                   ),
-                  SizedBox(width: 20),
+                  const SizedBox(width: 20),
                   TextButton(
-                    onPressed: () => _selectDate(
+                    onPressed: () => _selectConfirmDate(
                       context,
                     ),
                     child: Text(
@@ -829,167 +891,119 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                       decoration: AppVars
                           .customInputboxDecoration, //BoxDecoration(border: Border.all(width: 0.4)),
                       margin: EdgeInsets.symmetric(vertical: marginHeight),
-                      child: DropdownButton(
-                          hint: Text(
-                            "Choose department",
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(
-                                fontSize: mediumLabelFontSize,
-                                color: Colors.black54),
-                          ),
-                          value: _selectedDepartment,
-                          items: Department.values
-                              .map(
-                                (department) => DropdownMenuItem(
-                                  value: department,
-                                  child: Text(
-                                    department.name.toUpperCase(),
-                                    style:
-                                        Theme.of(context).textTheme.labelSmall,
-                                  ),
+                      child: FutureBuilder(
+                        future: econtrol
+                            .getDepartmentList(ApiLinks.departmentListApiLink),
+                        builder: (ctx, snapshot) => (!snapshot.hasData)
+                            ? const SizedBox.shrink()
+                            : DropdownButton(
+                                hint: Text(
+                                  "Choose department",
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      fontSize: mediumLabelFontSize,
+                                      color: Colors.black54),
                                 ),
-                              )
-                              .toList(),
-                          onChanged: (val) {
-                            if (val == null) {
-                              return;
-                            }
-                            setState(() {
-                              _selectedDepartment = val;
-                            });
-                          }),
+                                value: _selectedDepartment,
+                                items: List.generate(
+                                    snapshot.data!.data.length,
+                                    (index) => DropdownMenuItem(
+                                        value: snapshot
+                                            .data!.data[index].departmentName,
+                                        child: Text(
+                                          snapshot
+                                              .data!.data[index].departmentName,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelSmall,
+                                        ))),
+                                onChanged: (val) {
+                                  if (val == null) {
+                                    return;
+                                  }
+                                  setState(() {
+                                    _selectedDepartment = val;
+                                  });
+                                }),
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          /*  Container(
-            margin: EdgeInsets.symmetric(vertical: marginHeight),
-            decoration: AppVars.customInputboxDecoration,
-            child: TextFormField(
-              controller: _employeeIdController,
-              decoration: InputDecoration(
-                labelText: 'Id Number',
-                contentPadding: AppVars.inputContentPadding,
-                /*  prefixIcon: Icon(
-                  Icons.phone,
-                  color: iconColor,
-                ), */
-                border: InputBorder.none,
-                hintText: 'Id Number',
-                hintStyle: AppVars.customHintTextStyle,
-                labelStyle:
-                    TextStyle(fontSize: labelFontSize, color: labelFontColor),
-              ),
-              validator: (value) {
-                if (value != null && value == "") {
-                  return AppStrings.idNumberErrorText;
-                }
-                return null;
-              },
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(vertical: marginHeight),
-            decoration: AppVars.customInputboxDecoration,
-            child: TextFormField(
-              controller: _employeePunchIdController,
-              decoration: InputDecoration(
-                labelText: 'Punch Id',
-                contentPadding: AppVars.inputContentPadding,
-                /* prefixIcon: Icon(
-                  Icons.phone,
-                  color: iconColor,
-                ), */
-                border: InputBorder.none,
-                hintText: 'Punch Id',
-                hintStyle: AppVars.customHintTextStyle,
-                labelStyle:
-                    TextStyle(fontSize: labelFontSize, color: labelFontColor),
-              ),
-              validator: (value) {
-                if (value != null && value == "") {
-                  return AppStrings.punchIdErrorText;
-                }
-                return null;
-              },
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(vertical: marginHeight),
-            decoration: AppVars.customInputboxDecoration,
-            child: TextFormField(
-              controller: _employeePresentAddressController,
-              maxLines: 1,
-              decoration: InputDecoration(
-                labelText: 'Present Address',
-                contentPadding: AppVars.inputContentPadding,
-                hintStyle: AppVars.customHintTextStyle,
-                /*  prefixIcon: Icon(
-                  Icons.home,
-                  color: iconColor,
-                ), */
-                border: InputBorder.none,
-                hintText: 'Present Address',
-                labelStyle:
-                    TextStyle(fontSize: labelFontSize, color: labelFontColor),
-              ),
-              validator: (value) {
-                if (value != null && value == "") {
-                  return AppStrings.presentAddressErrorText;
-                }
-                return null;
-              },
-            ),
-          ), */
-          /* Container(
-            margin: EdgeInsets.symmetric(vertical: marginHeight),
-            decoration: AppVars.customInputboxDecoration,
-            child: TextFormField(
-              controller: _employeePermanentAddressController,
-              maxLines: 1,
-              decoration: InputDecoration(
-                labelText: 'Permanent Address',
-                contentPadding: AppVars.inputContentPadding,
-                hintStyle: AppVars.customHintTextStyle,
-                /* prefixIcon: Icon(
-                  Icons.home,
-                  color: iconColor,
-                ), */
-                border: InputBorder.none,
-                hintText: 'Permanent Address',
-                labelStyle:
-                    TextStyle(fontSize: labelFontSize, color: labelFontColor),
-              ),
-              validator: (value) {
-                if (value != null && value == "") {
-                  return AppStrings.permanentAddressErrorText;
-                }
-                return null;
-              },
-            ),
-          ), */
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 5),
+                padding: const EdgeInsets.symmetric(vertical: 5),
                 shape: RoundedRectangleBorder(
                   borderRadius: borderRadius,
                 ),
                 backgroundColor: Appcolors.assignButtonColor,
                 foregroundColor: actionButtonFgColor),
-            onPressed: () {
+            onPressed: () async {
               if (_formOfficialInfoKey.currentState == null) {
                 return;
               }
               if (_formOfficialInfoKey.currentState!.validate()) {
                 _formOfficialInfoKey.currentState!.save();
-                // Do something with the validated data
-                //print('Name: $_name');
               }
-              // Handle apply button press
-              // You can access the values using controller.text for each field
+
+              EmployeeDatum employeeDatum = EmployeeDatum(
+                  id: null,
+                  employeeCode: null,
+                  punchId: _employeePunchIdController.text,
+                  employeeName: _employeeNameController.text,
+                  employeeFather: _employeeFatherNameController.text,
+                  employeeMother: _employeeMotherNameController.text,
+                  gender: _selectedGender.name,
+                  dateOfBirth:
+                      "${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}", //_selectedDate.toIso8601String(),
+                  nationality: _selectedNation,
+                  idType: _selectedIdType,
+                  idNumber: _employeeIdController.text,
+                  permanentAddress: _employeePermanentAddressController.text,
+                  presentAddress: _employeePermanentAddressController.text,
+                  image: null,
+                  userId: null,
+                  createdAt: null,
+                  updatedAt: null,
+                  deletedAt: null,
+                  action: null,
+                  dtRowIndex: null);
+              Map<String, dynamic> data = {
+                "punch_id": _employeePunchIdController.text,
+                "employee_name": "james bond",
+                "employee_father": _employeeFatherNameController.text,
+                "employee_mother": _employeeMotherNameController.text,
+                "gender": _selectedGender.name,
+                "date_of_birth": "2024-05-04",
+                "nationality": _selectedNation,
+                "id_type": _selectedIdType,
+                "id_number": _employeeIdController.text,
+                "permanent_address": _employeePermanentAddressController.text,
+                "present_address": _employeePermanentAddressController.text,
+                "user_id": null,
+                "image": null,
+                "email_address": null,
+                "password": null,
+                "shift_date": "2024-05-23",
+                "shift_id": null,
+                "joining_date": "2024-05-23",
+                "confirmation_date": "2024-05-23",
+                "designation": "Developer",
+                "department_id": "IT Developer"
+              };
+              /*  await econtrol.createEmployee(
+                  ApiLinks.employeeListApiLink, employeeDatum);
+              
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (ctx) => EmployeeList())); */
+              await econtrol.createEmployee(
+                  ApiLinks.employeeListApiLink, employeeDatum);
+
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (ctx) => EmployeeList()));
             },
             child: const Text(
               'Create',
@@ -1003,6 +1017,8 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
 
   @override
   Widget build(BuildContext context) {
+    EmployeeDataController employeeDataController =
+        Provider.of<EmployeeDataController>(context, listen: false);
     return Scaffold(
       appBar: (widget.title == null)
           ? null
@@ -1015,7 +1031,6 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
         height: AppVars.screenSize.height * 1,
         child: Column(
-          //   mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SizedBox(
@@ -1045,9 +1060,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
               ),
             ),
             TabBar(
-                labelStyle: Theme.of(context)
-                    .textTheme
-                    .headlineSmall /* TextStyle(fontSize: 17, fontWeight: FontWeight.bold) */,
+                labelStyle: Theme.of(context).textTheme.headlineSmall,
                 controller: tabController,
                 isScrollable: false,
                 tabs: const [
@@ -1073,9 +1086,9 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                   controller: tabController,
                   children: [
                     SingleChildScrollView(
-                        padding: EdgeInsets.all(0), child: employeeInfoTab()),
+                        child: employeeInfoTab(employeeDataController)),
                     SingleChildScrollView(
-                        padding: EdgeInsets.all(0), child: officeInfoTab())
+                        child: officeInfoTab(employeeDataController))
                   ]),
             ),
 

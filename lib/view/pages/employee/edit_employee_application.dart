@@ -1,12 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:hrms_app/controller/employee_data_controller.dart';
-import 'package:hrms_app/model/hrms_employee_model.dart';
-import 'package:hrms_app/utils/app_colors/app_colors.dart';
-import 'package:hrms_app/utils/app_variables/api_links.dart';
-import 'package:hrms_app/utils/app_variables/app_strings.dart';
-import 'package:hrms_app/utils/app_variables/image_paths.dart';
+import 'package:hrms_app/controller/employee_edit_data_controller.dart';
+import 'package:hrms_app/model/hrms_employee_edit_model.dart';
+import '../../../controller/employee_data_controller.dart';
+
+import '../../../utils/app_colors/app_colors.dart';
+import '../../../utils/app_variables/api_links.dart';
+import '../../../utils/app_variables/app_strings.dart';
+import '../../../utils/app_variables/image_paths.dart';
 
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -18,9 +20,9 @@ import '../../../utils/enums/enums.dart';
 
 class EditEmployeeApplicationForm extends StatefulWidget {
   final String? title;
-  final EmployeeDatum employeeDatum;
+  final int? employeeID;
   const EditEmployeeApplicationForm(
-      {super.key, this.title, required this.employeeDatum});
+      {super.key, this.title, required this.employeeID});
 
   @override
   State<EditEmployeeApplicationForm> createState() =>
@@ -33,6 +35,10 @@ class _EditEmployeeApplicationFormState
   final _formPersonalInfoKey = GlobalKey<FormState>();
   final _formOfficialInfoKey = GlobalKey<FormState>();
 
+  final TextEditingController _employeeEmailController =
+      TextEditingController();
+  final TextEditingController _employeePasswordController =
+      TextEditingController();
   final TextEditingController _employeeIdController = TextEditingController();
   final TextEditingController _employeePunchIdController =
       TextEditingController();
@@ -53,7 +59,7 @@ class _EditEmployeeApplicationFormState
 
   late TabController tabController;
   /*************************************************************** */
-  final TextEditingController _shiftDateController = TextEditingController();
+
   final TextEditingController _employeeDesignationController =
       TextEditingController();
   final TextEditingController _employeeJoiningDateController =
@@ -67,7 +73,7 @@ class _EditEmployeeApplicationFormState
   String? _selectedNation;
   String? _selectedIdType;
   String? _selectedShift;
-  String? _selectedDepartment;
+  int? _selectedDepartment;
 
   BorderRadius borderRadius = const BorderRadius.all(Radius.circular(10));
   Color borderColor = const Color.fromARGB(255, 189, 183, 183);
@@ -88,8 +94,13 @@ class _EditEmployeeApplicationFormState
   Color actionButtonFgColor = Colors.white;
 
 //date picker
+  String? selectedDateString;
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedTime = TimeOfDay.now();
+
+  DateTime _selectedShiftDate = DateTime.now();
+  DateTime _selectedJoiningDate = DateTime.now();
+  DateTime _selectedConfirmationDate = DateTime.now();
 
   File? _storedImage;
   Future<void> _clickOrChoosePhoto(ImageSource imageSource) async {
@@ -158,6 +169,48 @@ class _EditEmployeeApplicationFormState
       });
   }
 
+  Future<void> _selectJoiningDate(BuildContext context,
+      {DateTime? fDate, DateTime? lDate}) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedJoiningDate,
+      firstDate: (fDate != null) ? fDate : DateTime(2015, 8),
+      lastDate: (lDate != null) ? lDate : DateTime(2101),
+    );
+    if (picked != null && picked != _selectedDate)
+      setState(() {
+        _selectedJoiningDate = picked;
+      });
+  }
+
+  Future<void> _selectShiftDate(BuildContext context,
+      {DateTime? fDate, DateTime? lDate}) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedShiftDate,
+      firstDate: (fDate != null) ? fDate : DateTime(2015, 8),
+      lastDate: (lDate != null) ? lDate : DateTime(2101),
+    );
+    if (picked != null && picked != _selectedDate)
+      setState(() {
+        _selectedShiftDate = picked;
+      });
+  }
+
+  Future<void> _selectConfirmDate(BuildContext context,
+      {DateTime? fDate, DateTime? lDate}) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedConfirmationDate,
+      firstDate: (fDate != null) ? fDate : DateTime(2015, 8),
+      lastDate: (lDate != null) ? lDate : DateTime(2101),
+    );
+    if (picked != null && picked != _selectedDate)
+      setState(() {
+        _selectedConfirmationDate = picked;
+      });
+  }
+
   Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
@@ -172,7 +225,7 @@ class _EditEmployeeApplicationFormState
   @override
   void initState() {
     tabController = TabController(length: 2, vsync: this);
-    _employeeNameController.text = widget.employeeDatum.employeeName ?? "";
+    /*  _employeeNameController.text = widget.employeeDatum.employeeName ?? "";
     _employeeFatherNameController.text =
         widget.employeeDatum.employeeFather ?? "";
     _employeeMotherNameController.text =
@@ -189,7 +242,9 @@ class _EditEmployeeApplicationFormState
       _selectedGender = Gender.male;
     }
 
-    _selectedDate = widget.employeeDatum.dateOfBirth ?? DateTime.now();
+    _selectedDate = (widget.employeeDatum.dateOfBirth != null)
+        ? DateTime.parse(widget.employeeDatum.dateOfBirth!)
+        : DateTime.now(); */
     /*   _selectedNation = Nationality.values.firstWhere((element) => element.name
         .toUpperCase()
         .contains(widget.employeeDatum.nationality?.toUpperCase() ?? "")); */
@@ -199,6 +254,46 @@ class _EditEmployeeApplicationFormState
 
     // TODO: implement initState
     super.initState();
+  }
+
+  void initField(HrmsEmployeeEditModel hrmsEmployeeEditModel) {
+    _employeeNameController.text = hrmsEmployeeEditModel.employeeName ?? "";
+    _employeeFatherNameController.text =
+        hrmsEmployeeEditModel.employeeFather ?? "";
+    _employeeMotherNameController.text =
+        hrmsEmployeeEditModel.employeeMother ?? "";
+    (hrmsEmployeeEditModel.gender?.toLowerCase() == "Female".toLowerCase())
+        ? _selectedGender = Gender.female
+        : _selectedGender = Gender.male;
+    selectedDateString = hrmsEmployeeEditModel.dateOfBirth;
+    /*  _selectedDate = DateTime.parse(
+            hrmsEmployeeEditModel.dateOfBirth ?? DateTime.now.toString()) ??
+        DateTime.now(); */
+    _selectedNation = hrmsEmployeeEditModel.nationality;
+    _selectedIdType = hrmsEmployeeEditModel.idType;
+    _employeeIdController.text = hrmsEmployeeEditModel.idNumber ?? "";
+    _employeePunchIdController.text = hrmsEmployeeEditModel.punchId ?? "";
+    _employeePresentAddressController.text =
+        hrmsEmployeeEditModel.presentAddress ?? "";
+    _employeePermanentAddressController.text =
+        hrmsEmployeeEditModel.permanentAddress ?? "";
+
+    //office info
+    _selectedShiftDate =
+        hrmsEmployeeEditModel.officeInformation?.shiftDate ?? DateTime.now();
+    _selectedShift = hrmsEmployeeEditModel.officeInformation?.shiftId ?? "";
+    _employeeDesignationController.text =
+        hrmsEmployeeEditModel.officeInformation?.designation ?? "";
+
+    _selectedJoiningDate =
+        hrmsEmployeeEditModel.officeInformation?.joiningDate ?? DateTime.now();
+    _selectedConfirmationDate =
+        hrmsEmployeeEditModel.officeInformation?.confirmationDate ??
+            DateTime.now();
+    _selectedDepartment =
+        hrmsEmployeeEditModel.officeInformation?.departmentId ?? 0;
+
+    // _employeeEmailController.text = hrmsEmployeeEditModel.e
   }
 
   @override
@@ -212,9 +307,12 @@ class _EditEmployeeApplicationFormState
     _employeeDOBController.dispose();
     _employeePermanentAddressController.dispose();
     _employeePresentAddressController.dispose();
-    _shiftDateController.dispose();
+
     _employeeJoiningDateController.dispose();
     _employeeConfirmDateController.dispose();
+
+    _employeeEmailController.dispose();
+    _employeePasswordController.dispose();
     // TODO: implement dispose
     super.dispose();
   }
@@ -362,9 +460,14 @@ class _EditEmployeeApplicationFormState
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Date Of Birth: ${DateFormat.yMd().format(_selectedDate)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
+                    'Date Of Birth: ${selectedDateString}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
                     style: TextStyle(fontSize: mediumLabelFontSize),
                   ),
+/* 
+                   Text(
+                    'Date Of Birth: ${DateFormat.yMd().format(_selectedDate)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
+                    style: TextStyle(fontSize: mediumLabelFontSize),
+                  ), */
                   SizedBox(width: 20),
                   TextButton(
                     onPressed: () =>
@@ -634,7 +737,7 @@ class _EditEmployeeApplicationFormState
                   margin: EdgeInsets.symmetric(vertical: marginHeight),
                   decoration: AppVars.customInputboxDecoration,
                   child: TextFormField(
-                    // controller: _employeeNameController,
+                    controller: _employeeNameController,
                     decoration: InputDecoration(
                       labelText: 'Employee Email',
                       contentPadding: AppVars.inputContentPadding,
@@ -657,7 +760,7 @@ class _EditEmployeeApplicationFormState
                   margin: EdgeInsets.symmetric(vertical: marginHeight),
                   decoration: AppVars.customInputboxDecoration,
                   child: TextFormField(
-                    // controller: _employeeFatherNameController,
+                    controller: _employeePasswordController,
                     obscureText: true,
                     decoration: InputDecoration(
                       labelText: 'Employee Password',
@@ -725,12 +828,12 @@ class _EditEmployeeApplicationFormState
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Shift Date: ${DateFormat.yMd().format(_selectedDate)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
+                    'Shift Date: ${DateFormat.yMd().format(_selectedShiftDate)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
                     style: TextStyle(fontSize: mediumLabelFontSize),
                   ),
                   SizedBox(width: 20),
                   TextButton(
-                    onPressed: () => _selectDate(context),
+                    onPressed: () => _selectShiftDate(context),
                     child: Text(
                       'Select Date',
                       style: TextStyle(fontSize: mediumLabelFontSize),
@@ -833,12 +936,12 @@ class _EditEmployeeApplicationFormState
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Joining Date: ${DateFormat.yMd().format(_selectedDate)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
+                    'Joining Date: ${DateFormat.yMd().format(_selectedJoiningDate)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
                     style: TextStyle(fontSize: mediumLabelFontSize),
                   ),
                   SizedBox(width: 20),
                   TextButton(
-                    onPressed: () => _selectDate(context),
+                    onPressed: () => _selectJoiningDate(context),
                     child: Text(
                       'Select Date',
                       style: TextStyle(fontSize: mediumLabelFontSize),
@@ -854,12 +957,12 @@ class _EditEmployeeApplicationFormState
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Confirmation Date: ${DateFormat.yMd().format(_selectedDate)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
+                    'Confirmation Date: ${DateFormat.yMd().format(_selectedConfirmationDate)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
                     style: TextStyle(fontSize: mediumLabelFontSize),
                   ),
                   SizedBox(width: 20),
                   TextButton(
-                    onPressed: () => _selectDate(
+                    onPressed: () => _selectConfirmDate(
                       context,
                     ),
                     child: Text(
@@ -890,36 +993,41 @@ class _EditEmployeeApplicationFormState
                       decoration: AppVars
                           .customInputboxDecoration, //BoxDecoration(border: Border.all(width: 0.4)),
                       margin: EdgeInsets.symmetric(vertical: marginHeight),
-                      child: DropdownButton(
-                          hint: Text(
-                            "Choose department",
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(
-                                fontSize: mediumLabelFontSize,
-                                color: Colors.black54),
-                          ),
-                          value: _selectedDepartment,
-                          items: Department.values
-                              .map(
-                                (department) => DropdownMenuItem(
-                                  value: department,
-                                  child: Text(
-                                    department.name.toUpperCase(),
-                                    style:
-                                        Theme.of(context).textTheme.labelSmall,
-                                  ),
+                      child: FutureBuilder(
+                        future: econtrol
+                            .getDepartmentList(ApiLinks.departmentListApiLink),
+                        builder: (ctx, snapshot) => (!snapshot.hasData)
+                            ? SizedBox.shrink()
+                            : DropdownButton(
+                                hint: Text(
+                                  "Choose department",
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      fontSize: mediumLabelFontSize,
+                                      color: Colors.black54),
                                 ),
-                              )
-                              .toList(),
-                          onChanged: (val) {
-                            if (val == null) {
-                              return;
-                            }
-                            setState(() {
-                              _selectedDepartment = val;
-                            });
-                          }),
+                                value: _selectedDepartment,
+                                items: List.generate(
+                                    snapshot.data!.data.length,
+                                    (index) => DropdownMenuItem(
+                                        value: snapshot.data!.data[index].id,
+                                        child: Text(
+                                          snapshot
+                                              .data!.data[index].departmentName,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelSmall,
+                                        ))),
+                                onChanged: (val) {
+                                  if (val == null) {
+                                    return;
+                                  }
+                                  setState(() {
+                                    _selectedDepartment = val;
+                                  });
+                                }),
+                      ),
                     ),
                   ),
                 ),
@@ -960,6 +1068,8 @@ class _EditEmployeeApplicationFormState
   Widget build(BuildContext context) {
     EmployeeDataController employeeDataController =
         Provider.of<EmployeeDataController>(context, listen: false);
+    EmployeeEditDataController employeeEditDataController =
+        Provider.of<EmployeeEditDataController>(context, listen: false);
     return Scaffold(
       appBar: (widget.title == null)
           ? null
@@ -971,74 +1081,108 @@ class _EditEmployeeApplicationFormState
       body: Container(
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
         height: AppVars.screenSize.height * 1,
-        child: Column(
-          //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundImage: (_storedImage != null)
-                        ? FileImage(_storedImage!)
-                        : AssetImage(ImagePath.proPicPlaceholderPath)
-                            as ImageProvider,
-                    //  backgroundColor: Color(0xFFFFCFDA),
-                  ),
-                  TextButton(
-                    onPressed: _pictureButtonMethod,
-                    child: Text(
-                      (_storedImage == null)
-                          ? "Add Profile Picture"
-                          : "Update Profile Picture",
-                      style: const TextStyle(
-                          color: Colors.grey,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            TabBar(
-                labelStyle: Theme.of(context)
-                    .textTheme
-                    .headlineSmall /* TextStyle(fontSize: 17, fontWeight: FontWeight.bold) */,
-                controller: tabController,
-                isScrollable: false,
-                tabs: const [
-                  Tab(
-                    icon: Text(
-                      'Employee Information',
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
-                  ),
-                  Tab(
-                    icon: Text(
-                      'Office Information',
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
-                  ),
-                ]),
-            Expanded(
-              //  height: AppVars.screenSize.height * 0.6,
-              child: TabBarView(
-                  physics: NeverScrollableScrollPhysics(),
-                  controller: tabController,
-                  children: [
-                    SingleChildScrollView(
-                        child: employeeInfoTab(employeeDataController)),
-                    SingleChildScrollView(
-                        child: officeInfoTab(employeeDataController))
-                  ]),
-            ),
+        child: (widget.employeeID == null)
+            ? Container(
+                height: AppVars.screenSize.height,
+                child: const Center(
+                  child: Text("No Id found"),
+                ),
+              )
+            : FutureBuilder(
+                future: employeeEditDataController.getEmployeeCurrentInfo(
+                    ApiLinks.employeeInfoLink, widget.employeeID!),
+                builder: (ctx, infosnapShot) {
+                  if (infosnapShot.connectionState == ConnectionState.waiting) {
+                    return Container(
+                      height: AppVars.screenSize.height,
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  } else {
+                    if (!infosnapShot.hasData) {
+                      return Container(
+                        height: AppVars.screenSize.height,
+                        child: const Center(
+                          child: Text("No data available"),
+                        ),
+                      );
+                    } else {
+                      initField(infosnapShot.data!);
+                      return Column(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          SizedBox(
+                            child: Column(
+                              children: [
+                                CircleAvatar(
+                                  radius: 50,
+                                  backgroundImage: (_storedImage != null)
+                                      ? FileImage(_storedImage!)
+                                      : AssetImage(
+                                              ImagePath.proPicPlaceholderPath)
+                                          as ImageProvider,
+                                  //  backgroundColor: Color(0xFFFFCFDA),
+                                ),
+                                TextButton(
+                                  onPressed: _pictureButtonMethod,
+                                  child: Text(
+                                    (_storedImage == null)
+                                        ? "Add Profile Picture"
+                                        : "Update Profile Picture",
+                                    style: const TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          TabBar(
+                              labelStyle: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall /* TextStyle(fontSize: 17, fontWeight: FontWeight.bold) */,
+                              controller: tabController,
+                              isScrollable: false,
+                              tabs: const [
+                                Tab(
+                                  icon: Text(
+                                    'Employee Information',
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
+                                ),
+                                Tab(
+                                  icon: Text(
+                                    'Office Information',
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
+                                ),
+                              ]),
+                          Expanded(
+                            //  height: AppVars.screenSize.height * 0.6,
+                            child: TabBarView(
+                                physics: NeverScrollableScrollPhysics(),
+                                controller: tabController,
+                                children: [
+                                  SingleChildScrollView(
+                                      child: employeeInfoTab(
+                                          employeeDataController)),
+                                  SingleChildScrollView(
+                                      child:
+                                          officeInfoTab(employeeDataController))
+                                ]),
+                          ),
 
-            //              const SizedBox(height: 20),
-          ],
-        ),
+                          //              const SizedBox(height: 20),
+                        ],
+                      );
+                    }
+                  }
+                }),
       ),
     );
   }

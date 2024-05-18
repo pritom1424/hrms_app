@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:hrms_app/model/hrms_departments_model.dart';
-import 'package:hrms_app/model/hrms_employee_model.dart';
-import 'package:hrms_app/model/hrms_idtypes_model.dart';
-import 'package:hrms_app/model/hrms_nationality_model.dart';
-import 'package:hrms_app/model/hrms_shifttypes_model.dart';
+import '../model/hrms_departments_model.dart';
+import '../model/hrms_employee_model.dart';
+import '../model/hrms_idtypes_model.dart';
+import '../model/hrms_nationality_model.dart';
+import '../model/hrms_shifttypes_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
@@ -21,8 +21,65 @@ class EmployeeDataController with ChangeNotifier {
 
     _userData = jsonResponse.data;
     _filterData = _userData;
+
     print("fetch userdata ${userData.length}");
     return jsonResponse;
+  }
+
+  Future<void> deleteEmployee(String apiLink, int employeeId) async {
+    final url = Uri.parse(apiLink + employeeId.toString());
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      print("Employee deleted successfully");
+    } else {
+      print("Employee deletion failed");
+    }
+    notifyListeners();
+  }
+
+  Future<void> createEmployeeWithMap(
+      String apiLink, Map<String, dynamic> data) async {
+    final url = Uri.parse(apiLink);
+
+    final response = await http.post(url,
+        body: jsonEncode(data), headers: {'Content-Type': 'application/json'});
+    /*   HrmsEmployeeModel jsonResponse =
+        hrmsEmployeeModelFromJson(utf8.decode(response.bodyBytes)); */
+
+    if (response.statusCode == 200) {
+      print("post created successfully");
+    } else {
+      print("post creation failed");
+    }
+    notifyListeners();
+/*     _userData = jsonResponse.data;
+    _filterData = _userData;
+    print("fetch userdata ${userData.length}");
+    return jsonResponse; */
+  }
+
+  Future<void> createEmployee(
+      String apiLink, EmployeeDatum employeeDatum) async {
+    final url = Uri.parse(apiLink);
+    final bodyData = employeeDatum.toJson();
+    print(bodyData);
+    final response = await http.post(url,
+        body: jsonEncode(bodyData),
+        headers: {'Content-Type': 'application/json'});
+    /*   HrmsEmployeeModel jsonResponse =
+        hrmsEmployeeModelFromJson(utf8.decode(response.bodyBytes)); */
+
+    if (response.statusCode == 200) {
+      print("post created successfully");
+    } else {
+      print("post creation failed");
+    }
+    notifyListeners();
+/*     _userData = jsonResponse.data;
+    _filterData = _userData;
+    print("fetch userdata ${userData.length}");
+    return jsonResponse; */
   }
 
   void filterUserData(String query) {

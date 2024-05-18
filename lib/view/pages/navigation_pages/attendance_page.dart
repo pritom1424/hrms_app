@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:hrms_app/utils/app_colors/app_colors.dart';
-import 'package:hrms_app/utils/app_variables/app_strings.dart';
-import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
+import '../../../utils/app_colors/app_colors.dart';
+import '../../../utils/app_variables/app_strings.dart';
+import '../../widgets/appbar_default_widget.dart';
 
 import '../../../utils/app_variables/app_vars.dart';
 import '../../../utils/app_variables/image_paths.dart';

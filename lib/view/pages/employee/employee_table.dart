@@ -3,12 +3,12 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hrms_app/controller/employee_data_controller.dart';
-import 'package:hrms_app/model/hrms_employee_model.dart';
-import 'package:hrms_app/utils/app_colors/app_colors.dart';
-import 'package:hrms_app/utils/app_methods/app_methods.dart';
-import 'package:hrms_app/utils/app_variables/api_links.dart';
-import 'package:hrms_app/utils/app_variables/app_strings.dart';
+import '../../../controller/employee_data_controller.dart';
+import '../../../model/hrms_employee_model.dart';
+import '../../../utils/app_colors/app_colors.dart';
+import '../../../utils/app_methods/app_methods.dart';
+import '../../../utils/app_variables/api_links.dart';
+import '../../../utils/app_variables/app_strings.dart';
 import 'package:provider/provider.dart';
 import '../../../utils/app_variables/app_vars.dart';
 import '../../../utils/app_variables/image_paths.dart';
@@ -456,15 +456,18 @@ class _EmployeeListState extends State<EmployeeList> {
                                               IconButton(
                                                 icon: Icon(Icons.edit),
                                                 onPressed: () {
+                                                  print(
+                                                      "${consumer.userData[index].id}");
                                                   Navigator.of(context).push(
                                                       MaterialPageRoute(
                                                           builder: (ctx) =>
                                                               EditEmployeeApplicationForm(
                                                                 title:
                                                                     "Edit employee",
-                                                                employeeDatum:
-                                                                    consumer.userData[
-                                                                        index],
+                                                                employeeID: consumer
+                                                                    .userData[
+                                                                        index]
+                                                                    .id,
                                                               )));
                                                   /* _editUser(
                                         context,
@@ -474,8 +477,13 @@ class _EmployeeListState extends State<EmployeeList> {
                                               ),
                                               IconButton(
                                                 icon: Icon(Icons.delete),
-                                                onPressed: () {
-                                                  _deleteUser(index);
+                                                onPressed: () async {
+                                                  await consumer.deleteEmployee(
+                                                      ApiLinks
+                                                          .employeeDeleteLink,
+                                                      consumer
+                                                          .userData[index].id!);
+                                                  // _deleteUser(index);
                                                 },
                                               ),
                                               IconButton(
@@ -826,9 +834,10 @@ class _EmployeeListState extends State<EmployeeList> {
   }
 
   void _deleteUser(int index) {
-    setState(() {
+    /*    setState(() {
+
       //  filteredUsers.removeAt(index);
       //users.removeAt(index);
-    });
+    }); */
   }
 }
