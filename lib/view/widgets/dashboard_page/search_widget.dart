@@ -45,7 +45,7 @@ class _SearcWidgetState extends State<SearcWidget> {
                 Expanded(
                   child: TextField(
                     onChanged: (str) {
-                      setState(() {
+                      /* setState(() {
                         if (AppVars.filteredUserData
                             .where((element) => element.containsValue(str))
                             .toList()
@@ -55,7 +55,7 @@ class _SearcWidgetState extends State<SearcWidget> {
                               .where((element) => element.containsValue(str))
                               .toList();
                         }
-                      });
+                      }); */
                     },
                     onSubmitted: (value) {
                       didShowList = true;
@@ -88,21 +88,6 @@ class _SearcWidgetState extends State<SearcWidget> {
                         contentPadding:
                             const EdgeInsets.symmetric(horizontal: 5),
                         hintText: AppStrings.searchPlaceholderText,
-                        /*  suffixIcon: AvatarGlow(
-                                    glowRadiusFactor: 0.1,
-                                    animate: _isListening,
-                                    glowColor: (didGlow)
-                                        ? Theme.of(context).primaryColor
-                                        : Colors.white,
-                                    duration: const Duration(milliseconds: 2000),
-                                    // repeatPauseDuration: const Duration(milliseconds: 100),
-                                    repeat: true,
-                                    child: IconButton(
-                                      onPressed: _listen,
-                                      icon:
-                                          Icon(_isListening ? Icons.mic : Icons.mic_none),
-                                    ),
-                                  ), */
                         prefixIcon: IconButton(
                             onPressed: () {
                               didShowList = true;

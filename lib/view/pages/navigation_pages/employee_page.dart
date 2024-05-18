@@ -64,100 +64,107 @@ class EmployeePage extends StatelessWidget {
               appbarName: title,
             ),
       body: SingleChildScrollView(
+          padding: EdgeInsets.only(bottom: 30),
           child: Column(
-        children: List.generate(
-            employeeData.length,
-            (index) => Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: Offset(0, 3), // changes position of shadow
-                        ),
-                      ],
-                    ),
-                    child: Card(
-                      elevation:
-                          0, // Set Card's elevation to 0 to prevent shadow overlap
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16.0),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          ListTile(
-                            leading: CircleAvatar(
-                              child: Icon(Icons.person),
+            children: List.generate(
+                employeeData.length,
+                (index) => Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset:
+                                  Offset(0, 3), // changes position of shadow
                             ),
-                            title: Text(employeeData[index]['name'] ?? "name"),
-                            subtitle:
-                                Text(employeeData[index]['phone'] ?? "phone"),
-                            // trailing: Text('Date'),
+                          ],
+                        ),
+                        child: Card(
+                          elevation:
+                              0, // Set Card's elevation to 0 to prevent shadow overlap
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16.0),
                           ),
-                          Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 25, vertical: 5),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                //  MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Column(
-                                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              ListTile(
+                                leading: CircleAvatar(
+                                  child: Icon(Icons.person),
+                                ),
+                                title:
+                                    Text(employeeData[index]['name'] ?? "name"),
+                                subtitle: Text(
+                                    employeeData[index]['phone'] ?? "phone"),
+                                // trailing: Text('Date'),
+                              ),
+                              Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 25, vertical: 5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    //  MainAxisAlignment.spaceAround,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Text('Employee Id: '),
-                                      Text('Joining Date: '),
-                                      Text('Gender: '),
-                                      Text('Position: '),
-                                      Text('Working Shift: '),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(employeeData[index]['id'] ??
-                                            "null"),
-                                        Text(employeeData[index]
-                                                ['joining date'] ??
-                                            "null"),
-                                        Text(employeeData[index]['gender'] ??
-                                            "null"),
-                                        Text(employeeData[index]['position'] ??
-                                            "null"),
-                                        Text(employeeData[index]
-                                                ['working shift'] ??
-                                            "null"),
-                                      ]
+                                    children: [
+                                      const Column(
+                                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Text('Employee Id: '),
+                                          Text('Joining Date: '),
+                                          Text('Gender: '),
+                                          Text('Position: '),
+                                          Text('Working Shift: '),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(employeeData[index]['id'] ??
+                                                "null"),
+                                            Text(employeeData[index]
+                                                    ['joining date'] ??
+                                                "null"),
+                                            Text(employeeData[index]
+                                                    ['gender'] ??
+                                                "null"),
+                                            Text(employeeData[index]
+                                                    ['position'] ??
+                                                "null"),
+                                            Text(employeeData[index]
+                                                    ['working shift'] ??
+                                                "null"),
+                                          ]
 
-                                      /* [
+                                          /* [
                                       Text('Leave: '),
                                       Text('Duration: '),
                                       Text('Leave Date: '),
                                       Text('Leave Balance: '),
                                       Text('Reason: '),
                                     ], */
-                                      ),
-                                ],
-                              )),
-                          /* ButtonBar(
+                                          ),
+                                    ],
+                                  )),
+                              /* ButtonBar(
                           alignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             TextButton(
@@ -221,12 +228,12 @@ class EmployeePage extends StatelessWidget {
                             ), */
                           ],
                         ), */
-                        ],
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                )),
-      )),
+                    )),
+          )),
     );
   }
 }

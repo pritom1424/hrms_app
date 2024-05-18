@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hrms_app/utils/app_variables/app_strings.dart';
 import 'package:hrms_app/view/pages/admin_panel.dart';
 import 'package:hrms_app/view/pages/employee/add_new_application.dart';
 import 'package:hrms_app/view/pages/employee_profile_page.dart';
@@ -38,8 +39,10 @@ class AppVars {
       ),
     ],
   );
-  static TextStyle customHintTextStyle =
-      TextStyle(color: Colors.grey.withOpacity(0.5), fontSize: 15);
+  static TextStyle customHintTextStyle = TextStyle(
+      color: Colors.grey.withOpacity(0.5),
+      fontSize: 15,
+      fontFamily: AppStrings.currentFontFamily);
 
   static EdgeInsets inputContentPadding =
       const EdgeInsets.symmetric(horizontal: 20);
@@ -47,10 +50,12 @@ class AppVars {
 //navbar
   static List<Map<String, IconData>> navBarData = [
     {"Home": Icons.grid_view},
-    {"Employee": CupertinoIcons.person_2},
+    //  {"Employee": CupertinoIcons.person_2},
+    {"Leave": Icons.flight_takeoff},
+    {"Attendance": Icons.calendar_month},
     {"Me": CupertinoIcons.profile_circled},
-    {"Settings": CupertinoIcons.gear},
-    {"Logout": Icons.logout},
+    // {"Settings": CupertinoIcons.gear},
+    // {"Logout": Icons.logout},
   ];
 
 // dashboard menu data
@@ -64,7 +69,7 @@ class AppVars {
   ];
 
   static List<Map<String, dynamic>> appdrawerListData = [
-    {"Dashboard": CupertinoIcons.globe},
+    // {"Dashboard": CupertinoIcons.globe},
     {
       "Employee": CupertinoIcons.person_2,
       "Add Employee": CupertinoIcons.add_circled,
@@ -93,16 +98,16 @@ class AppVars {
     /*  "Dashboard": DrawerPage1(
       title: "Dashboard",
     ) */
-    "Dashboard": DashboardPage2(
+    /*  "Dashboard": DashboardPage2(
       title: "Dashboard",
-    ),
+    ), */
 
     /* "Users": DrawerPage2(
       title: "Users",
     ) */
 
     "Users": UsersList(
-      title: "Users",
+      title: "User List",
     ),
     /*  "User Permission": UserPermission(
       title: "User Permission",

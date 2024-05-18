@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hrms_app/utils/app_colors/app_colors.dart';
 import '../../utils/app_variables/app_vars.dart';
 import 'login_page.dart';
 
@@ -119,7 +120,8 @@ class _SplashPage2State extends State<SplashPage2> {
               child: Text("Get Started"),
               style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
-                  backgroundColor: Color(0xFF4F14DE),
+                  backgroundColor:
+                      Appcolors.assignButtonColor, //Color(0xFF4F14DE),
                   padding: EdgeInsets.symmetric(vertical: 15),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(0))),

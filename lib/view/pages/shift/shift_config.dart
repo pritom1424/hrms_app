@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
 import '../../../utils/app_variables/app_vars.dart';
 import '../../../utils/enums/enums.dart';
 import 'shift_config_view.dart';
@@ -160,60 +162,68 @@ class _ShiftConfigState extends State<ShiftConfig> {
             )
           : null,
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 8),
+        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
               "Shift",
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
             ),
             Container(
-              //padding: EdgeInsets.only(left: leftPadding),
+              padding: EdgeInsets.only(left: leftPadding),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Office Shift",
-                    style: TextStyle(
-                        fontSize: labelFontSize, fontWeight: FontWeight.bold),
+                  Expanded(
+                    child: Text(
+                      "Office Shift",
+                      style: TextStyle(
+                          fontSize: mediumLabelFontSize,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
                   DropdownButtonHideUnderline(
-                    child: Container(
-                      width: AppVars.screenSize.width * 0.55,
-                      padding: contentPadding,
-                      decoration: BoxDecoration(border: Border.all(width: 0.4)),
-                      margin: EdgeInsets.symmetric(vertical: marginHeight),
-                      child: DropdownButton(
-                          hint: Text(
-                            "Choose Shift",
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(
-                                fontSize: mediumLabelFontSize,
-                                color: Colors.black54),
-                          ),
-                          value: _selectedShift,
-                          items: Shift.values
-                              .map(
-                                (shift) => DropdownMenuItem(
-                                  value: shift,
-                                  child: Text(
-                                    shift.name.toUpperCase(),
-                                    style:
-                                        Theme.of(context).textTheme.labelSmall,
+                    child: Expanded(
+                      flex: 2,
+                      child: Container(
+                        //width: AppVars.screenSize.width * 0.55,
+                        padding: contentPadding,
+                        decoration: AppVars.customInputboxDecoration,
+                        // BoxDecoration(border: Border.all(width: 0.4)),
+                        margin: EdgeInsets.symmetric(vertical: marginHeight),
+                        child: DropdownButton(
+                            hint: Text(
+                              "Choose Shift",
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: TextStyle(
+                                  fontSize: mediumLabelFontSize,
+                                  color: Colors.black54),
+                            ),
+                            value: _selectedShift,
+                            items: Shift.values
+                                .map(
+                                  (shift) => DropdownMenuItem(
+                                    value: shift,
+                                    child: Text(
+                                      shift.name.toUpperCase(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelSmall,
+                                    ),
                                   ),
-                                ),
-                              )
-                              .toList(),
-                          onChanged: (val) {
-                            if (val == null) {
-                              return;
-                            }
-                            setState(() {
-                              _selectedShift = val;
-                            });
-                          }),
+                                )
+                                .toList(),
+                            onChanged: (val) {
+                              if (val == null) {
+                                return;
+                              }
+                              setState(() {
+                                _selectedShift = val;
+                              });
+                            }),
+                      ),
                     ),
                   ),
                 ],
@@ -261,11 +271,18 @@ class _ShiftConfigState extends State<ShiftConfig> {
                     ),
                   ],
                 )),
-            Row(
-              children: [
-                Checkbox(value: false, onChanged: (val) {}),
-                Text("Default Shift")
-              ],
+            Container(
+              padding: EdgeInsets.only(left: leftPadding),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text("Default Shift"),
+                  Checkbox(
+                    value: false,
+                    onChanged: (val) {},
+                  ),
+                ],
+              ),
             ),
             Container(
               margin: EdgeInsets.symmetric(vertical: marginHeight),
@@ -275,15 +292,16 @@ class _ShiftConfigState extends State<ShiftConfig> {
                 decoration: InputDecoration(
                   labelText: 'Grace Period (min)',
                   contentPadding: contentPadding,
+
                   /*  prefixIcon: Icon(
                 Icons.phone,
                 color: iconColor,
               ), */
                   border: InputBorder.none,
                   hintText: 'Grace Period (min)',
-                  hintStyle: hintTextStyle,
-                  labelStyle:
-                      TextStyle(fontSize: labelFontSize, color: labelFontColor),
+                  hintStyle: AppVars.customHintTextStyle,
+                  labelStyle: TextStyle(
+                      fontSize: mediumLabelFontSize, color: labelFontColor),
                 ),
                 validator: (value) {
                   if (value != null && value == "") {
@@ -292,6 +310,9 @@ class _ShiftConfigState extends State<ShiftConfig> {
                   return null;
                 },
               ),
+            ),
+            SizedBox(
+              height: 20,
             ),
             Text(
               "Break Time",
@@ -359,12 +380,45 @@ class _ShiftConfigState extends State<ShiftConfig> {
                     ),
                   ],
                 )),
+            SizedBox(
+              height: 10,
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: 5),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: borderRadius,
+                  ),
+                  backgroundColor: actionButtonBgColor,
+                  foregroundColor: actionButtonFgColor),
+              onPressed: () {
+                /* if (_formPersonalInfoKey.currentState == null) {
+                return;
+              }
+              if (_formPersonalInfoKey.currentState!.validate()) {
+                _formPersonalInfoKey.currentState!.save();
+                // Do something with the validated data
+                // print('Name: $_name');
+              } */
+
+                // Handle apply button press
+                // You can access the values using controller.text for each field
+              },
+              child: const Text(
+                'Save',
+                style: TextStyle(fontSize: 25),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
             DataTable(
+                headingRowHeight: AppVars.screenSize.height * 0.05,
                 dataTextStyle: TextStyle(color: Colors.black),
                 headingTextStyle:
                     TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 dividerThickness: 1,
-                columnSpacing: 15,
+                columnSpacing: 5,
                 headingRowColor: MaterialStateColor.resolveWith(
                     (states) => Color(0xFF7A59AD)), //Colors.blue.shade400
                 /*   dataRowColor:
@@ -373,8 +427,7 @@ class _ShiftConfigState extends State<ShiftConfig> {
                 columns: [
                   DataColumn(label: Text('ID')),
                   DataColumn(
-                      label:
-                          Expanded(child: Center(child: Text('Shift Name')))),
+                      label: Expanded(child: Center(child: Text('Shift')))),
                   DataColumn(
                       label: Expanded(
                     child: Center(
@@ -390,57 +443,69 @@ class _ShiftConfigState extends State<ShiftConfig> {
                           DataCell(Text('${data[index]["id"]}')),
                           DataCell(Text('${data[index]["shift name"]}')),
                           DataCell(Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      padding: EdgeInsets.zero,
-                                      backgroundColor: Color(0xFF1DC9B7),
+                              Padding(
+                                padding: const EdgeInsets.all(6),
+                                child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        padding: EdgeInsets.all(0),
+                                        backgroundColor: Color(0xFF1DC9B7),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5))),
+                                    onPressed: () {},
+                                    child: Text(
+                                      'Edit',
+                                      style: TextStyle(color: Colors.white),
+                                    )),
+                              ),
+                              SizedBox(
+                                width: 2,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(6),
+                                child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      padding: EdgeInsets.all(0),
+                                      backgroundColor: Color(0xFF886AB5),
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(5))),
-                                  onPressed: () {},
-                                  child: Text(
-                                    'Edit',
-                                    style: TextStyle(color: Colors.white),
-                                  )),
-                              SizedBox(
-                                width: 10,
+                                              BorderRadius.circular(5)),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                              builder: (ctx) => ShiftConfigView(
+                                                    title: "Shift Config View",
+                                                  )));
+                                    },
+                                    child: Text(
+                                      'View',
+                                      style: TextStyle(color: Colors.white),
+                                    )),
                               ),
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    padding: EdgeInsets.all(0),
-                                    backgroundColor: Color(0xFF886AB5),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5)),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                            builder: (ctx) => ShiftConfigView(
-                                                  title: "Shift Config View",
-                                                )));
-                                  },
-                                  child: Text(
-                                    'View',
-                                    style: TextStyle(color: Colors.white),
-                                  )),
                               SizedBox(
-                                width: 10,
+                                width: 2,
                               ),
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    padding: EdgeInsets.all(0),
-                                    backgroundColor: Color(0xFFFD3995),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5)),
-                                  ),
-                                  onPressed: () {
-                                    _deleteUser(index);
-                                  },
-                                  child: Text(
-                                    'Delete',
-                                    style: TextStyle(color: Colors.white),
-                                  ))
+                              Padding(
+                                padding: const EdgeInsets.all(6),
+                                child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      padding: EdgeInsets.all(0),
+                                      backgroundColor: Color(0xFFFD3995),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
+                                    ),
+                                    onPressed: () {
+                                      _deleteUser(index);
+                                    },
+                                    child: Text(
+                                      'Delete',
+                                      style: TextStyle(color: Colors.white),
+                                    )),
+                              )
                             ],
                           ))
                         ])))

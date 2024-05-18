@@ -3,6 +3,13 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hrms_app/controller/employee_data_controller.dart';
+import 'package:hrms_app/model/hrms_employee_model.dart';
+import 'package:hrms_app/utils/app_colors/app_colors.dart';
+import 'package:hrms_app/utils/app_methods/app_methods.dart';
+import 'package:hrms_app/utils/app_variables/api_links.dart';
+import 'package:hrms_app/utils/app_variables/app_strings.dart';
+import 'package:provider/provider.dart';
 import '../../../utils/app_variables/app_vars.dart';
 import '../../../utils/app_variables/image_paths.dart';
 import '../../../utils/enums/enums.dart';
@@ -21,12 +28,16 @@ class EmployeeList extends StatefulWidget {
 }
 
 class _EmployeeListState extends State<EmployeeList> {
+  //search
+  //late List<Map<String, dynamic>> filteredUsers;
+  TextEditingController searchController = TextEditingController();
   Gender _selectedGender = Gender.male;
+  //List<EmployeeDatum> fileredModel = [];
   final List<Map<String, dynamic>> users = [
     {
       "id": 1,
       "name": "Tanay Sayed",
-      "employeeCode": "###",
+      "employeeCode": "007",
       "faName": "New York",
       "gender": "Male",
       "dateOfBirth": "9-9-2000",
@@ -36,17 +47,17 @@ class _EmployeeListState extends State<EmployeeList> {
     {
       "id": 2,
       "name": "Bkash Nahid",
-      "employeeCode": "###",
-      "faName": "New York",
+      "employeeCode": "008",
+      "faName": "London",
       "gender": "Male",
-      "dateOfBirth": "9-9-2000",
+      "dateOfBirth": "5-12-1998",
       "Nationality": "BD",
       "image": ""
     },
     {
       "id": 3,
       "name": "Pitom Ahmed",
-      "employeeCode": "###",
+      "employeeCode": "012",
       "faName": "New York",
       "gender": "Male",
       "dateOfBirth": "9-9-2000",
@@ -56,10 +67,10 @@ class _EmployeeListState extends State<EmployeeList> {
     {
       "id": 4,
       "name": "Roni From Noakhali",
-      "employeeCode": "###",
-      "faName": "New York",
+      "employeeCode": "024",
+      "faName": "Father",
       "gender": "Male",
-      "dateOfBirth": "9-9-2000",
+      "dateOfBirth": "2-5-2005",
       "Nationality": "BD",
       "image": ""
     },
@@ -69,7 +80,7 @@ class _EmployeeListState extends State<EmployeeList> {
       "employeeCode": "###",
       "faName": "New York",
       "gender": "Male",
-      "dateOfBirth": "9-9-2000",
+      "dateOfBirth": "2-3-1995",
       "Nationality": "BD",
       "image": ""
     },
@@ -79,7 +90,7 @@ class _EmployeeListState extends State<EmployeeList> {
       "employeeCode": "###",
       "faName": "New York",
       "gender": "Male",
-      "dateOfBirth": "9-9-2000",
+      "dateOfBirth": "12-8-2011",
       "Nationality": "BD",
       "image": ""
     },
@@ -89,7 +100,7 @@ class _EmployeeListState extends State<EmployeeList> {
       "employeeCode": "###",
       "faName": "New York",
       "gender": "Male",
-      "dateOfBirth": "9-9-2000",
+      "dateOfBirth": "5-9-2001",
       "Nationality": "BD",
       "image": ""
     },
@@ -99,7 +110,7 @@ class _EmployeeListState extends State<EmployeeList> {
       "employeeCode": "###",
       "faName": "New York",
       "gender": "Male",
-      "dateOfBirth": "9-9-2000",
+      "dateOfBirth": "1-2-2002",
       "Nationality": "BD",
       "image": ""
     },
@@ -109,17 +120,17 @@ class _EmployeeListState extends State<EmployeeList> {
       "employeeCode": "###",
       "faName": "New York",
       "gender": "Male",
-      "dateOfBirth": "9-9-2000",
+      "dateOfBirth": "1-2-2009",
       "Nationality": "BD",
       "image": ""
     },
     {
       "id": 10,
-      "name": "Tanay Sayed",
+      "name": "Sajjad hasan",
       "employeeCode": "###",
-      "faName": "New York",
+      "faName": "father",
       "gender": "Male",
-      "dateOfBirth": "9-9-2000",
+      "dateOfBirth": "9-9-2002",
       "Nationality": "BD",
       "image": ""
     },
@@ -140,6 +151,13 @@ class _EmployeeListState extends State<EmployeeList> {
   TextEditingController moNameController = TextEditingController();
   TextEditingController employeeCodeController = TextEditingController();
   TextEditingController punchIdController = TextEditingController();
+  @override
+  void initState() {
+    /*    filteredUsers = [];
+    filteredUsers = users; */
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -149,9 +167,54 @@ class _EmployeeListState extends State<EmployeeList> {
     employeeCodeController.dispose();
     punchIdController.dispose();
     _scrollController.dispose();
+
+    searchController.dispose();
     // TODO: implement dispose
     super.dispose();
   }
+
+  /* void filterUsers(String query, HrmsEmployeeModel userModel) {
+    setState(() {
+      filteredUsers = userModel.toJson()['data'].where((user) {
+        bool matchFound = false;
+        user.forEach((key, value) {
+          if (value.toString().toLowerCase().contains(query.toLowerCase())) {
+            matchFound = true;
+          }
+        });
+        return matchFound;
+
+        /* user['name']
+            .toString()
+            .toLowerCase()
+            .contains(query.toLowerCase()); */
+      }).toList();
+    });
+  } */
+
+  /*  void filterUserData(String query, HrmsEmployeeModel userModel) {
+    setState(() {
+      fileredModel = userModel.data.where((user) {
+        bool matchFound = false;
+        print("user data: ${user.toJson()}");
+        user.toJson().forEach((key, value) {
+          if (value
+              .toString()
+              .trim()
+              .toLowerCase()
+              .contains(query.toLowerCase())) {
+            matchFound = true;
+          }
+        });
+        return matchFound;
+
+        /* user['name']
+            .toString()
+            .toLowerCase()
+            .contains(query.toLowerCase()); */
+      }).toList();
+    });
+  } */
 
   MaterialStateColor getRandomColor() {
     // Generate random RGB values
@@ -194,6 +257,8 @@ class _EmployeeListState extends State<EmployeeList> {
 
   @override
   Widget build(BuildContext context) {
+    EmployeeDataController employeeDataController =
+        Provider.of<EmployeeDataController>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: (widget.title != null)
@@ -201,7 +266,7 @@ class _EmployeeListState extends State<EmployeeList> {
             : Text('Employee List'),
         actions: [
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 5),
+            margin: EdgeInsets.symmetric(horizontal: 10),
             child: ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
@@ -220,111 +285,228 @@ class _EmployeeListState extends State<EmployeeList> {
           )
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SearcWidget(),
-            SizedBox(
-              height: 10,
-            ),
-            RawScrollbar(
-              thumbColor: Colors.blueAccent,
-              controller: _scrollController,
-              thumbVisibility: true,
-              child: SingleChildScrollView(
-                controller: _scrollController,
-                scrollDirection: Axis.horizontal,
-                child: DataTable(
-                  dataTextStyle: TextStyle(color: Colors.black),
-                  dividerThickness: 3,
-                  headingRowColor: MaterialStateColor.resolveWith(
-                      (states) => Colors.blue.shade400),
-                  dataRowColor: MaterialStateColor.resolveWith(
-                      (states) => Colors.black26),
-                  sortAscending: true,
-                  columns: const [
-                    DataColumn(
-                      label: Text('ID'),
-                    ),
-                    DataColumn(label: Text('Name')),
-                    DataColumn(label: Text('Employee Code')),
-                    DataColumn(label: Text('Punch Id')),
-                    DataColumn(label: Text('Father Name')),
-                    DataColumn(label: Text('Mother Name')),
-                    DataColumn(label: Text('Gender')),
-                    DataColumn(label: Text('Date of Birth')),
-                    DataColumn(label: Text('Nationality')),
-                    DataColumn(label: Text('Image')),
-                    DataColumn(
-                        label: Expanded(child: Center(child: Text('Action')))),
-                  ],
-                  rows: List<DataRow>.generate(
-                    users.length,
-                    (index) => DataRow(
-                      color: getRandomColor(),
-                      cells: [
-                        DataCell(Text('${users[index]["id"]}')),
-                        DataCell(Text(users[index]["name"].toString())),
-                        DataCell(Text(users[index]["employeeCode"].toString())),
-                        DataCell(Text(users[index]["punchId"].toString())),
-                        DataCell(Text(users[index]["faName"].toString())),
-                        DataCell(Text(users[index]["maName"].toString())),
-                        DataCell(Text(users[index]["gender"].toString())),
-                        DataCell(Text(users[index]["dateOfBirth"].toString())),
-                        DataCell(Text(users[index]["nationality"].toString())),
-                        DataCell(CircleAvatar(
-                            backgroundImage: (users[index]["image"]
-                                    .toString()
-                                    .isNotEmpty)
-                                ? AssetImage(users[index]["image"].toString())
-                                : null,
-                            child: (users[index]["image"].toString().isNotEmpty)
-                                ? null
-                                : Icon(Icons
-                                    .person))), //Text(users[index]["image"].toString())
-                        DataCell(Row(
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.edit),
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (ctx) =>
-                                        EditEmployeeApplicationForm(
-                                          title: "Edit employee",
-                                        )));
-                                /* _editUser(
-                                    context,
-                                    users[
-                                        index]);  */ //_editName(context, users[index]);
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.delete),
-                              onPressed: () {
-                                _deleteUser(index);
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.picture_as_pdf),
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (ctx) => TextToPdfConverter(
-                                          user: users[index],
-                                        )));
-                                // Handle PDF download action
-                              },
-                            ),
-                          ],
-                        )),
-                      ],
-                    ),
-                  ),
+      body: FutureBuilder(
+          future: employeeDataController
+              .loadEmployeeList(ApiLinks.employeeListApiLink),
+          builder: (ctx, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting)
+              return Container(
+                height: AppVars.screenSize.height,
+                child: Center(
+                  child: CircularProgressIndicator(),
                 ),
-              ),
-            ),
-          ],
-        ),
-      ),
+              );
+            else {
+              return SingleChildScrollView(
+                child: (!snapshot.hasData)
+                    ? Container(
+                        height: AppVars.screenSize.height,
+                        child: Center(
+                          child: Text("No data available"),
+                        ),
+                      )
+                    : Column(
+                        children: [
+                          // SearcWidget(),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextField(
+                              controller: searchController,
+                              decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Appcolors.searchbarBgColor,
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                      borderSide: BorderSide(
+                                          width: 1,
+                                          color: Appcolors.searchbarBgColor)),
+                                  contentPadding:
+                                      const EdgeInsets.symmetric(horizontal: 5),
+                                  hintText: AppStrings.searchPlaceholderText,
+                                  prefixIcon: Icon(Icons.search),
+                                  hintStyle: const TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.normal),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                      borderSide: BorderSide(
+                                          width: 1,
+                                          color: Appcolors.searchbarBgColor))),
+                              /* InputDecoration(
+                    labelText: 'Search',
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(),
+                  ), */
+                              onChanged: (value) {
+                                print("value ${value.isEmpty}");
+                                Provider.of<EmployeeDataController>(context,
+                                        listen: false)
+                                    .filterUserData(value);
+
+                                // filterUsers(value, snapshot.data!);
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Consumer<EmployeeDataController>(
+                            builder: (ctx, consumer, ch) {
+                              return RawScrollbar(
+                                thumbColor: Colors.blueAccent,
+                                controller: _scrollController,
+                                thumbVisibility: true,
+                                child: SingleChildScrollView(
+                                  controller: _scrollController,
+                                  scrollDirection: Axis.horizontal,
+                                  child: DataTable(
+                                    headingRowHeight:
+                                        AppVars.screenSize.height * 0.06,
+                                    dataTextStyle:
+                                        TextStyle(color: Colors.black),
+                                    dividerThickness: 3,
+                                    headingTextStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                    headingRowColor:
+                                        MaterialStateColor.resolveWith(
+                                            (states) => Appcolors
+                                                .dataTableHeadingColor),
+                                    dataRowColor:
+                                        MaterialStateColor.resolveWith(
+                                            (states) => Colors.black26),
+                                    sortAscending: true,
+                                    columns: const [
+                                      DataColumn(
+                                        label: Text('ID'),
+                                      ),
+                                      DataColumn(label: Text('Name')),
+                                      DataColumn(label: Text('Employee Code')),
+                                      DataColumn(label: Text('Punch Id')),
+                                      DataColumn(label: Text('Father Name')),
+                                      DataColumn(label: Text('Mother Name')),
+                                      DataColumn(label: Text('Gender')),
+                                      DataColumn(label: Text('Date of Birth')),
+                                      DataColumn(label: Text('Nationality')),
+                                      DataColumn(label: Text('Image')),
+                                      DataColumn(
+                                          label: Expanded(
+                                              child: Center(
+                                                  child: Text('Action')))),
+                                    ],
+                                    rows: List<DataRow>.generate(
+                                      consumer.userData.length, //users.length,
+                                      (index) => DataRow(
+                                        color: MaterialStateColor.resolveWith(
+                                            (states) => (index % 2 == 0)
+                                                ? Color.fromARGB(
+                                                    223, 179, 157, 219)
+                                                : Colors.deepPurple.shade100),
+                                        cells: [
+                                          DataCell(Text(
+                                              '${consumer.userData[index].id ?? -1}')),
+                                          DataCell(Text(consumer
+                                              .userData[index].employeeName
+                                              .toString())),
+                                          DataCell(Text(consumer
+                                              .userData[index].employeeCode
+                                              .toString())),
+                                          DataCell(Text(consumer
+                                              .userData[index].punchId
+                                              .toString())),
+                                          DataCell(Text(consumer
+                                              .userData[index].employeeFather
+                                              .toString())),
+                                          DataCell(Text(consumer
+                                              .userData[index].employeeMother
+                                              .toString())),
+                                          DataCell(Text(consumer
+                                              .userData[index].gender
+                                              .toString())),
+                                          DataCell(Text(consumer
+                                              .userData[index].dateOfBirth
+                                              .toString())),
+                                          DataCell(Text(consumer
+                                              .userData[index].nationality
+                                              .toString())),
+                                          DataCell(CircleAvatar(
+                                            backgroundImage: (consumer
+                                                        .userData[index]
+                                                        .image !=
+                                                    null)
+                                                ? (AppMethods().stripLink(
+                                                            consumer
+                                                                .userData[index]
+                                                                .image!) !=
+                                                        null)
+                                                    ? NetworkImage(AppMethods()
+                                                        .stripLink(consumer
+                                                            .userData[index]
+                                                            .image!)!)
+                                                    : AssetImage(ImagePath
+                                                            .proPicPlaceholderPath)
+                                                        as ImageProvider
+                                                : AssetImage(ImagePath
+                                                        .proPicPlaceholderPath)
+                                                    as ImageProvider,
+                                          )),
+                                          DataCell(Row(
+                                            children: [
+                                              IconButton(
+                                                icon: Icon(Icons.edit),
+                                                onPressed: () {
+                                                  Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                          builder: (ctx) =>
+                                                              EditEmployeeApplicationForm(
+                                                                title:
+                                                                    "Edit employee",
+                                                                employeeDatum:
+                                                                    consumer.userData[
+                                                                        index],
+                                                              )));
+                                                  /* _editUser(
+                                        context,
+                                        users[
+                                            index]);  */ //_editName(context, users[index]);
+                                                },
+                                              ),
+                                              IconButton(
+                                                icon: Icon(Icons.delete),
+                                                onPressed: () {
+                                                  _deleteUser(index);
+                                                },
+                                              ),
+                                              IconButton(
+                                                icon:
+                                                    Icon(Icons.picture_as_pdf),
+                                                onPressed: () {
+                                                  Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                          builder: (ctx) =>
+                                                              TextToPdfConverter(
+                                                                user: users[
+                                                                    index],
+                                                              )));
+                                                  // Handle PDF download action
+                                                },
+                                              ),
+                                            ],
+                                          )),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+              );
+            }
+          }),
     );
   }
 
@@ -645,7 +827,8 @@ class _EmployeeListState extends State<EmployeeList> {
 
   void _deleteUser(int index) {
     setState(() {
-      users.removeAt(index);
+      //  filteredUsers.removeAt(index);
+      //users.removeAt(index);
     });
   }
 }

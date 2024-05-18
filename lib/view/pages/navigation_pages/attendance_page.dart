@@ -3,132 +3,108 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:hrms_app/utils/app_colors/app_colors.dart';
 import 'package:hrms_app/utils/app_variables/app_strings.dart';
+import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
 
 import '../../../utils/app_variables/app_vars.dart';
 import '../../../utils/app_variables/image_paths.dart';
 import '../../../utils/enums/enums.dart';
-import '../employee/add_new_application.dart';
-import '../employee/edit_employee_application.dart';
-import '../text_to_pdf.dart';
+
 import '../../widgets/dashboard_page/search_widget.dart';
 import 'package:intl/intl.dart';
 
-class UsersList extends StatefulWidget {
+class AttendancePage extends StatefulWidget {
   final String? title;
 
-  const UsersList({super.key, this.title});
+  const AttendancePage({super.key, this.title});
   @override
-  State<UsersList> createState() => _UsersListState();
+  State<AttendancePage> createState() => _AttendancePageState();
 }
 
-class _UsersListState extends State<UsersList> {
+class _AttendancePageState extends State<AttendancePage> {
   //search
   late List<Map<String, dynamic>> filteredUsers;
   TextEditingController searchController = TextEditingController();
-
-  List<bool> didEnable = [];
   Gender _selectedGender = Gender.male;
-
   final List<Map<String, dynamic>> users = [
     {
       "id": 1,
-      "name": "Tanay Sayed",
-      "employeeCode": "007",
-      "faName": "New York",
-      "gender": "Male",
-      "dateOfBirth": "9-9-2000",
-      "Nationality": "BD",
-      "image": ImagePath.proPicPath //""
+      "name": "employee 1",
+      "employeeCode": "211",
+      "status": "on time",
+      "intime": "9.00 am",
+      "outtime": "6.00 pm",
     },
     {
       "id": 2,
-      "name": "Bkash Nahid",
-      "employeeCode": "008",
-      "faName": "London",
-      "gender": "Male",
-      "dateOfBirth": "5-12-1998",
-      "Nationality": "BD",
-      "image": ""
+      "name": "employee 2",
+      "employeeCode": "122",
+      "status": "on time",
+      "intime": "9.00 am",
+      "outtime": "6.00 pm",
     },
     {
       "id": 3,
-      "name": "Pitom Ahmed",
-      "employeeCode": "012",
-      "faName": "New York",
-      "gender": "Male",
-      "dateOfBirth": "9-9-2000",
-      "Nationality": "BD",
-      "image": ""
+      "name": "employee 3",
+      "employeeCode": "322",
+      "status": "on time",
+      "intime": "9.00 am",
+      "outtime": "6.00 pm",
     },
     {
       "id": 4,
-      "name": "Roni From Noakhali",
-      "employeeCode": "024",
-      "faName": "Father",
-      "gender": "Male",
-      "dateOfBirth": "2-5-2005",
-      "Nationality": "BD",
-      "image": ""
+      "name": "employee 4",
+      "employeeCode": "007",
+      "status": "absent",
+      "intime": "-",
+      "outtime": "-",
     },
     {
       "id": 5,
-      "name": "Partho Das",
-      "employeeCode": "###",
-      "faName": "New York",
-      "gender": "Male",
-      "dateOfBirth": "2-3-1995",
-      "Nationality": "BD",
-      "image": ""
+      "name": "employee 5",
+      "employeeCode": "325",
+      "status": "late",
+      "intime": "9.30 am",
+      "outtime": "6.00 pm",
     },
     {
       "id": 6,
-      "name": "Bkash Naiii",
-      "employeeCode": "###",
-      "faName": "New York",
-      "gender": "Male",
-      "dateOfBirth": "12-8-2011",
-      "Nationality": "BD",
-      "image": ""
+      "name": "employee 6",
+      "employeeCode": "324",
+      "status": "on time",
+      "intime": "9.00 am",
+      "outtime": "6.00 pm",
     },
     {
       "id": 7,
-      "name": "Bkash Nahid",
-      "employeeCode": "###",
-      "faName": "New York",
-      "gender": "Male",
-      "dateOfBirth": "5-9-2001",
-      "Nationality": "BD",
-      "image": ""
+      "name": "employee 7",
+      "employeeCode": "246",
+      "status": "on time",
+      "intime": "9.00 am",
+      "outtime": "6.00 pm",
     },
     {
       "id": 8,
-      "name": "Nahid Bkash",
-      "employeeCode": "###",
-      "faName": "New York",
-      "gender": "Male",
-      "dateOfBirth": "1-2-2002",
-      "Nationality": "BD",
-      "image": ""
+      "name": "employee 8",
+      "employeeCode": "778",
+      "status": "on time",
+      "intime": "9.00 am",
+      "outtime": "6.00 pm",
     },
     {
       "id": 9,
-      "name": "Bkash Bolci",
-      "employeeCode": "###",
-      "faName": "New York",
-      "gender": "Male",
-      "dateOfBirth": "1-2-2009",
-      "Nationality": "BD",
-      "image": ""
+      "name": "employee 9",
+      "employeeCode": "153",
+      "status": "on time",
+      "intime": "9.00 am",
+      "outtime": "6.00 pm",
     },
     {
       "id": 10,
-      "name": "Sajjad hasan",
-      "employeeCode": "###",
-      "faName": "father",
-      "gender": "Male",
-      "dateOfBirth": "9-9-2002",
-      "Nationality": "BD",
-      "image": ""
+      "name": "employee 10",
+      "employeeCode": "999",
+      "status": "on time",
+      "intime": "9.00 am",
+      "outtime": "6.00 pm",
     },
   ];
 
@@ -147,13 +123,10 @@ class _UsersListState extends State<UsersList> {
   TextEditingController moNameController = TextEditingController();
   TextEditingController employeeCodeController = TextEditingController();
   TextEditingController punchIdController = TextEditingController();
-
   @override
   void initState() {
-    //AppVars.filteredUserData = users;
     filteredUsers = [];
     filteredUsers = users;
-    print("filteredUser: ${filteredUsers.length}");
     // TODO: implement initState
     super.initState();
   }
@@ -193,9 +166,8 @@ class _UsersListState extends State<UsersList> {
   MaterialStateColor getRandomColor() {
     // Generate random RGB values
     final random = Random();
-
-    final int minBrightness = 210; // Minimum brightness value
-    final int maxBrightness = 220; // Maximum brightness value
+    final int minBrightness = 200; // Minimum brightness value
+    final int maxBrightness = 255; // Maximum brightness value
     final int r = minBrightness + random.nextInt(maxBrightness - minBrightness);
     final int g = minBrightness + random.nextInt(maxBrightness - minBrightness);
     final int b = minBrightness + random.nextInt(maxBrightness - minBrightness);
@@ -233,35 +205,16 @@ class _UsersListState extends State<UsersList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: (widget.title != null)
-            ? Text(widget.title!)
-            : Text('Employee List'),
-        actions: [
-          /*  Container(
-            margin: EdgeInsets.symmetric(horizontal: 5),
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (ctx) => AddNewApplicationForm(
-                          title: "Add new employee",
-                        )));
-              },
-              child: Text("Add Employee"),
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF886AB5),
-                  foregroundColor: Colors.white,
-                  padding: EdgeInsets.all(5),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5))),
+      appBar: (widget.title == null)
+          ? null
+          : AppbarDefault(
+              appbarName: widget.title,
             ),
-          ) */
-        ],
-      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             // SearcWidget(),
+
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
@@ -300,7 +253,6 @@ class _UsersListState extends State<UsersList> {
                 controller: _scrollController,
                 scrollDirection: Axis.horizontal,
                 child: DataTable(
-                  headingRowHeight: AppVars.screenSize.height * 0.06,
                   dataTextStyle: TextStyle(color: Colors.black),
                   dividerThickness: 3,
                   headingTextStyle: TextStyle(
@@ -316,89 +268,43 @@ class _UsersListState extends State<UsersList> {
                     ),
                     DataColumn(label: Text('Name')),
                     DataColumn(label: Text('Employee Code')),
-                    DataColumn(label: Text('Punch Id')),
-                    DataColumn(label: Text('Father Name')),
-                    DataColumn(label: Text('Mother Name')),
-                    DataColumn(label: Text('Gender')),
-                    DataColumn(label: Text('Date of Birth')),
-                    DataColumn(label: Text('Nationality')),
-                    DataColumn(label: Text('Image')),
-                    DataColumn(
-                        label: Expanded(child: Center(child: Text('Action')))),
+                    //DataColumn(label: Text('Punch Id')),
+                    // DataColumn(label: Text('Father Name')),
+                    // DataColumn(label: Text('Mother Name')),
+                    // DataColumn(label: Text('Gender')),
+                    // DataColumn(label: Text('Date of Birth')),
+                    //DataColumn(label: Text('Nationality')),
+                    //  DataColumn(label: Text('Image')),
+                    DataColumn(label: Text('Status')),
+                    DataColumn(label: Text('In time')),
+                    DataColumn(label: Text('Out time')),
                   ],
                   rows: List<DataRow>.generate(
-                    filteredUsers.length, // users.length,
+                    filteredUsers.length,
                     (index) => DataRow(
                       color: MaterialStateColor.resolveWith((states) =>
                           (index % 2 == 0)
                               ? Color.fromARGB(223, 179, 157, 219)
-                              : Colors.deepPurple.shade100), //getRandomColor(),
+                              : Colors.deepPurple.shade100),
                       cells: [
-                        DataCell(Text(filteredUsers[index]["id"].toString())),
+                        DataCell(Text('${filteredUsers[index]["id"]}')),
                         DataCell(Text(filteredUsers[index]["name"].toString())),
-                        DataCell(Text(
-                            filteredUsers[index]["employeeCode"].toString())),
+                        DataCell(Center(
+                          child: Text(
+                              filteredUsers[index]["employeeCode"].toString()),
+                        )),
                         DataCell(
-                            Text(filteredUsers[index]["punchId"].toString())),
+                            Text(filteredUsers[index]["status"].toString())),
                         DataCell(
-                            Text(filteredUsers[index]["faName"].toString())),
+                            Text(filteredUsers[index]["intime"].toString())),
                         DataCell(
-                            Text(filteredUsers[index]["maName"].toString())),
-                        DataCell(
-                            Text(filteredUsers[index]["gender"].toString())),
-                        DataCell(Text(
-                            filteredUsers[index]["dateOfBirth"].toString())),
-                        DataCell(Text(
-                            filteredUsers[index]["nationality"].toString())),
-                        DataCell(CircleAvatar(
-                            backgroundImage: (filteredUsers[index]["image"]
-                                    .toString()
-                                    .isNotEmpty)
-                                ? AssetImage(
-                                    filteredUsers[index]["image"].toString())
-                                : null,
-                            child: (filteredUsers[index]["image"]
-                                    .toString()
-                                    .isNotEmpty)
-                                ? null
-                                : Icon(Icons.person))),
-
-                        /*  DataCell(Text(users[index]["id"].toString())),
+                            Text(filteredUsers[index]["outtime"].toString())),
+                        /* DataCell(Text('${users[index]["id"]}')),
                         DataCell(Text(users[index]["name"].toString())),
                         DataCell(Text(users[index]["employeeCode"].toString())),
-                        DataCell(Text(users[index]["punchId"].toString())),
-                        DataCell(Text(users[index]["faName"].toString())),
-                        DataCell(Text(users[index]["maName"].toString())),
-                        DataCell(Text(users[index]["gender"].toString())),
-                        DataCell(Text(users[index]["dateOfBirth"].toString())),
-                        DataCell(Text(users[index]["nationality"].toString())),
-                        DataCell(CircleAvatar(
-                            backgroundImage: (users[index]["image"]
-                                    .toString()
-                                    .isNotEmpty)
-                                ? AssetImage(users[index]["image"].toString())
-                                : null,
-                            child: (users[index]["image"].toString().isNotEmpty)
-                                ? null
-                                : Icon(Icons
-                                    .person))), */ //Text(users[index]["image"].toString())
-                        DataCell(Row(
-                          children: [
-                            Checkbox(
-                                value: didEnable.length > index
-                                    ? didEnable[index]
-                                    : false,
-                                onChanged: (val) {
-                                  setState(() {
-                                    if (didEnable.length <= index) {
-                                      didEnable.add(false);
-                                    }
-                                    didEnable[index] = val ?? false;
-                                  });
-                                }),
-                            Text("Enable")
-                          ],
-                        )),
+                        DataCell(Text(users[index]["status"].toString())),
+                        DataCell(Text(users[index]["intime"].toString())),
+                        DataCell(Text(users[index]["outtime"].toString())), */
                       ],
                     ),
                   ),

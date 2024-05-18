@@ -1,8 +1,11 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hrms_app/utils/app_colors/app_colors.dart';
 import 'package:hrms_app/utils/app_variables/app_strings.dart';
+import 'package:hrms_app/utils/app_variables/image_paths.dart';
 
 import 'package:intl/intl.dart';
 import '../../../utils/app_variables/app_vars.dart';
@@ -263,42 +266,59 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
           Container(
             margin: EdgeInsets.symmetric(vertical: marginHeight),
             padding: EdgeInsets.only(left: leftPadding),
+            //decoration: AppVars.customInputboxDecoration,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(
-                  "Gender",
-                  style: TextStyle(
-                      fontSize: labelFontSize, fontWeight: FontWeight.bold),
+                Expanded(
+                  child: Text(
+                    "Gender",
+                    style: TextStyle(
+                        fontSize: labelFontSize, fontWeight: FontWeight.bold),
+                  ),
                 ),
-                ToggleButtons(
-                  isSelected: _selectedGender == Gender.male
-                      ? [true, false]
-                      : _selectedGender == Gender.female
-                          ? [false, true]
-                          : [false, false],
-                  onPressed: (int index) {
-                    setState(() {
-                      _selectedGender =
-                          index == 0 ? Gender.male : Gender.female;
-                    });
-                  },
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 5),
-                      padding: EdgeInsets.symmetric(horizontal: 5),
-                      child: Row(
-                        children: [Icon(Icons.male), Text("male")],
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.only(left: 10),
+                    child: Container(
+                      decoration: AppVars.customInputboxDecoration,
+                      child: FittedBox(
+                        child: ToggleButtons(
+                          fillColor:
+                              Appcolors.assignButtonColor.withOpacity(0.3),
+                          //Appcolors.toggleButtonSelectColor,
+                          borderRadius: BorderRadius.circular(10),
+                          isSelected: _selectedGender == Gender.male
+                              ? [true, false]
+                              : _selectedGender == Gender.female
+                                  ? [false, true]
+                                  : [false, false],
+                          onPressed: (int index) {
+                            setState(() {
+                              _selectedGender =
+                                  index == 0 ? Gender.male : Gender.female;
+                            });
+                          },
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.symmetric(horizontal: 5),
+                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              child: Row(
+                                children: [Icon(Icons.male), Text("male")],
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              margin: EdgeInsets.symmetric(horizontal: 5),
+                              child: Row(
+                                children: [Icon(Icons.female), Text("female")],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 5),
-                      margin: EdgeInsets.symmetric(horizontal: 5),
-                      child: Row(
-                        children: [Icon(Icons.female), Text("female")],
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ],
             ),
@@ -330,46 +350,54 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "Nationality",
-                  style: TextStyle(
-                      fontSize: labelFontSize, fontWeight: FontWeight.bold),
+                Expanded(
+                  child: Text(
+                    "Nationality",
+                    style: TextStyle(
+                        fontSize: labelFontSize, fontWeight: FontWeight.bold),
+                  ),
                 ),
                 DropdownButtonHideUnderline(
-                  child: Container(
-                    width: AppVars.screenSize.width * 0.60,
-                    padding: AppVars.inputContentPadding,
-                    decoration: BoxDecoration(border: Border.all(width: 0.4)),
-                    margin: EdgeInsets.symmetric(vertical: marginHeight),
-                    child: DropdownButton(
-                        hint: Text(
-                          "Choose nationality",
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: TextStyle(
-                              fontSize: mediumLabelFontSize,
-                              color: Colors.black54),
-                        ),
-                        value: _selectedNation,
-                        items: Nationality.values
-                            .map(
-                              (nationality) => DropdownMenuItem(
-                                value: nationality,
-                                child: Text(
-                                  nationality.name.toUpperCase(),
-                                  style: Theme.of(context).textTheme.labelSmall,
+                  child: Expanded(
+                    flex: 2,
+                    child: Container(
+                      //width: AppVars.screenSize.width * 0.40,
+                      padding: AppVars.inputContentPadding,
+                      decoration: AppVars
+                          .customInputboxDecoration, // BoxDecoration(border: Border.all(width: 0.4)),
+                      margin: EdgeInsets.symmetric(vertical: marginHeight),
+                      child: DropdownButton(
+                          padding: EdgeInsets.all(0),
+                          hint: Text(
+                            "Choose nationality",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontSize: mediumLabelFontSize,
+                                color: Colors.black54),
+                          ),
+                          value: _selectedNation,
+                          items: Nationality.values
+                              .map(
+                                (nationality) => DropdownMenuItem(
+                                  value: nationality,
+                                  child: Text(
+                                    nationality.name.toUpperCase(),
+                                    style:
+                                        Theme.of(context).textTheme.labelSmall,
+                                  ),
                                 ),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (val) {
-                          if (val == null) {
-                            return;
-                          }
-                          setState(() {
-                            _selectedNation = val;
-                          });
-                        }),
+                              )
+                              .toList(),
+                          onChanged: (val) {
+                            if (val == null) {
+                              return;
+                            }
+                            setState(() {
+                              _selectedNation = val;
+                            });
+                          }),
+                    ),
                   ),
                 ),
               ],
@@ -380,46 +408,53 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "Choose Id type",
-                  style: TextStyle(
-                      fontSize: labelFontSize, fontWeight: FontWeight.bold),
+                Expanded(
+                  child: Text(
+                    "Id type",
+                    style: TextStyle(
+                        fontSize: labelFontSize, fontWeight: FontWeight.bold),
+                  ),
                 ),
                 DropdownButtonHideUnderline(
-                  child: Container(
-                    width: AppVars.screenSize.width * 0.60,
-                    padding: AppVars.inputContentPadding,
-                    decoration: BoxDecoration(border: Border.all(width: 0.4)),
-                    margin: EdgeInsets.symmetric(vertical: marginHeight),
-                    child: DropdownButton(
-                        hint: Text(
-                          "Choose Id Type",
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: TextStyle(
-                              fontSize: mediumLabelFontSize,
-                              color: Colors.black54),
-                        ),
-                        value: _selectedIdType,
-                        items: IdType.values
-                            .map(
-                              (idtype) => DropdownMenuItem(
-                                value: idtype,
-                                child: Text(
-                                  idtype.name.toUpperCase(),
-                                  style: Theme.of(context).textTheme.labelSmall,
+                  child: Expanded(
+                    flex: 2,
+                    child: Container(
+                      //   width: AppVars.screenSize.width * 0.60,
+                      padding: AppVars.inputContentPadding,
+                      decoration: AppVars
+                          .customInputboxDecoration, //BoxDecoration(border: Border.all(width: 0.4)),
+                      margin: EdgeInsets.symmetric(vertical: marginHeight),
+                      child: DropdownButton(
+                          hint: Text(
+                            "Choose Id Type",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontSize: mediumLabelFontSize,
+                                color: Colors.black54),
+                          ),
+                          value: _selectedIdType,
+                          items: IdType.values
+                              .map(
+                                (idtype) => DropdownMenuItem(
+                                  value: idtype,
+                                  child: Text(
+                                    idtype.name.toUpperCase(),
+                                    style:
+                                        Theme.of(context).textTheme.labelSmall,
+                                  ),
                                 ),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (val) {
-                          if (val == null) {
-                            return;
-                          }
-                          setState(() {
-                            _selectedIdType = val;
-                          });
-                        }),
+                              )
+                              .toList(),
+                          onChanged: (val) {
+                            if (val == null) {
+                              return;
+                            }
+                            setState(() {
+                              _selectedIdType = val;
+                            });
+                          }),
+                    ),
                   ),
                 ),
               ],
@@ -482,7 +517,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
             decoration: AppVars.customInputboxDecoration,
             child: TextFormField(
               controller: _employeePresentAddressController,
-              maxLines: 3,
+              maxLines: 1,
               decoration: InputDecoration(
                 labelText: 'Present Address',
                 contentPadding: AppVars.inputContentPadding,
@@ -509,7 +544,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
             decoration: AppVars.customInputboxDecoration,
             child: TextFormField(
               controller: _employeePermanentAddressController,
-              maxLines: 3,
+              maxLines: 1,
               decoration: InputDecoration(
                 labelText: 'Permanent Address',
                 contentPadding: AppVars.inputContentPadding,
@@ -531,64 +566,70 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
               },
             ),
           ),
-          ExpansionTile(
-            title: Text("Self Access"),
-            children: [
-              Container(
-                margin: EdgeInsets.symmetric(vertical: marginHeight),
-                decoration: AppVars.customInputboxDecoration,
-                child: TextFormField(
-                  // controller: _employeeNameController,
-                  decoration: InputDecoration(
-                    labelText: 'Employee Email',
-                    contentPadding: AppVars.inputContentPadding,
-                    hintStyle: AppVars.customHintTextStyle,
-                    /* prefixIcon: Icon(
-                  Icons.abc,
-                  color: iconColor,
-                ), */
-                    border: InputBorder.none,
-                    hintText: 'Employee Email',
-                    labelStyle: TextStyle(
-                        fontSize: labelFontSize, color: labelFontColor),
+          Container(
+            //  decoration: AppVars.customInputboxDecoration,
+            margin: EdgeInsets.symmetric(vertical: marginHeight),
+            child: ExpansionTile(
+              shape: Border(),
+              title: Text("Self Access"),
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: marginHeight),
+                  decoration: AppVars.customInputboxDecoration,
+                  child: TextFormField(
+                    // controller: _employeeNameController,
+                    decoration: InputDecoration(
+                      labelText: 'Employee Email',
+                      contentPadding: AppVars.inputContentPadding,
+                      hintStyle: AppVars.customHintTextStyle,
+                      /* prefixIcon: Icon(
+                    Icons.abc,
+                    color: iconColor,
+                  ), */
+                      border: InputBorder.none,
+                      hintText: 'Employee Email',
+                      labelStyle: TextStyle(
+                          fontSize: labelFontSize, color: labelFontColor),
+                    ),
+                    /* validator: (val) => (val?.isEmpty ?? val == null)
+                        ? AppStrings.nameErrorText
+                        : null, */
                   ),
-                  /* validator: (val) => (val?.isEmpty ?? val == null)
-                      ? AppStrings.nameErrorText
-                      : null, */
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: marginHeight),
-                decoration: AppVars.customInputboxDecoration,
-                child: TextFormField(
-                  // controller: _employeeFatherNameController,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: 'Employee Password',
-                    contentPadding: AppVars.inputContentPadding,
-                    hintStyle: AppVars.customHintTextStyle,
-                    /* prefixIcon: Icon(
-                  Icons.abc,
-                  color: iconColor,
-                ), */
-                    border: InputBorder.none,
-                    hintText: 'Employee Password',
-                    labelStyle: TextStyle(
-                        fontSize: labelFontSize, color: labelFontColor),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: marginHeight),
+                  decoration: AppVars.customInputboxDecoration,
+                  child: TextFormField(
+                    // controller: _employeeFatherNameController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: 'Employee Password',
+                      contentPadding: AppVars.inputContentPadding,
+                      hintStyle: AppVars.customHintTextStyle,
+                      /* prefixIcon: Icon(
+                    Icons.abc,
+                    color: iconColor,
+                  ), */
+                      border: InputBorder.none,
+                      hintText: 'Employee Password',
+                      labelStyle: TextStyle(
+                          fontSize: labelFontSize, color: labelFontColor),
+                    ),
+                    /*  validator: (val) => (val?.isEmpty ?? val == null)
+                        ? AppStrings.fatherNameErrorText
+                        : null, */
                   ),
-                  /*  validator: (val) => (val?.isEmpty ?? val == null)
-                      ? AppStrings.fatherNameErrorText
-                      : null, */
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(vertical: 5),
                 shape: RoundedRectangleBorder(
                   borderRadius: borderRadius,
                 ),
-                backgroundColor: actionButtonBgColor,
+                backgroundColor: Appcolors.assignButtonColor,
                 foregroundColor: actionButtonFgColor),
             onPressed: () {
               if (_formPersonalInfoKey.currentState == null) {
@@ -645,46 +686,53 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "Shift",
-                  style: TextStyle(
-                      fontSize: labelFontSize, fontWeight: FontWeight.bold),
+                Expanded(
+                  child: Text(
+                    "Shift",
+                    style: TextStyle(
+                        fontSize: labelFontSize, fontWeight: FontWeight.bold),
+                  ),
                 ),
                 DropdownButtonHideUnderline(
-                  child: Container(
-                    width: AppVars.screenSize.width * 0.55,
-                    padding: AppVars.inputContentPadding,
-                    margin: EdgeInsets.symmetric(vertical: marginHeight),
-                    decoration: BoxDecoration(border: Border.all(width: 0.4)),
-                    child: DropdownButton(
-                        hint: Text(
-                          "Choose shift",
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: TextStyle(
-                              fontSize: mediumLabelFontSize,
-                              color: Colors.black54),
-                        ),
-                        value: _selectedShift,
-                        items: Shift.values
-                            .map(
-                              (shift) => DropdownMenuItem(
-                                value: shift,
-                                child: Text(
-                                  shift.name.toUpperCase(),
-                                  style: Theme.of(context).textTheme.labelSmall,
+                  child: Expanded(
+                    flex: 2,
+                    child: Container(
+                      //width: AppVars.screenSize.width * 0.55,
+                      padding: AppVars.inputContentPadding,
+                      margin: EdgeInsets.symmetric(vertical: marginHeight),
+                      decoration: AppVars
+                          .customInputboxDecoration, //BoxDecoration(border: Border.all(width: 0.4),),
+                      child: DropdownButton(
+                          hint: Text(
+                            "Choose shift",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontSize: mediumLabelFontSize,
+                                color: Colors.black54),
+                          ),
+                          value: _selectedShift,
+                          items: Shift.values
+                              .map(
+                                (shift) => DropdownMenuItem(
+                                  value: shift,
+                                  child: Text(
+                                    shift.name.toUpperCase(),
+                                    style:
+                                        Theme.of(context).textTheme.labelSmall,
+                                  ),
                                 ),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (val) {
-                          if (val == null) {
-                            return;
-                          }
-                          setState(() {
-                            _selectedShift = val;
-                          });
-                        }),
+                              )
+                              .toList(),
+                          onChanged: (val) {
+                            if (val == null) {
+                              return;
+                            }
+                            setState(() {
+                              _selectedShift = val;
+                            });
+                          }),
+                    ),
                   ),
                 ),
               ],
@@ -765,52 +813,59 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "Department",
-                  style: TextStyle(
-                      fontSize: labelFontSize, fontWeight: FontWeight.bold),
+                Expanded(
+                  child: Text(
+                    "Department",
+                    style: TextStyle(
+                        fontSize: labelFontSize, fontWeight: FontWeight.bold),
+                  ),
                 ),
                 DropdownButtonHideUnderline(
-                  child: Container(
-                    width: AppVars.screenSize.width * 0.55,
-                    padding: AppVars.inputContentPadding,
-                    decoration: BoxDecoration(border: Border.all(width: 0.4)),
-                    margin: EdgeInsets.symmetric(vertical: marginHeight),
-                    child: DropdownButton(
-                        hint: Text(
-                          "Choose department",
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: TextStyle(
-                              fontSize: mediumLabelFontSize,
-                              color: Colors.black54),
-                        ),
-                        value: _selectedDepartment,
-                        items: Department.values
-                            .map(
-                              (department) => DropdownMenuItem(
-                                value: department,
-                                child: Text(
-                                  department.name.toUpperCase(),
-                                  style: Theme.of(context).textTheme.labelSmall,
+                  child: Expanded(
+                    flex: 2,
+                    child: Container(
+                      //   width: AppVars.screenSize.width * 0.55,
+                      padding: AppVars.inputContentPadding,
+                      decoration: AppVars
+                          .customInputboxDecoration, //BoxDecoration(border: Border.all(width: 0.4)),
+                      margin: EdgeInsets.symmetric(vertical: marginHeight),
+                      child: DropdownButton(
+                          hint: Text(
+                            "Choose department",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontSize: mediumLabelFontSize,
+                                color: Colors.black54),
+                          ),
+                          value: _selectedDepartment,
+                          items: Department.values
+                              .map(
+                                (department) => DropdownMenuItem(
+                                  value: department,
+                                  child: Text(
+                                    department.name.toUpperCase(),
+                                    style:
+                                        Theme.of(context).textTheme.labelSmall,
+                                  ),
                                 ),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (val) {
-                          if (val == null) {
-                            return;
-                          }
-                          setState(() {
-                            _selectedDepartment = val;
-                          });
-                        }),
+                              )
+                              .toList(),
+                          onChanged: (val) {
+                            if (val == null) {
+                              return;
+                            }
+                            setState(() {
+                              _selectedDepartment = val;
+                            });
+                          }),
+                    ),
                   ),
                 ),
               ],
             ),
           ),
-          Container(
+          /*  Container(
             margin: EdgeInsets.symmetric(vertical: marginHeight),
             decoration: AppVars.customInputboxDecoration,
             child: TextFormField(
@@ -867,7 +922,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
             decoration: AppVars.customInputboxDecoration,
             child: TextFormField(
               controller: _employeePresentAddressController,
-              maxLines: 3,
+              maxLines: 1,
               decoration: InputDecoration(
                 labelText: 'Present Address',
                 contentPadding: AppVars.inputContentPadding,
@@ -888,13 +943,13 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                 return null;
               },
             ),
-          ),
-          Container(
+          ), */
+          /* Container(
             margin: EdgeInsets.symmetric(vertical: marginHeight),
             decoration: AppVars.customInputboxDecoration,
             child: TextFormField(
               controller: _employeePermanentAddressController,
-              maxLines: 3,
+              maxLines: 1,
               decoration: InputDecoration(
                 labelText: 'Permanent Address',
                 contentPadding: AppVars.inputContentPadding,
@@ -915,13 +970,14 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                 return null;
               },
             ),
-          ),
+          ), */
           ElevatedButton(
             style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(vertical: 5),
                 shape: RoundedRectangleBorder(
                   borderRadius: borderRadius,
                 ),
-                backgroundColor: actionButtonBgColor,
+                backgroundColor: Appcolors.assignButtonColor,
                 foregroundColor: actionButtonFgColor),
             onPressed: () {
               if (_formOfficialInfoKey.currentState == null) {
@@ -969,8 +1025,9 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                     radius: 50,
                     backgroundImage: (_storedImage != null)
                         ? FileImage(_storedImage!)
-                        : null,
-                    backgroundColor: Color(0xFFFFCFDA),
+                        : AssetImage(ImagePath.proPicPlaceholderPath)
+                            as ImageProvider,
+                    //  backgroundColor: Color(0xFFFFCFDA),
                   ),
                   TextButton(
                     onPressed: _pictureButtonMethod,

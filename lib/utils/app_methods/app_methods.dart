@@ -10,6 +10,16 @@ class AppMethods {
     FocusScope.of(context).requestFocus(nextFocus);
   }
 
+  String? stripLink(String htmlString) {
+    if (htmlString.isEmpty || htmlString == "") {
+      return null;
+    }
+    RegExp regex = RegExp(r'https?://[^\s"]+\.(jpg|png)');
+    String? imageUrl = regex.stringMatch(htmlString);
+
+    return imageUrl;
+  }
+
   // generic toast message imported from toast package
   // we will utilise this for showing errors or success messages
   /*  static toastMessage(String message){
