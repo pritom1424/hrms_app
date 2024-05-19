@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../app_variables/app_vars.dart';
 
 class AppMethods {
@@ -18,6 +19,16 @@ class AppMethods {
     String? imageUrl = regex.stringMatch(htmlString);
 
     return imageUrl;
+  }
+
+  ////
+  static String dateOfBirthFormat(DateTime? dateTime) {
+    DateTime currentDate = DateTime.now();
+    if (dateTime != null) {
+      currentDate = dateTime;
+    }
+    String formattedDate = DateFormat('yyyy-MM-dd').format(currentDate);
+    return formattedDate;
   }
 
   // generic toast message imported from toast package
