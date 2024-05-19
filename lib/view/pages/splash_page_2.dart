@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hrms_app/utils/app_colors/app_colors.dart';
+import '../../utils/app_colors/app_colors.dart';
 import '../../utils/app_variables/app_vars.dart';
 import 'login_page.dart';
 

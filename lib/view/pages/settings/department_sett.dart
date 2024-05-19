@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
+import '../../widgets/appbar_default_widget.dart';
 
 class DepartmentSettings extends StatelessWidget {
   final String? title;

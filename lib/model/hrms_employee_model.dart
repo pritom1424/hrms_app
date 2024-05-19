@@ -52,7 +52,7 @@ class EmployeeDatum {
   String? employeeFather;
   String? employeeMother;
   String? gender;
-  DateTime? dateOfBirth;
+  String? dateOfBirth;
   String? nationality;
   String? idType;
   String? idNumber;
@@ -97,7 +97,7 @@ class EmployeeDatum {
         employeeFather: json["employee_father"],
         employeeMother: json["employee_mother"],
         gender: json["gender"],
-        dateOfBirth: DateTime.parse(json["date_of_birth"]),
+        dateOfBirth: json["date_of_birth"],
         nationality: json["nationality"],
         idType: json["id_type"],
         idNumber: json["id_number"],
@@ -120,8 +120,7 @@ class EmployeeDatum {
         "employee_father": employeeFather,
         "employee_mother": employeeMother,
         "gender": gender,
-        "date_of_birth":
-            "${dateOfBirth?.year.toString().padLeft(4, '0')}-${dateOfBirth?.month.toString().padLeft(2, '0')}-${dateOfBirth?.day.toString().padLeft(2, '0')}",
+        "date_of_birth": dateOfBirth,
         "nationality": nationality,
         "id_type": idType,
         "id_number": idNumber,
@@ -129,10 +128,8 @@ class EmployeeDatum {
         "present_address": presentAddress,
         "image": image,
         "user_id": userId,
-        "created_at":
-            createdAt?.toIso8601String() ?? DateTime.now().toIso8601String(),
-        "updated_at":
-            updatedAt?.toIso8601String() ?? DateTime.now().toIso8601String(),
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
         "deleted_at": deletedAt,
         "action": action,
         "DT_RowIndex": dtRowIndex,
