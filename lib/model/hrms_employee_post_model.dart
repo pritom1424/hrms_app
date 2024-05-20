@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 HrmsEmployeePostModel hrmsEmployeePostModelFromJson(String str) =>
     HrmsEmployeePostModel.fromJson(json.decode(str));
@@ -19,7 +20,7 @@ class HrmsEmployeePostModel {
   String? idNumber;
   String? permanentAddress;
   String? presentAddress;
-  String? image;
+  File? image;
   int? userId;
 
   String? email;

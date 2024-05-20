@@ -268,19 +268,22 @@ class _EmployeeListState extends State<EmployeeList> {
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10),
             child: ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (ctx) => AddNewApplicationForm(
+              onPressed: () async {
+                await Navigator.of(context).push(MaterialPageRoute(
+                    builder: (ctx) => const AddNewApplicationForm(
                           title: "Add new employee",
+                          isPop: true,
                         )));
+
+                setState(() {});
               },
-              child: Text("Add Employee"),
               style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF886AB5),
                   foregroundColor: Colors.white,
                   padding: EdgeInsets.all(5),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5))),
+              child: const Text("Add Employee"),
             ),
           )
         ],
@@ -456,11 +459,11 @@ class _EmployeeListState extends State<EmployeeList> {
                                             children: [
                                               IconButton(
                                                 icon: Icon(Icons.edit),
-                                                onPressed: () {
+                                                onPressed: () async {
                                                   print(
                                                       "${consumer.userData[index].id}");
-                                                  Navigator.of(context).push(
-                                                      MaterialPageRoute(
+                                                  await Navigator.of(context)
+                                                      .push(MaterialPageRoute(
                                                           builder: (ctx) =>
                                                               EditEmployeeApplicationForm(
                                                                 title:
@@ -470,6 +473,8 @@ class _EmployeeListState extends State<EmployeeList> {
                                                                         index]
                                                                     .id,
                                                               )));
+                                                  setState(() {});
+                                                  print("pop");
                                                   /* _editUser(
                                         context,
                                         users[

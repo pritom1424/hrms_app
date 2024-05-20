@@ -14,6 +14,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:provider/provider.dart';
 
+import 'package:http/http.dart' as http;
+
 class TextToPdfConverter extends StatefulWidget {
   final int id;
 
@@ -54,13 +56,18 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
     // });
     final pdf = pw.Document();
     FocusScope.of(context).unfocus();
-    /*    final Uint8List imageBytes = await _getImageBytes((widget.user == null)
+    /* final Uint8List imageBytes = await _getImageBytes((widget.user == null)
         ? imgPlaceHolder
         : (widget.user!['image'].toString().isEmpty)
             ? imgPlaceHolder
             : widget.user!['image']
-                .toString()); */ //'assets/images/profile_pic.png'
-    /*    final pdfImage = pw.MemoryImage(imageBytes); */
+                .toString()); //'assets/images/profile_pic.png'
+       final pdfImage = pw.MemoryImage(imageBytes); */
+    final imageResponse = await http.get(Uri.parse(
+        "https://hrms.szamantech.com/storage/employee/${hrmsEmployeeEditModel.image}"));
+    final Uint8List imageBytes = imageResponse.bodyBytes;
+    final pdfImage = pw.MemoryImage(imageBytes);
+
     pdf.addPage(
       pw.Page(
           theme: pw.ThemeData(defaultTextStyle: pw.TextStyle(fontSize: 18)),
@@ -125,9 +132,9 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
                             ? "ID"
                             : "ID: ${hrmsEmployeeEditModel.employeeCode.toString()}"),
                       ]),
-                  /*   pw.Spacer(),
+                  pw.Spacer(),
                   pw.Image(pdfImage,
-                      width: 75, height: 100, fit: pw.BoxFit.contain), */
+                      width: 75, height: 100, fit: pw.BoxFit.contain),
                 ]),
                 pw.SizedBox(height: 10),
 

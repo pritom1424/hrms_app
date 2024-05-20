@@ -22,7 +22,10 @@ import '../../../utils/enums/enums.dart';
 
 class AddNewApplicationForm extends StatefulWidget {
   final String? title;
-  const AddNewApplicationForm({super.key, this.title});
+  final bool? isReplace;
+  final bool? isPop;
+  const AddNewApplicationForm(
+      {super.key, this.title, this.isReplace, this.isPop});
 
   @override
   State<AddNewApplicationForm> createState() => _AddNewApplicationFormState();
@@ -100,6 +103,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
   DateTime _selectedConfirmationDate = DateTime.now();
 
   File? _storedImage;
+
   Future<void> _clickOrChoosePhoto(ImageSource imageSource) async {
     final picker = ImagePicker();
     Navigator.of(context).pop();
@@ -573,12 +577,12 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                 labelStyle:
                     TextStyle(fontSize: labelFontSize, color: labelFontColor),
               ),
-              validator: (value) {
+              /*     validator: (value) {
                 if (value != null && value == "") {
                   return AppStrings.punchIdErrorText;
                 }
                 return null;
-              },
+              } */
             ),
           ),
           Container(
@@ -712,7 +716,9 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
               if (_formPersonalInfoKey.currentState == null) {
                 return;
               }
-              if (_formPersonalInfoKey.currentState!.validate()) {
+              if (_formPersonalInfoKey.currentState!.validate() &&
+                  _selectedIdType != null &&
+                  _selectedNation != null) {
                 tabController.index = 1;
                 _formPersonalInfoKey.currentState!.save();
               }
@@ -959,43 +965,59 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
               if (_formOfficialInfoKey.currentState == null) {
                 return;
               }
-              if (_formOfficialInfoKey.currentState!.validate()) {
+              //     print("val ${_formPersonalInfoKey.currentState!}");
+
+              if (_formOfficialInfoKey.currentState!.validate() &&
+                  _selectedDepartment != null &&
+                  _selectedShift != null) {
                 _formOfficialInfoKey.currentState!.save();
+
+                HrmsEmployeePostModel employeeData = HrmsEmployeePostModel(
+                    id: null,
+                    punchId: _employeePunchIdController.text,
+                    employeeName: _employeeNameController.text,
+                    employeeFather: _employeeFatherNameController.text,
+                    employeeMother: _employeeMotherNameController.text,
+                    gender: _selectedGender.name,
+                    dateOfBirth: AppMethods.dateOfBirthFormat(_selectedDate),
+                    nationality: _selectedNation,
+                    idType: _selectedIdType,
+                    idNumber: _employeeIdController.text,
+                    permanentAddress: _employeePermanentAddressController.text,
+                    presentAddress: _employeePermanentAddressController.text,
+                    image: null,
+                    userId: null,
+                    email: _employeeEmailController.text,
+                    password: _employeePassController.text,
+                    shiftDate: AppMethods.dateOfBirthFormat(_selectedShiftDate),
+                    shiftId: _selectedShift,
+                    joiningDate:
+                        AppMethods.dateOfBirthFormat(_selectedJoiningDate),
+                    confirmDate:
+                        AppMethods.dateOfBirthFormat(_selectedConfirmationDate),
+                    designation: _employeeDesignationController.text,
+                    departmentId: _selectedDepartment,
+                    selfAccess: _selectSelfAccess);
+
+                //  print("employee data ${employeeData.toJson()}");
+                /*  await econtrol.createEmployee(
+                    ApiLinks.employeeListApiLink, employeeData); */
+                await econtrol.CreateImageDio(
+                    ApiLinks.employeeListApiLink, employeeData, _storedImage);
+                if (widget.isPop != null && widget.isPop == true) {
+                  print("not pop");
+                  Navigator.of(context).pop();
+                } else if (widget.isReplace != null &&
+                    widget.isReplace == true) {
+                  print("replaces");
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (ctx) => const EmployeeList()));
+                } else {
+                  print("not replaces");
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (ctx) => const EmployeeList()));
+                }
               }
-
-              HrmsEmployeePostModel employeeData = HrmsEmployeePostModel(
-                  id: null,
-                  punchId: _employeePunchIdController.text,
-                  employeeName: _employeeNameController.text,
-                  employeeFather: _employeeFatherNameController.text,
-                  employeeMother: _employeeMotherNameController.text,
-                  gender: _selectedGender.name,
-                  dateOfBirth: AppMethods.dateOfBirthFormat(_selectedDate),
-                  nationality: _selectedNation,
-                  idType: _selectedIdType,
-                  idNumber: _employeeIdController.text,
-                  permanentAddress: _employeePermanentAddressController.text,
-                  presentAddress: _employeePermanentAddressController.text,
-                  image: null,
-                  userId: null,
-                  email: _employeeEmailController.text,
-                  password: _employeePassController.text,
-                  shiftDate: AppMethods.dateOfBirthFormat(_selectedShiftDate),
-                  shiftId: _selectedShift,
-                  joiningDate:
-                      AppMethods.dateOfBirthFormat(_selectedJoiningDate),
-                  confirmDate:
-                      AppMethods.dateOfBirthFormat(_selectedConfirmationDate),
-                  designation: _employeeDesignationController.text,
-                  departmentId: _selectedDepartment,
-                  selfAccess: _selectSelfAccess);
-
-              //  print("employee data ${employeeData.toJson()}");
-              await econtrol.createEmployee(
-                  ApiLinks.employeeListApiLink, employeeData);
-
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (ctx) => EmployeeList()));
             },
             child: const Text(
               'Create',
@@ -1055,6 +1077,19 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                 labelStyle: Theme.of(context).textTheme.headlineSmall,
                 controller: tabController,
                 isScrollable: false,
+                onTap: (value) {
+                  if (_formPersonalInfoKey.currentState == null) {
+                    return;
+                  }
+                  if (_formPersonalInfoKey.currentState!.validate() &&
+                      _selectedIdType != null &&
+                      _selectedNation != null) {
+                    tabController.index = 1;
+                    _formPersonalInfoKey.currentState!.save();
+                  } else {
+                    tabController.index = 0;
+                  }
+                },
                 tabs: const [
                   Tab(
                     icon: Text(
