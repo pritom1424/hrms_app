@@ -298,25 +298,25 @@ class _EditEmployeeApplicationFormState
 
     if (hrmsEmployeeEditModel.officeInformation == null) {
       // print("office info null");
-      _selectedShiftDate = DateTime.now();
+      /*     _selectedShiftDate = DateTime.now();
 
       _selectedJoiningDate = DateTime.now();
 
-      _selectedConfirmationDate = DateTime.now();
+      _selectedConfirmationDate = DateTime.now(); */
     } else {
       // print("office info not null");
 
-      DateTime? tempDate =
-          DateTime.tryParse(hrmsEmployeeEditModel.officeInformation!.shiftDate);
+      DateTime? tempDate = DateTime.tryParse(
+          hrmsEmployeeEditModel.officeInformation!.shiftDate ?? "");
 
       DateTime? tempJoinDate = DateTime.tryParse(
-          hrmsEmployeeEditModel.officeInformation!.joiningDate);
+          hrmsEmployeeEditModel.officeInformation!.joiningDate ?? "");
 
       DateTime? tempConfirmDate = DateTime.tryParse(
-          hrmsEmployeeEditModel.officeInformation!.confirmationDate);
+          hrmsEmployeeEditModel.officeInformation!.confirmationDate ?? "");
 
-      /*   _employeeDesignationController.text =
-          hrmsEmployeeEditModel.officeInformation!.designation ?? null; */
+      _employeeDesignationController.text =
+          hrmsEmployeeEditModel.officeInformation!.designation ?? "";
 
       _selectedDepartment =
           hrmsEmployeeEditModel.officeInformation!.departmentId;

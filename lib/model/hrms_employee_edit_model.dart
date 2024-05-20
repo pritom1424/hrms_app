@@ -57,32 +57,60 @@ class HrmsEmployeeEditModel {
     required this.experience,
   });
 
-  factory HrmsEmployeeEditModel.fromJson(Map<String, dynamic> json) =>
-      HrmsEmployeeEditModel(
-        id: json["id"],
-        employeeCode: json["employee_code"],
-        punchId: json["punch_id"],
-        employeeName: json["employee_name"],
-        employeeFather: json["employee_father"],
-        employeeMother: json["employee_mother"],
-        gender: json["gender"],
-        dateOfBirth: json["date_of_birth"],
-        nationality: json["nationality"],
-        idType: json["id_type"],
-        idNumber: json["id_number"],
-        permanentAddress: json["permanent_address"],
-        presentAddress: json["present_address"],
-        image: json["image"],
-        userId: json["user_id"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-        deletedAt: json["deleted_at"],
-        officeInformation:
-            OfficeInformation.fromJson(json["office_information"]),
-        education: List<dynamic>.from(json["education"].map((x) => x)),
-        experience: List<dynamic>.from(json["experience"].map((x) => x)),
-      );
-
+  factory HrmsEmployeeEditModel.fromJson(Map<String, dynamic> json) {
+    print("office info: ${json["office_information"]}");
+    print("office info new${OfficeInformation.fromJson({
+          "id": null,
+          "employee_id": null,
+          "shift_date": null,
+          "shift_id": null,
+          "joining_date": null,
+          "confirmation_date": null,
+          "designation": null,
+          "department_id": null,
+          "created_at": DateTime.now().toIso8601String(),
+          "updated_at": DateTime.now().toIso8601String(),
+          "deleted_at": null
+        })}");
+    return HrmsEmployeeEditModel(
+      id: json["id"],
+      employeeCode: json["employee_code"],
+      punchId: json["punch_id"],
+      employeeName: json["employee_name"],
+      employeeFather: json["employee_father"],
+      employeeMother: json["employee_mother"],
+      gender: json["gender"],
+      dateOfBirth: json["date_of_birth"],
+      nationality: json["nationality"],
+      idType: json["id_type"],
+      idNumber: json["id_number"],
+      permanentAddress: json["permanent_address"],
+      presentAddress: json["present_address"],
+      image: json["image"],
+      userId: json["user_id"],
+      createdAt: DateTime.parse(json["created_at"]),
+      updatedAt: DateTime.parse(json["updated_at"]),
+      deletedAt: json["deleted_at"],
+      officeInformation:
+          OfficeInformation?.fromJson((json["office_information"] == null)
+              ? {
+                  "id": null,
+                  "employee_id": null,
+                  "shift_date": null,
+                  "shift_id": null,
+                  "joining_date": null,
+                  "confirmation_date": null,
+                  "designation": null,
+                  "department_id": null,
+                  "created_at": DateTime.now().toIso8601String(),
+                  "updated_at": DateTime.now().toIso8601String(),
+                  "deleted_at": null
+                }
+              : json["office_information"]),
+      education: List<dynamic>.from(json["education"].map((x) => x)),
+      experience: List<dynamic>.from(json["experience"].map((x) => x)),
+    );
+  }
   Map<String, dynamic> toJson() => {
         "id": id,
         "employee_code": employeeCode,
