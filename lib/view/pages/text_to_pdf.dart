@@ -4,16 +4,20 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hrms_app/controller/employee_edit_data_controller.dart';
+import 'package:hrms_app/model/hrms_employee_edit_model.dart';
+import 'package:hrms_app/utils/app_variables/api_links.dart';
 import 'package:hrms_app/utils/app_variables/app_vars.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:provider/provider.dart';
 
 class TextToPdfConverter extends StatefulWidget {
-  final Map<String, dynamic>? user;
+  final int id;
 
-  const TextToPdfConverter({super.key, required this.user});
+  const TextToPdfConverter({super.key, required this.id});
 
   @override
   State<TextToPdfConverter> createState() => _TextToPdfConverterState();
@@ -24,14 +28,14 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
   final TextEditingController _textEditingController = TextEditingController();
   bool isLoading = false;
   String? _pdfPath;
-
+  bool isInit = false;
   bool _isPDFCreated = false;
   Future<Uint8List> _getImageBytes(String imagePath) async {
     final ByteData data = await rootBundle.load(imagePath);
     return data.buffer.asUint8List();
   }
 
-  Future<void> _generatePdf() async {
+  Future<void> _generatePdf(HrmsEmployeeEditModel hrmsEmployeeEditModel) async {
     if (_isPDFCreated) {
       // PDF has already been created, no need to create again
       return;
@@ -50,13 +54,13 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
     // });
     final pdf = pw.Document();
     FocusScope.of(context).unfocus();
-    final Uint8List imageBytes = await _getImageBytes((widget.user == null)
+    /*    final Uint8List imageBytes = await _getImageBytes((widget.user == null)
         ? imgPlaceHolder
         : (widget.user!['image'].toString().isEmpty)
             ? imgPlaceHolder
             : widget.user!['image']
-                .toString()); //'assets/images/profile_pic.png'
-    final pdfImage = pw.MemoryImage(imageBytes);
+                .toString()); */ //'assets/images/profile_pic.png'
+    /*    final pdfImage = pw.MemoryImage(imageBytes); */
     pdf.addPage(
       pw.Page(
           theme: pw.ThemeData(defaultTextStyle: pw.TextStyle(fontSize: 18)),
@@ -81,7 +85,8 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
                 pw.SizedBox(height: 5),
                 pw.Column(children: [
                   pw.Text('SZamanTech',
-                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                      style: pw.TextStyle(
+                          fontWeight: pw.FontWeight.bold, fontSize: 25)),
                   pw.SizedBox(height: 5),
                   pw.Text(
                     'Phone:+8801713694070, Address: 93, Kazi Nazrul Islam Avenue, (5th Floor),',
@@ -97,19 +102,32 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
 
                 pw.SizedBox(height: 10),
                 pw.Row(children: [
-                  pw.Column(children: [
-                    pw.Text((widget.user == null)
-                        ? "Designation"
-                        : widget.user!['designation']
-                            .toString()), //'testtest_designation'
-                    pw.SizedBox(height: 5),
-                    pw.Text((widget.user == null)
-                        ? "ID"
-                        : widget.user!['id'].toString()),
-                  ]),
-                  pw.Spacer(),
+                  pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.start,
+                      children: [
+                        pw.Text(
+                            (hrmsEmployeeEditModel.employeeName == null)
+                                ? "Name"
+                                : hrmsEmployeeEditModel.employeeName.toString(),
+                            style: pw.TextStyle(
+                                fontSize: 18, fontWeight: pw.FontWeight.bold)),
+                        pw.SizedBox(height: 5),
+                        pw.Text((hrmsEmployeeEditModel
+                                    .officeInformation?.designation ==
+                                null)
+                            ? "Designation"
+                            : hrmsEmployeeEditModel
+                                    .officeInformation?.designation
+                                    .toString() ??
+                                "Designation"), //'testtest_designation'
+                        pw.SizedBox(height: 5),
+                        pw.Text((hrmsEmployeeEditModel.employeeCode == null)
+                            ? "ID"
+                            : "ID: ${hrmsEmployeeEditModel.employeeCode.toString()}"),
+                      ]),
+                  /*   pw.Spacer(),
                   pw.Image(pdfImage,
-                      width: 75, height: 100, fit: pw.BoxFit.contain),
+                      width: 75, height: 100, fit: pw.BoxFit.contain), */
                 ]),
                 pw.SizedBox(height: 10),
 
@@ -137,32 +155,37 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
                       mainAxisAlignment: pw.MainAxisAlignment.start,
                       crossAxisAlignment: pw.CrossAxisAlignment.start,
                       children: [
-                        pw.Text((widget.user == null)
+                        pw.Text((hrmsEmployeeEditModel.employeeFather == null)
                             ? "Father"
-                            : widget.user!['faName'].toString()),
-                        pw.Text((widget.user == null)
+                            : hrmsEmployeeEditModel.employeeFather.toString()),
+                        pw.Text((hrmsEmployeeEditModel.employeeMother == null)
                             ? "Mother"
-                            : widget.user!['maName'].toString()),
-                        pw.Text((widget.user == null)
+                            : hrmsEmployeeEditModel.employeeFather.toString()),
+                        pw.Text((hrmsEmployeeEditModel.gender == null)
                             ? "Gender"
-                            : widget.user!['gender'].toString()),
-                        pw.Text((widget.user == null)
+                            : hrmsEmployeeEditModel.gender.toString()),
+                        pw.Text((hrmsEmployeeEditModel.dateOfBirth == null)
                             ? "BirthDate"
-                            : widget.user!['dateOfBirth'].toString()),
-                        pw.Text((widget.user == null)
+                            : hrmsEmployeeEditModel.dateOfBirth.toString()),
+                        pw.Text((hrmsEmployeeEditModel.nationality == null)
                             ? "Bangladesh"
-                            : widget.user!['Nationality'].toString()),
-                        pw.Text((widget.user == null)
-                            ? "Phone"
-                            : widget.user!['phone'].toString()),
-                        pw.Text('permanent'),
-                        pw.Text('present'),
+                            : hrmsEmployeeEditModel.nationality.toString()),
+                        pw.Text((hrmsEmployeeEditModel.idType == null)
+                            ? "Id"
+                            : hrmsEmployeeEditModel.idType.toString()),
+                        pw.Text((hrmsEmployeeEditModel.permanentAddress == null)
+                            ? "permanent address"
+                            : hrmsEmployeeEditModel.permanentAddress
+                                .toString()),
+                        pw.Text((hrmsEmployeeEditModel.presentAddress == null)
+                            ? "present address"
+                            : hrmsEmployeeEditModel.presentAddress.toString()),
                       ]),
                 ]),
 
                 // Education
 
-                pw.SizedBox(height: 20),
+                /* pw.SizedBox(height: 20),
                 pw.Text('Education',
                     style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                 pw.SizedBox(height: 5),
@@ -227,7 +250,7 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
                         pw.Text('Dhaka'),
                         pw.Text('Dhaka'),
                       ]),
-                ]),
+                ]), */
                 pw.Spacer(),
                 pw.Container(
                   color: PdfColors.greenAccent,
@@ -276,62 +299,78 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
   }
 
   @override
+  void initState() {
+    isInit = true;
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var scSize = MediaQuery.of(context).size;
-    _generatePdf();
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Text to PDF Converter'),
-      ),
-      body: Container(
-        height: scSize.height * 1,
-        width: double.infinity,
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              /* Container(
-                child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: TextField(
-                    controller: _textEditingController,
-                    maxLines: null,
-                    decoration: InputDecoration(
-                      hintText: 'Enter your text...',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-              ), */
-              /*   ElevatedButton(
-                onPressed: _generatePdf,
-                child: Text('Generate PDF'),
-              ), */
-              /*  if (_pdfPath != null)
-                Container(
-                    height: AppVars.screenSize.height,
-                    width: double.infinity,
-                    child: SfPdfViewer.file(File(_pdfPath!))) */
+    EmployeeEditDataController employeeEditDataController =
+        Provider.of<EmployeeEditDataController>(context, listen: false);
 
-              if (_pdfPath != null)
-                Container(
-                  height: scSize.height * 1,
-                  //color: Colors.red,
-                  width: double.infinity,
-                  child: PDFView(
-                    fitPolicy: FitPolicy.BOTH,
-                    filePath: _pdfPath,
-                    enableSwipe: true,
-                    swipeHorizontal: true,
-                    autoSpacing: true,
-                    pageFling: true,
-                    pageSnap: false,
-                  ),
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Text to PDF Converter'),
+        ),
+        body: (isInit)
+            ? FutureBuilder(
+                future: employeeEditDataController.getEmployeeCurrentInfo(
+                    ApiLinks.employeeInfoLink, widget.id),
+                builder: (ctx, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Container(
+                      height: AppVars.screenSize.height,
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  } else {
+                    if (!snapshot.hasData) {
+                      return Container(
+                        height: AppVars.screenSize.height,
+                        child: const Center(
+                          child: Text("No data available"),
+                        ),
+                      );
+                    } else {
+                      isInit = false;
+                      _generatePdf(snapshot.data!);
+                      return mainPdfForn(scSize);
+                    }
+                  }
+                })
+            : mainPdfForn(scSize));
+  }
+
+  Container mainPdfForn(Size scSize) {
+    return Container(
+      height: scSize.height * 1,
+      width: double.infinity,
+      child: SingleChildScrollView(
+        padding: EdgeInsets.all(0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            if (_pdfPath != null)
+              Container(
+                height: scSize.height * 1,
+                //color: Colors.red,
+                width: double.infinity,
+                child: PDFView(
+                  fitPolicy: FitPolicy.BOTH,
+                  filePath: _pdfPath,
+                  enableSwipe: true,
+                  swipeHorizontal: true,
+                  autoSpacing: true,
+                  pageFling: true,
+                  pageSnap: false,
                 ),
-            ],
-          ),
+              ),
+          ],
         ),
       ),
     );

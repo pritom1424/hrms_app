@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:hrms_app/model/hrms_employee_post_model.dart';
 import '../model/hrms_departments_model.dart';
 import '../model/hrms_employee_model.dart';
 import '../model/hrms_idtypes_model.dart';
@@ -16,8 +17,7 @@ class EmployeeDataController with ChangeNotifier {
   Future<HrmsEmployeeModel> loadEmployeeList(String apiLink) async {
     final url = Uri.parse(apiLink);
     final response = await http.get(url);
-    HrmsEmployeeModel jsonResponse =
-        hrmsEmployeeModelFromJson(utf8.decode(response.bodyBytes));
+    HrmsEmployeeModel jsonResponse = hrmsEmployeeModelFromJson(response.body);
 
     _userData = jsonResponse.data;
     _filterData = _userData;
@@ -38,14 +38,13 @@ class EmployeeDataController with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> createEmployeeWithMap(
-      String apiLink, Map<String, dynamic> data) async {
+  Future<void> createEmployee(
+      String apiLink, HrmsEmployeePostModel hrmsEmployeePostModel) async {
     final url = Uri.parse(apiLink);
-
+    final bodyData = hrmsEmployeePostModelToJson(hrmsEmployeePostModel);
+    print("create employee: $bodyData");
     final response = await http.post(url,
-        body: jsonEncode(data), headers: {'Content-Type': 'application/json'});
-    /*   HrmsEmployeeModel jsonResponse =
-        hrmsEmployeeModelFromJson(utf8.decode(response.bodyBytes)); */
+        body: bodyData, headers: {'Content-Type': 'application/json'});
 
     if (response.statusCode == 200) {
       print("post created successfully");
@@ -53,22 +52,15 @@ class EmployeeDataController with ChangeNotifier {
       print("post creation failed");
     }
     notifyListeners();
-/*     _userData = jsonResponse.data;
-    _filterData = _userData;
-    print("fetch userdata ${userData.length}");
-    return jsonResponse; */
   }
 
-  Future<void> createEmployee(
-      String apiLink, EmployeeDatum employeeDatum) async {
-    final url = Uri.parse(apiLink);
-    final bodyData = employeeDatum.toJson();
+  Future<void> updateEmployee(String apiLink, int employeeId,
+      HrmsEmployeePostModel hrmsEmployeePostModel) async {
+    final url = Uri.parse(apiLink + employeeId.toString());
+    final bodyData = hrmsEmployeePostModelToJson(hrmsEmployeePostModel);
     print(bodyData);
     final response = await http.post(url,
-        body: jsonEncode(bodyData),
-        headers: {'Content-Type': 'application/json'});
-    /*   HrmsEmployeeModel jsonResponse =
-        hrmsEmployeeModelFromJson(utf8.decode(response.bodyBytes)); */
+        body: bodyData, headers: {'Content-Type': 'application/json'});
 
     if (response.statusCode == 200) {
       print("post created successfully");
@@ -76,10 +68,6 @@ class EmployeeDataController with ChangeNotifier {
       print("post creation failed");
     }
     notifyListeners();
-/*     _userData = jsonResponse.data;
-    _filterData = _userData;
-    print("fetch userdata ${userData.length}");
-    return jsonResponse; */
   }
 
   void filterUserData(String query) {
@@ -87,7 +75,6 @@ class EmployeeDataController with ChangeNotifier {
 
     if (query.isEmpty || query == "") {
       _filterData = _userData;
-      print("query value: ${Bidi.stripHtmlIfNeeded(_filterData[0].image!)}");
     } else {
       _filterData = _userData
           .where((element) => (element.id
@@ -117,11 +104,11 @@ class EmployeeDataController with ChangeNotifier {
     return jsonResponse;
   }
 
-  Future<HrmsShifttypeListModel> getShiftList(String apiLink) async {
+  Future<HrmsShifttypesModel> getShiftList(String apiLink) async {
     final url = Uri.parse(apiLink);
     final response = await http.get(url);
-    HrmsShifttypeListModel jsonResponse =
-        hrmsShifttypeListModelFromJson(utf8.decode(response.bodyBytes));
+    HrmsShifttypesModel jsonResponse =
+        hrmsShifttypesModelFromJson(utf8.decode(response.bodyBytes));
     return jsonResponse;
   }
 

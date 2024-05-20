@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hrms_app/controller/employee_edit_data_controller.dart';
 import 'package:hrms_app/model/hrms_employee_edit_model.dart';
+import 'package:hrms_app/model/hrms_employee_post_model.dart';
+import 'package:hrms_app/utils/app_methods/app_methods.dart';
+import 'package:hrms_app/view/pages/employee/employee_table.dart';
 import '../../../controller/employee_data_controller.dart';
 
 import '../../../utils/app_colors/app_colors.dart';
@@ -21,6 +24,7 @@ import '../../../utils/enums/enums.dart';
 class EditEmployeeApplicationForm extends StatefulWidget {
   final String? title;
   final int? employeeID;
+
   const EditEmployeeApplicationForm(
       {super.key, this.title, required this.employeeID});
 
@@ -35,6 +39,7 @@ class _EditEmployeeApplicationFormState
   final _formPersonalInfoKey = GlobalKey<FormState>();
   final _formOfficialInfoKey = GlobalKey<FormState>();
 
+  bool isInit = false;
   final TextEditingController _employeeEmailController =
       TextEditingController();
   final TextEditingController _employeePasswordController =
@@ -74,6 +79,7 @@ class _EditEmployeeApplicationFormState
   String? _selectedIdType;
   String? _selectedShift;
   int? _selectedDepartment;
+  String? _selectSelfAccess;
 
   BorderRadius borderRadius = const BorderRadius.all(Radius.circular(10));
   Color borderColor = const Color.fromARGB(255, 189, 183, 183);
@@ -225,73 +231,111 @@ class _EditEmployeeApplicationFormState
   @override
   void initState() {
     tabController = TabController(length: 2, vsync: this);
-    /*  _employeeNameController.text = widget.employeeDatum.employeeName ?? "";
-    _employeeFatherNameController.text =
-        widget.employeeDatum.employeeFather ?? "";
-    _employeeMotherNameController.text =
-        widget.employeeDatum.employeeMother ?? "";
-    _employeeIdController.text = widget.employeeDatum.idNumber ?? "";
-    _employeePunchIdController.text = widget.employeeDatum.punchId ?? "";
-    _employeePresentAddressController.text =
-        widget.employeeDatum.presentAddress ?? "";
-    _employeePermanentAddressController.text =
-        widget.employeeDatum.permanentAddress ?? "";
-    if (widget.employeeDatum.gender?.toLowerCase() == "female") {
-      _selectedGender = Gender.female;
-    } else {
-      _selectedGender = Gender.male;
-    }
+    isInit = true;
 
-    _selectedDate = (widget.employeeDatum.dateOfBirth != null)
-        ? DateTime.parse(widget.employeeDatum.dateOfBirth!)
-        : DateTime.now(); */
-    /*   _selectedNation = Nationality.values.firstWhere((element) => element.name
-        .toUpperCase()
-        .contains(widget.employeeDatum.nationality?.toUpperCase() ?? "")); */
-/*     _selectedIdType = IdType.values.firstWhere((element) => element.name
-        .toUpperCase()
-        .contains(widget.employeeDatum.idType?.toUpperCase() ?? "")); */
-
-    // TODO: implement initState
     super.initState();
   }
 
   void initField(HrmsEmployeeEditModel hrmsEmployeeEditModel) {
     _employeeNameController.text = hrmsEmployeeEditModel.employeeName ?? "";
+    /*   _employeeFatherNameController.text =
+        hrmsEmployeeEditModel.employeeFather ?? ""; */
     _employeeFatherNameController.text =
-        hrmsEmployeeEditModel.employeeFather ?? "";
+        (hrmsEmployeeEditModel.employeeFather == null)
+            ? ""
+            : hrmsEmployeeEditModel.employeeFather!;
+
+/*     _employeeMotherNameController.text =
+        hrmsEmployeeEditModel.employeeMother ?? ""; */
+
     _employeeMotherNameController.text =
-        hrmsEmployeeEditModel.employeeMother ?? "";
-    (hrmsEmployeeEditModel.gender?.toLowerCase() == "Female".toLowerCase())
+        (hrmsEmployeeEditModel.employeeMother == null)
+            ? ""
+            : hrmsEmployeeEditModel.employeeMother!;
+
+    (hrmsEmployeeEditModel.gender == null)
+        ? _selectedGender = Gender.male
+        : (hrmsEmployeeEditModel.gender?.toLowerCase() ==
+                "Female".toLowerCase())
+            ? Gender.female
+            : Gender.male;
+    /*  (hrmsEmployeeEditModel.gender?.toLowerCase() == "Female".toLowerCase())
         ? _selectedGender = Gender.female
-        : _selectedGender = Gender.male;
+        : _selectedGender = Gender.male; */
     selectedDateString = hrmsEmployeeEditModel.dateOfBirth;
     /*  _selectedDate = DateTime.parse(
             hrmsEmployeeEditModel.dateOfBirth ?? DateTime.now.toString()) ??
         DateTime.now(); */
     _selectedNation = hrmsEmployeeEditModel.nationality;
     _selectedIdType = hrmsEmployeeEditModel.idType;
-    _employeeIdController.text = hrmsEmployeeEditModel.idNumber ?? "";
-    _employeePunchIdController.text = hrmsEmployeeEditModel.punchId ?? "";
+
+    _employeeIdController.text = (hrmsEmployeeEditModel.idNumber == null)
+        ? ""
+        : hrmsEmployeeEditModel.idNumber!;
+
+/*     _employeeIdController.text = hrmsEmployeeEditModel.idNumber ?? ""; */
+
+    _employeePunchIdController.text = (hrmsEmployeeEditModel.punchId == null)
+        ? ""
+        : hrmsEmployeeEditModel.punchId!;
+    // _employeePunchIdController.text = hrmsEmployeeEditModel.punchId ?? "";
+/*     _employeePresentAddressController.text =
+        hrmsEmployeeEditModel.presentAddress ?? ""; */
+
     _employeePresentAddressController.text =
-        hrmsEmployeeEditModel.presentAddress ?? "";
+        (hrmsEmployeeEditModel.presentAddress == null)
+            ? ""
+            : hrmsEmployeeEditModel.presentAddress!;
+    /*  _employeePermanentAddressController.text =
+        hrmsEmployeeEditModel.permanentAddress ?? ""; */
+
     _employeePermanentAddressController.text =
-        hrmsEmployeeEditModel.permanentAddress ?? "";
+        (hrmsEmployeeEditModel.permanentAddress == null)
+            ? ""
+            : hrmsEmployeeEditModel.permanentAddress!;
 
     //office info
-    _selectedShiftDate =
-        hrmsEmployeeEditModel.officeInformation?.shiftDate ?? DateTime.now();
-    _selectedShift = hrmsEmployeeEditModel.officeInformation?.shiftId ?? "";
-    _employeeDesignationController.text =
-        hrmsEmployeeEditModel.officeInformation?.designation ?? "";
 
-    _selectedJoiningDate =
-        hrmsEmployeeEditModel.officeInformation?.joiningDate ?? DateTime.now();
-    _selectedConfirmationDate =
-        hrmsEmployeeEditModel.officeInformation?.confirmationDate ??
-            DateTime.now();
-    _selectedDepartment =
-        hrmsEmployeeEditModel.officeInformation?.departmentId ?? 0;
+    if (hrmsEmployeeEditModel.officeInformation == null) {
+      // print("office info null");
+      /*     _selectedShiftDate = DateTime.now();
+
+      _selectedJoiningDate = DateTime.now();
+
+      _selectedConfirmationDate = DateTime.now(); */
+    } else {
+      // print("office info not null");
+
+      DateTime? tempDate = DateTime.tryParse(
+          hrmsEmployeeEditModel.officeInformation!.shiftDate ?? "");
+
+      DateTime? tempJoinDate = DateTime.tryParse(
+          hrmsEmployeeEditModel.officeInformation!.joiningDate ?? "");
+
+      DateTime? tempConfirmDate = DateTime.tryParse(
+          hrmsEmployeeEditModel.officeInformation!.confirmationDate ?? "");
+
+      _employeeDesignationController.text =
+          hrmsEmployeeEditModel.officeInformation!.designation ?? "";
+
+      _selectedDepartment =
+          hrmsEmployeeEditModel.officeInformation!.departmentId;
+
+      _selectedShift =
+          hrmsEmployeeEditModel.officeInformation!.shiftId?.toString();
+      (tempDate != null)
+          ? _selectedDate = tempDate
+          : _selectedDate = DateTime.now();
+
+      (tempJoinDate != null)
+          ? _selectedJoiningDate = tempJoinDate
+          : _selectedJoiningDate = DateTime.now();
+      (tempConfirmDate != null)
+          ? _selectedConfirmationDate = tempConfirmDate
+          : _selectedConfirmationDate = DateTime.now();
+
+      print("office info $_selectedConfirmationDate $tempConfirmDate end");
+    }
 
     // _employeeEmailController.text = hrmsEmployeeEditModel.e
   }
@@ -730,6 +774,13 @@ class _EditEmployeeApplicationFormState
             //  decoration: AppVars.customInputboxDecoration,
             margin: EdgeInsets.symmetric(vertical: marginHeight),
             child: ExpansionTile(
+              onExpansionChanged: (value) {
+                if (value == true) {
+                  _selectSelfAccess = "has_self_access";
+                } else {
+                  _selectSelfAccess = null;
+                }
+              },
               shape: Border(),
               title: Text("Self Access"),
               children: [
@@ -737,7 +788,7 @@ class _EditEmployeeApplicationFormState
                   margin: EdgeInsets.symmetric(vertical: marginHeight),
                   decoration: AppVars.customInputboxDecoration,
                   child: TextFormField(
-                    controller: _employeeNameController,
+                    controller: _employeeEmailController,
                     decoration: InputDecoration(
                       labelText: 'Employee Email',
                       contentPadding: AppVars.inputContentPadding,
@@ -796,16 +847,15 @@ class _EditEmployeeApplicationFormState
                 return;
               }
               if (_formPersonalInfoKey.currentState!.validate()) {
+                tabController.index = 1;
                 _formPersonalInfoKey.currentState!.save();
-                // Do something with the validated data
-                // print('Name: $_name');
               }
 
               // Handle apply button press
               // You can access the values using controller.text for each field
             },
             child: const Text(
-              'Update',
+              'Next',
               style: TextStyle(fontSize: 25),
             ),
           ),
@@ -1042,12 +1092,48 @@ class _EditEmployeeApplicationFormState
                 ),
                 backgroundColor: Appcolors.assignButtonColor,
                 foregroundColor: actionButtonFgColor),
-            onPressed: () {
+            onPressed: () async {
               if (_formOfficialInfoKey.currentState == null) {
                 return;
               }
               if (_formOfficialInfoKey.currentState!.validate()) {
                 _formOfficialInfoKey.currentState!.save();
+
+                print("email: ${_employeeEmailController.text}");
+                HrmsEmployeePostModel employeeData = HrmsEmployeePostModel(
+                    id: widget.employeeID,
+                    punchId: _employeePunchIdController.text,
+                    employeeName: _employeeNameController.text,
+                    employeeFather: _employeeFatherNameController.text,
+                    employeeMother: _employeeMotherNameController.text,
+                    gender: _selectedGender.name,
+                    dateOfBirth: AppMethods.dateOfBirthFormat(_selectedDate),
+                    nationality: _selectedNation,
+                    idType: _selectedIdType,
+                    idNumber: _employeeIdController.text,
+                    permanentAddress: _employeePermanentAddressController.text,
+                    presentAddress: _employeePermanentAddressController.text,
+                    image: null,
+                    userId: null,
+                    email: _employeeEmailController.text,
+                    password: _employeePasswordController.text,
+                    shiftDate: AppMethods.dateOfBirthFormat(_selectedShiftDate),
+                    shiftId: _selectedShift,
+                    joiningDate:
+                        AppMethods.dateOfBirthFormat(_selectedJoiningDate),
+                    confirmDate:
+                        AppMethods.dateOfBirthFormat(_selectedConfirmationDate),
+                    designation: _employeeDesignationController.text,
+                    departmentId: _selectedDepartment,
+                    selfAccess: _selectSelfAccess);
+
+                if (widget.employeeID != null) {
+                  await econtrol.updateEmployee(ApiLinks.employeeUpdateLink,
+                      widget.employeeID!, employeeData);
+                }
+
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (ctx) => EmployeeList()));
                 // Do something with the validated data
                 //print('Name: $_name');
               }
@@ -1088,102 +1174,108 @@ class _EditEmployeeApplicationFormState
                   child: Text("No Id found"),
                 ),
               )
-            : FutureBuilder(
-                future: employeeEditDataController.getEmployeeCurrentInfo(
-                    ApiLinks.employeeInfoLink, widget.employeeID!),
-                builder: (ctx, infosnapShot) {
-                  if (infosnapShot.connectionState == ConnectionState.waiting) {
-                    return Container(
-                      height: AppVars.screenSize.height,
-                      child: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
-                  } else {
-                    if (!infosnapShot.hasData) {
-                      return Container(
-                        height: AppVars.screenSize.height,
-                        child: const Center(
-                          child: Text("No data available"),
-                        ),
-                      );
-                    } else {
-                      initField(infosnapShot.data!);
-                      return Column(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          SizedBox(
-                            child: Column(
-                              children: [
-                                CircleAvatar(
-                                  radius: 50,
-                                  backgroundImage: (_storedImage != null)
-                                      ? FileImage(_storedImage!)
-                                      : AssetImage(
-                                              ImagePath.proPicPlaceholderPath)
-                                          as ImageProvider,
-                                  //  backgroundColor: Color(0xFFFFCFDA),
-                                ),
-                                TextButton(
-                                  onPressed: _pictureButtonMethod,
-                                  child: Text(
-                                    (_storedImage == null)
-                                        ? "Add Profile Picture"
-                                        : "Update Profile Picture",
-                                    style: const TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ],
+            : (isInit)
+                ? FutureBuilder(
+                    future: employeeEditDataController.getEmployeeCurrentInfo(
+                        ApiLinks.employeeInfoLink, widget.employeeID!),
+                    builder: (ctx, infosnapShot) {
+                      if (infosnapShot.connectionState ==
+                          ConnectionState.waiting) {
+                        return Container(
+                          height: AppVars.screenSize.height,
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      } else {
+                        if (!infosnapShot.hasData) {
+                          return Container(
+                            height: AppVars.screenSize.height,
+                            child: const Center(
+                              child: Text("No data available"),
                             ),
-                          ),
-                          TabBar(
-                              labelStyle: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall /* TextStyle(fontSize: 17, fontWeight: FontWeight.bold) */,
-                              controller: tabController,
-                              isScrollable: false,
-                              tabs: const [
-                                Tab(
-                                  icon: Text(
-                                    'Employee Information',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  ),
-                                ),
-                                Tab(
-                                  icon: Text(
-                                    'Office Information',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  ),
-                                ),
-                              ]),
-                          Expanded(
-                            //  height: AppVars.screenSize.height * 0.6,
-                            child: TabBarView(
-                                physics: NeverScrollableScrollPhysics(),
-                                controller: tabController,
-                                children: [
-                                  SingleChildScrollView(
-                                      child: employeeInfoTab(
-                                          employeeDataController)),
-                                  SingleChildScrollView(
-                                      child:
-                                          officeInfoTab(employeeDataController))
-                                ]),
-                          ),
-
-                          //              const SizedBox(height: 20),
-                        ],
-                      );
-                    }
-                  }
-                }),
+                          );
+                        } else {
+                          initField(infosnapShot.data!);
+                          isInit = false;
+                          return editForm(context, employeeDataController);
+                        }
+                      }
+                    })
+                : editForm(context, employeeDataController),
       ),
+    );
+  }
+
+  Column editForm(
+      BuildContext context, EmployeeDataController employeeDataController) {
+    return Column(
+      //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SizedBox(
+          child: Column(
+            children: [
+              CircleAvatar(
+                radius: 50,
+                backgroundImage: (_storedImage != null)
+                    ? FileImage(_storedImage!)
+                    : AssetImage(ImagePath.proPicPlaceholderPath)
+                        as ImageProvider,
+                //  backgroundColor: Color(0xFFFFCFDA),
+              ),
+              TextButton(
+                onPressed: _pictureButtonMethod,
+                child: Text(
+                  (_storedImage == null)
+                      ? "Add Profile Picture"
+                      : "Update Profile Picture",
+                  style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+        ),
+        TabBar(
+            labelStyle: Theme.of(context)
+                .textTheme
+                .headlineSmall /* TextStyle(fontSize: 17, fontWeight: FontWeight.bold) */,
+            controller: tabController,
+            isScrollable: false,
+            tabs: const [
+              Tab(
+                icon: Text(
+                  'Employee Information',
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+              ),
+              Tab(
+                icon: Text(
+                  'Office Information',
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+              ),
+            ]),
+        Expanded(
+          //  height: AppVars.screenSize.height * 0.6,
+          child: TabBarView(
+              physics: NeverScrollableScrollPhysics(),
+              controller: tabController,
+              children: [
+                SingleChildScrollView(
+                    child: employeeInfoTab(employeeDataController)),
+                SingleChildScrollView(
+                    child: officeInfoTab(employeeDataController))
+              ]),
+        ),
+
+        //              const SizedBox(height: 20),
+      ],
     );
   }
 }

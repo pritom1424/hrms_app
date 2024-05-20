@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'package:hrms_app/controller/employee_data_controller.dart';
 import 'package:hrms_app/model/hrms_employee_model.dart';
+import 'package:hrms_app/model/hrms_employee_post_model.dart';
+import 'package:hrms_app/utils/app_methods/app_methods.dart';
 import 'package:hrms_app/utils/app_variables/api_links.dart';
 import 'package:hrms_app/view/pages/employee/employee_table.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +32,9 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
     with SingleTickerProviderStateMixin {
   final _formPersonalInfoKey = GlobalKey<FormState>();
   final _formOfficialInfoKey = GlobalKey<FormState>();
+  final TextEditingController _employeeEmailController =
+      TextEditingController();
+  final TextEditingController _employeePassController = TextEditingController();
 
   final TextEditingController _employeeIdController = TextEditingController();
   final TextEditingController _employeePunchIdController =
@@ -65,7 +70,9 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
   String? _selectedNation;
   String? _selectedIdType;
   String? _selectedShift;
-  String? _selectedDepartment;
+  int? _selectedDepartment;
+
+  String? _selectSelfAccess;
 
   BorderRadius borderRadius = const BorderRadius.all(Radius.circular(10));
   Color borderColor = const Color.fromARGB(255, 189, 183, 183);
@@ -233,6 +240,8 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
     _shiftDateController.dispose();
     _employeeJoiningDateController.dispose();
     _employeeConfirmDateController.dispose();
+    _employeeEmailController.dispose();
+    _employeePassController.dispose();
     // TODO: implement dispose
     super.dispose();
   }
@@ -630,6 +639,14 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
             //  decoration: AppVars.customInputboxDecoration,
             margin: EdgeInsets.symmetric(vertical: marginHeight),
             child: ExpansionTile(
+              onExpansionChanged: (val) {
+                if (val == true) {
+                  _selectSelfAccess = "has_self_access";
+                } else {
+                  _selectSelfAccess = null;
+                }
+                print("on self access click $val");
+              },
               shape: Border(),
               title: Text("Self Access"),
               children: [
@@ -637,7 +654,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                   margin: EdgeInsets.symmetric(vertical: marginHeight),
                   decoration: AppVars.customInputboxDecoration,
                   child: TextFormField(
-                    // controller: _employeeNameController,
+                    controller: _employeeEmailController,
                     decoration: InputDecoration(
                       labelText: 'Employee Email',
                       contentPadding: AppVars.inputContentPadding,
@@ -660,7 +677,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                   margin: EdgeInsets.symmetric(vertical: marginHeight),
                   decoration: AppVars.customInputboxDecoration,
                   child: TextFormField(
-                    // controller: _employeeFatherNameController,
+                    controller: _employeePassController,
                     obscureText: true,
                     decoration: InputDecoration(
                       labelText: 'Employee Password',
@@ -696,9 +713,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                 return;
               }
               if (_formPersonalInfoKey.currentState!.validate()) {
-                if (_formPersonalInfoKey.currentState!.validate()) {
-                  tabController.index = 1;
-                }
+                tabController.index = 1;
                 _formPersonalInfoKey.currentState!.save();
               }
             },
@@ -909,8 +924,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                                 items: List.generate(
                                     snapshot.data!.data.length,
                                     (index) => DropdownMenuItem(
-                                        value: snapshot
-                                            .data!.data[index].departmentName,
+                                        value: snapshot.data!.data[index].id,
                                         child: Text(
                                           snapshot
                                               .data!.data[index].departmentName,
@@ -949,16 +963,14 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                 _formOfficialInfoKey.currentState!.save();
               }
 
-              EmployeeDatum employeeDatum = EmployeeDatum(
+              HrmsEmployeePostModel employeeData = HrmsEmployeePostModel(
                   id: null,
-                  employeeCode: null,
                   punchId: _employeePunchIdController.text,
                   employeeName: _employeeNameController.text,
                   employeeFather: _employeeFatherNameController.text,
                   employeeMother: _employeeMotherNameController.text,
                   gender: _selectedGender.name,
-                  dateOfBirth:
-                      "${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}", //_selectedDate.toIso8601String(),
+                  dateOfBirth: AppMethods.dateOfBirthFormat(_selectedDate),
                   nationality: _selectedNation,
                   idType: _selectedIdType,
                   idNumber: _employeeIdController.text,
@@ -966,41 +978,21 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                   presentAddress: _employeePermanentAddressController.text,
                   image: null,
                   userId: null,
-                  createdAt: null,
-                  updatedAt: null,
-                  deletedAt: null,
-                  action: null,
-                  dtRowIndex: null);
-              Map<String, dynamic> data = {
-                "punch_id": _employeePunchIdController.text,
-                "employee_name": "james bond",
-                "employee_father": _employeeFatherNameController.text,
-                "employee_mother": _employeeMotherNameController.text,
-                "gender": _selectedGender.name,
-                "date_of_birth": "2024-05-04",
-                "nationality": _selectedNation,
-                "id_type": _selectedIdType,
-                "id_number": _employeeIdController.text,
-                "permanent_address": _employeePermanentAddressController.text,
-                "present_address": _employeePermanentAddressController.text,
-                "user_id": null,
-                "image": null,
-                "email_address": null,
-                "password": null,
-                "shift_date": "2024-05-23",
-                "shift_id": null,
-                "joining_date": "2024-05-23",
-                "confirmation_date": "2024-05-23",
-                "designation": "Developer",
-                "department_id": "IT Developer"
-              };
-              /*  await econtrol.createEmployee(
-                  ApiLinks.employeeListApiLink, employeeDatum);
-              
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (ctx) => EmployeeList())); */
+                  email: _employeeEmailController.text,
+                  password: _employeePassController.text,
+                  shiftDate: AppMethods.dateOfBirthFormat(_selectedShiftDate),
+                  shiftId: _selectedShift,
+                  joiningDate:
+                      AppMethods.dateOfBirthFormat(_selectedJoiningDate),
+                  confirmDate:
+                      AppMethods.dateOfBirthFormat(_selectedConfirmationDate),
+                  designation: _employeeDesignationController.text,
+                  departmentId: _selectedDepartment,
+                  selfAccess: _selectSelfAccess);
+
+              //  print("employee data ${employeeData.toJson()}");
               await econtrol.createEmployee(
-                  ApiLinks.employeeListApiLink, employeeDatum);
+                  ApiLinks.employeeListApiLink, employeeData);
 
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (ctx) => EmployeeList()));
