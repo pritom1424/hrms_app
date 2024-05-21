@@ -14,4 +14,10 @@ class ApiLinks {
 
   static String employeeDeleteLink =
       "https://hrms.szamantech.com/api/employee-api/destroy/";
+
+  static String employeeUserCheckLink =
+      "https://hrms.szamantech.com/api/employee-user-api/";
+
+  static String employeeUserListLink =
+      "https://hrms.szamantech.com/api/dashboard-user-api";
 }

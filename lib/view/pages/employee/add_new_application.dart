@@ -965,7 +965,6 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
               if (_formOfficialInfoKey.currentState == null) {
                 return;
               }
-              //     print("val ${_formPersonalInfoKey.currentState!}");
 
               if (_formOfficialInfoKey.currentState!.validate() &&
                   _selectedDepartment != null &&
@@ -985,7 +984,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                     idNumber: _employeeIdController.text,
                     permanentAddress: _employeePermanentAddressController.text,
                     presentAddress: _employeePermanentAddressController.text,
-                    image: null,
+                    image: _storedImage,
                     userId: null,
                     email: _employeeEmailController.text,
                     password: _employeePassController.text,
@@ -999,21 +998,16 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                     departmentId: _selectedDepartment,
                     selfAccess: _selectSelfAccess);
 
-                //  print("employee data ${employeeData.toJson()}");
-                /*  await econtrol.createEmployee(
-                    ApiLinks.employeeListApiLink, employeeData); */
-                await econtrol.CreateImageDio(
-                    ApiLinks.employeeListApiLink, employeeData, _storedImage);
+                await econtrol.createEmployee(
+                    ApiLinks.employeeListApiLink, employeeData);
+
                 if (widget.isPop != null && widget.isPop == true) {
-                  print("not pop");
                   Navigator.of(context).pop();
                 } else if (widget.isReplace != null &&
                     widget.isReplace == true) {
-                  print("replaces");
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (ctx) => const EmployeeList()));
                 } else {
-                  print("not replaces");
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (ctx) => const EmployeeList()));
                 }

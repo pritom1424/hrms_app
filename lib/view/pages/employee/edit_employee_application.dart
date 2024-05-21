@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hrms_app/controller/employee_edit_data_controller.dart';
+import 'package:hrms_app/controller/employee_user_controller.dart';
 import 'package:hrms_app/model/hrms_employee_edit_model.dart';
 import 'package:hrms_app/model/hrms_employee_post_model.dart';
 import 'package:hrms_app/utils/app_methods/app_methods.dart';
@@ -24,9 +26,13 @@ import '../../../utils/enums/enums.dart';
 class EditEmployeeApplicationForm extends StatefulWidget {
   final String? title;
   final int? employeeID;
+  final String? employeeCode;
 
   const EditEmployeeApplicationForm(
-      {super.key, this.title, required this.employeeID});
+      {super.key,
+      this.title,
+      required this.employeeID,
+      required this.employeeCode});
 
   @override
   State<EditEmployeeApplicationForm> createState() =>
@@ -778,70 +784,90 @@ class _EditEmployeeApplicationFormState
               },
             ),
           ),
-          Container(
-            //  decoration: AppVars.customInputboxDecoration,
-            margin: EdgeInsets.symmetric(vertical: marginHeight),
-            child: ExpansionTile(
-              onExpansionChanged: (value) {
-                if (value == true) {
-                  _selectSelfAccess = "has_self_access";
-                } else {
-                  _selectSelfAccess = null;
+          FutureBuilder(
+              future:
+                  Provider.of<EmployeeUserController>(context, listen: false)
+                      .getUserLogin(
+                          ApiLinks.employeeUserCheckLink, widget.employeeCode!),
+              builder: (context, snap) {
+                if (!snap.hasData) {
+                  return SizedBox.shrink();
                 }
-              },
-              shape: Border(),
-              title: Text("Self Access"),
-              children: [
-                Container(
+                (snap.data!.email != null)
+                    ? _selectSelfAccess = "has_self_access"
+                    : null;
+
+                if (_selectSelfAccess != null) {
+                  _employeeEmailController.text = snap.data!.email;
+                }
+                return Container(
+                  //  decoration: AppVars.customInputboxDecoration,
                   margin: EdgeInsets.symmetric(vertical: marginHeight),
-                  decoration: AppVars.customInputboxDecoration,
-                  child: TextFormField(
-                    controller: _employeeEmailController,
-                    decoration: InputDecoration(
-                      labelText: 'Employee Email',
-                      contentPadding: AppVars.inputContentPadding,
-                      hintStyle: AppVars.customHintTextStyle,
-                      /* prefixIcon: Icon(
-                    Icons.abc,
-                    color: iconColor,
-                  ), */
-                      border: InputBorder.none,
-                      hintText: 'Employee Email',
-                      labelStyle: TextStyle(
-                          fontSize: labelFontSize, color: labelFontColor),
-                    ),
-                    /* validator: (val) => (val?.isEmpty ?? val == null)
-                        ? AppStrings.nameErrorText
-                        : null, */
+                  child: ExpansionTile(
+                    initiallyExpanded:
+                        (_selectSelfAccess == null) ? false : true,
+                    onExpansionChanged: (value) {
+                      if (value == true) {
+                        _selectSelfAccess = "has_self_access";
+                      } else {
+                        _selectSelfAccess = null;
+                      }
+                    },
+                    shape: Border(),
+                    title: Text("Self Access"),
+                    children: [
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: marginHeight),
+                        decoration: AppVars.customInputboxDecoration,
+                        child: TextFormField(
+                          controller: _employeeEmailController,
+                          decoration: InputDecoration(
+                            labelText: 'Employee Email',
+                            contentPadding: AppVars.inputContentPadding,
+                            hintStyle: AppVars.customHintTextStyle,
+                            /* prefixIcon: Icon(
+                      Icons.abc,
+                      color: iconColor,
+                    ), */
+                            border: InputBorder.none,
+                            hintText: 'Employee Email',
+                            labelStyle: TextStyle(
+                                fontSize: labelFontSize, color: labelFontColor),
+                          ),
+                          /* validator: (val) => (val?.isEmpty ?? val == null)
+                          ? AppStrings.nameErrorText
+                          : null, */
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: marginHeight),
+                        decoration: AppVars.customInputboxDecoration,
+                        child: TextFormField(
+                          readOnly: (_selectSelfAccess == null) ? false : true,
+                          controller: _employeePasswordController,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            labelText: 'Employee Password',
+                            contentPadding: AppVars.inputContentPadding,
+                            hintStyle: AppVars.customHintTextStyle,
+                            /* prefixIcon: Icon(
+                      Icons.abc,
+                      color: iconColor,
+                    ), */
+                            border: InputBorder.none,
+                            hintText: 'Employee Password',
+                            labelStyle: TextStyle(
+                                fontSize: labelFontSize, color: labelFontColor),
+                          ),
+                          /*  validator: (val) => (val?.isEmpty ?? val == null)
+                          ? AppStrings.fatherNameErrorText
+                          : null, */
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: marginHeight),
-                  decoration: AppVars.customInputboxDecoration,
-                  child: TextFormField(
-                    controller: _employeePasswordController,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: 'Employee Password',
-                      contentPadding: AppVars.inputContentPadding,
-                      hintStyle: AppVars.customHintTextStyle,
-                      /* prefixIcon: Icon(
-                    Icons.abc,
-                    color: iconColor,
-                  ), */
-                      border: InputBorder.none,
-                      hintText: 'Employee Password',
-                      labelStyle: TextStyle(
-                          fontSize: labelFontSize, color: labelFontColor),
-                    ),
-                    /*  validator: (val) => (val?.isEmpty ?? val == null)
-                        ? AppStrings.fatherNameErrorText
-                        : null, */
-                  ),
-                ),
-              ],
-            ),
-          ),
+                );
+              }),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 5),
@@ -1103,14 +1129,20 @@ class _EditEmployeeApplicationFormState
                 backgroundColor: Appcolors.assignButtonColor,
                 foregroundColor: actionButtonFgColor),
             onPressed: () async {
+              print("update tes");
               if (_formOfficialInfoKey.currentState == null) {
+                print("not valid");
                 return;
               }
               if (_formOfficialInfoKey.currentState!.validate() &&
                   _selectedDepartment != null &&
                   _selectedShift != null) {
                 _formOfficialInfoKey.currentState!.save();
-                print("Image path ${_storedImage!.path}");
+                print("image path");
+                //    print("Image path ${_storedImage!.path}");
+                if (_employeeEmailController.text.isNotEmpty) {
+                  _selectSelfAccess = "has_self_access";
+                }
                 HrmsEmployeePostModel employeeData = HrmsEmployeePostModel(
                     id: widget.employeeID,
                     punchId: _employeePunchIdController.text,
@@ -1142,16 +1174,17 @@ class _EditEmployeeApplicationFormState
                   /*   await econtrol.updateEmployee(ApiLinks.employeeUpdateLink,
                       widget.employeeID!, employeeData); */
                   print("employee ID ${widget.employeeID!}");
-                  await econtrol.uploadImageDio(ApiLinks.employeeUpdateLink,
-                      widget.employeeID!, employeeData, _storedImage);
+                  await econtrol.updateEmployee(ApiLinks.employeeUpdateLink,
+                      widget.employeeID!, employeeData);
                 }
 
-                /* Navigator.of(context).pushReplacement(
+                /*   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (ctx) => EmployeeList())); */
                 Navigator.of(context).pop();
                 // Do something with the validated data
                 //print('Name: $_name');
               }
+              print("nothing matched");
               // Handle apply button press
               // You can access the values using controller.text for each field
             },

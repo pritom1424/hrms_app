@@ -21,6 +21,10 @@ class AppMethods {
     return imageUrl;
   }
 
+  static int? employeeCodeToId(String employeeCode) {
+    return int.tryParse(RegExp(r'\d+').firstMatch(employeeCode)!.group(0)!);
+  }
+
   ////
   static String dateOfBirthFormat(DateTime? dateTime) {
     DateTime currentDate = DateTime.now();

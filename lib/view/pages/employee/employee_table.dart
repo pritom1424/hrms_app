@@ -173,49 +173,7 @@ class _EmployeeListState extends State<EmployeeList> {
     super.dispose();
   }
 
-  /* void filterUsers(String query, HrmsEmployeeModel userModel) {
-    setState(() {
-      filteredUsers = userModel.toJson()['data'].where((user) {
-        bool matchFound = false;
-        user.forEach((key, value) {
-          if (value.toString().toLowerCase().contains(query.toLowerCase())) {
-            matchFound = true;
-          }
-        });
-        return matchFound;
-
-        /* user['name']
-            .toString()
-            .toLowerCase()
-            .contains(query.toLowerCase()); */
-      }).toList();
-    });
-  } */
-
-  /*  void filterUserData(String query, HrmsEmployeeModel userModel) {
-    setState(() {
-      fileredModel = userModel.data.where((user) {
-        bool matchFound = false;
-        print("user data: ${user.toJson()}");
-        user.toJson().forEach((key, value) {
-          if (value
-              .toString()
-              .trim()
-              .toLowerCase()
-              .contains(query.toLowerCase())) {
-            matchFound = true;
-          }
-        });
-        return matchFound;
-
-        /* user['name']
-            .toString()
-            .toLowerCase()
-            .contains(query.toLowerCase()); */
-      }).toList();
-    });
-  } */
-
+/* 
   MaterialStateColor getRandomColor() {
     // Generate random RGB values
     final random = Random();
@@ -227,7 +185,7 @@ class _EmployeeListState extends State<EmployeeList> {
 
     return MaterialStateColor.resolveWith(
         (states) => Color.fromRGBO(r, g, b, 1.0));
-  }
+  } */
 
   Future<void> _selectDate(BuildContext context,
       {DateTime? fDate, DateTime? lDate}) async {
@@ -292,19 +250,19 @@ class _EmployeeListState extends State<EmployeeList> {
           future: employeeDataController
               .loadEmployeeList(ApiLinks.employeeListApiLink),
           builder: (ctx, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting)
-              return Container(
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return SizedBox(
                 height: AppVars.screenSize.height,
-                child: Center(
+                child: const Center(
                   child: CircularProgressIndicator(),
                 ),
               );
-            else {
+            } else {
               return SingleChildScrollView(
                 child: (!snapshot.hasData)
                     ? Container(
                         height: AppVars.screenSize.height,
-                        child: Center(
+                        child: const Center(
                           child: Text("No data available"),
                         ),
                       )
@@ -336,13 +294,7 @@ class _EmployeeListState extends State<EmployeeList> {
                                       borderSide: BorderSide(
                                           width: 1,
                                           color: Appcolors.searchbarBgColor))),
-                              /* InputDecoration(
-                    labelText: 'Search',
-                    prefixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder(),
-                  ), */
                               onChanged: (value) {
-                                print("value ${value.isEmpty}");
                                 Provider.of<EmployeeDataController>(context,
                                         listen: false)
                                     .filterUserData(value);
@@ -435,6 +387,8 @@ class _EmployeeListState extends State<EmployeeList> {
                                               .userData[index].nationality
                                               .toString())),
                                           DataCell(CircleAvatar(
+                                            onBackgroundImageError: (st, ob) =>
+                                                Text("e"),
                                             backgroundImage: (consumer
                                                         .userData[index]
                                                         .image !=
@@ -464,15 +418,18 @@ class _EmployeeListState extends State<EmployeeList> {
                                                       "${consumer.userData[index].id}");
                                                   await Navigator.of(context)
                                                       .push(MaterialPageRoute(
-                                                          builder: (ctx) =>
-                                                              EditEmployeeApplicationForm(
-                                                                title:
-                                                                    "Edit employee",
-                                                                employeeID: consumer
-                                                                    .userData[
-                                                                        index]
-                                                                    .id,
-                                                              )));
+                                                          builder: (ctx) => EditEmployeeApplicationForm(
+                                                              title:
+                                                                  "Edit employee",
+                                                              employeeID:
+                                                                  consumer
+                                                                      .userData[
+                                                                          index]
+                                                                      .id,
+                                                              employeeCode: consumer
+                                                                  .userData[
+                                                                      index]
+                                                                  .employeeCode)));
                                                   setState(() {});
                                                   print("pop");
                                                   /* _editUser(

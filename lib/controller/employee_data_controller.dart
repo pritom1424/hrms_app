@@ -8,7 +8,7 @@ import '../model/hrms_employee_model.dart';
 import '../model/hrms_idtypes_model.dart';
 import '../model/hrms_nationality_model.dart';
 import '../model/hrms_shifttypes_model.dart';
-import 'package:http/http.dart' as http;
+//import 'package:http/http.dart' as http;
 
 import 'package:dio/dio.dart';
 
@@ -17,20 +17,24 @@ class EmployeeDataController with ChangeNotifier {
   List<EmployeeDatum> _filterData = [];
 
   Future<HrmsEmployeeModel> loadEmployeeList(String apiLink) async {
-    final url = Uri.parse(apiLink);
-    final response = await http.get(url);
-    HrmsEmployeeModel jsonResponse = hrmsEmployeeModelFromJson(response.body);
+    Dio dio = Dio();
+    //final url = Uri.parse(apiLink);
+    final response = await dio.get(apiLink);
+
+    HrmsEmployeeModel jsonResponse =
+        hrmsEmployeeModelFromJson(jsonEncode(response.data));
 
     _userData = jsonResponse.data;
     _filterData = _userData;
 
-    print("fetch userdata ${userData.length}");
     return jsonResponse;
   }
 
   Future<void> deleteEmployee(String apiLink, int employeeId) async {
-    final url = Uri.parse(apiLink + employeeId.toString());
-    final response = await http.get(url);
+    Dio dio = Dio();
+    final urlString = apiLink + employeeId.toString();
+    //final url = Uri.parse(urlString);
+    final response = await dio.get(urlString);
 
     if (response.statusCode == 200) {
       print("Employee deleted successfully");
@@ -42,103 +46,61 @@ class EmployeeDataController with ChangeNotifier {
 
   Future<void> createEmployee(
       String apiLink, HrmsEmployeePostModel hrmsEmployeePostModel) async {
-    final url = Uri.parse(apiLink);
-    final bodyData = hrmsEmployeePostModelToJson(hrmsEmployeePostModel);
-    print("create employee: $bodyData");
-    final response = await http.post(url,
-        body: bodyData, headers: {'Content-Type': 'application/json'});
+    Dio dio = Dio();
+    print("into dio");
+    if (hrmsEmployeePostModel.image == null) {
+      print("into dio null");
+      //  final url = Uri.parse(apiLink);
+      final bodyData = hrmsEmployeePostModelToJson(hrmsEmployeePostModel);
 
-    if (response.statusCode == 200) {
-      print("post created successfully");
+      final response = await dio.post(apiLink,
+          data: hrmsEmployeePostModel,
+          options: Options(headers: {'Content-Type': 'application/json'}));
+
+      // {'Content-Type': 'application/json'});
+
+      if (response.statusCode == 200) {
+        print("post created successfully");
+      } else {
+        print("post creation failed");
+      }
     } else {
-      print("post creation failed");
+      _createImageDio(
+          apiLink, hrmsEmployeePostModel, hrmsEmployeePostModel.image!);
     }
     notifyListeners();
   }
 
   Future<void> updateEmployee(String apiLink, int employeeId,
       HrmsEmployeePostModel hrmsEmployeePostModel) async {
-    final url = Uri.parse(apiLink + employeeId.toString());
-    print("image path control ${hrmsEmployeePostModel.image}");
-    final bodyData = hrmsEmployeePostModelToJson(hrmsEmployeePostModel);
-    print("image path $bodyData");
-    final response = await http.post(url,
-        body: bodyData, headers: {'Content-Type': 'application/json'});
+    Dio dio = Dio();
 
-    if (response.statusCode == 200) {
-      print("post created successfully");
-    } else {
-      print("post creation failed");
-    }
-    notifyListeners();
-  }
+    if (hrmsEmployeePostModel.image == null) {
+      // final url = Uri.parse(apiLink + employeeId.toString());
+      String urlString = apiLink + employeeId.toString();
+      final bodyData = hrmsEmployeePostModelToJson(hrmsEmployeePostModel);
 
-  Future<void> uploadImage(String apiLink, int employeeId,
-      HrmsEmployeePostModel hrmsEmployeePostModel, File? image) async {
-/*     final url = Uri.parse(apiLink + employeeId.toString());
-    final bodyData = hrmsEmployeePostModelToJson(hrmsEmployeePostModel);
-    print(bodyData);
-    final response = await http.post(url,
-        body: bodyData, headers: {'Content-Type': 'application/json'}); */
+      final response = await dio.post(urlString,
+          data: bodyData,
+          options: Options(headers: {'Content-Type': 'application/json'}));
 
-    /*  if (response.statusCode == 200) {
-      print("post created successfully");
-    } else {
-      print("post creation failed");
-    } */
-
-    if (image == null) return;
-    final request = http.MultipartRequest(
-        'POST', Uri.parse(apiLink + employeeId.toString()));
-    // Add the image file to the request
-    request.files.add(await http.MultipartFile.fromPath(
-      'image',
-      image.path,
-    ));
-    hrmsEmployeePostModel.toJson().forEach((key, value) {
-      request.fields[key] = value.toString();
-    });
-
-    // Add other fields to the request
-    //request.fields;
-    /*'punch_id': punchIdController.text,
-      'employee_name': employeeNameController.text,
-      'employee_father': employeeFatherController.text,
-      'employee_mother': employeeMotherController.text,
-      'gender': genderController.text,
-      'date_of_birth': dateOfBirthController.text,
-      'nationality': nationalityController.text,
-      'id_type': idTypeController.text,
-      'id_number': idNumberController.text,
-      'permanent_address': permanentAddressController.text,
-      'present_address': presentAddressController.text,
-      'user_id': userIdController.text,
-      'email_address': emailAddressController.text,
-      'password': passwordController.text,
-      'shift_date': shiftDateController.text,
-      'shift_id': shiftIdController.text,
-      'joining_date': joiningDateController.text,
-      'confirmation_date': confirmationDateController.text,
-      'designation': designationController.text,
-      'department_id': departmentIdController.text, */
-    try {
-      final response = await request.send();
       if (response.statusCode == 200) {
-        print('Image and data uploaded successfully');
+        print("post created successfully");
       } else {
-        print('Upload failed with status: ${response.statusCode}');
+        print("post creation failed");
       }
-    } catch (e) {
-      print('Error uploading image and data: $e');
+    } else {
+      _uploadImageDio(apiLink, employeeId, hrmsEmployeePostModel,
+          hrmsEmployeePostModel.image!);
     }
     notifyListeners();
   }
 
-  Future<void> uploadImageDio(String apiLink, int employeeId,
-      HrmsEmployeePostModel hrmsEmployeePostModel, File? image) async {
+  Future<void> _uploadImageDio(String apiLink, int employeeId,
+      HrmsEmployeePostModel hrmsEmployeePostModel, File image) async {
     Dio dio = Dio();
     final url = apiLink + employeeId.toString();
-    print("image path dio: ${image!.path}");
+
     FormData formData = FormData.fromMap({
       'image': await MultipartFile.fromFile(image!.path,
           filename: image.path.split("/").last),
@@ -164,6 +126,7 @@ class EmployeeDataController with ChangeNotifier {
       'confirmation_date': hrmsEmployeePostModel.confirmDate,
       'designation': hrmsEmployeePostModel.designation,
       'department_id': hrmsEmployeePostModel.departmentId,
+      "self_access": hrmsEmployeePostModel.selfAccess
     });
     try {
       Response response = await dio.post(url, data: formData);
@@ -177,13 +140,13 @@ class EmployeeDataController with ChangeNotifier {
     }
   }
 
-  Future<void> CreateImageDio(String apiLink,
-      HrmsEmployeePostModel hrmsEmployeePostModel, File? image) async {
+  Future<void> _createImageDio(String apiLink,
+      HrmsEmployeePostModel hrmsEmployeePostModel, File image) async {
     Dio dio = Dio();
     final url = apiLink;
 
     FormData formData = FormData.fromMap({
-      'image': await MultipartFile.fromFile(image!.path,
+      'image': await MultipartFile.fromFile(image.path,
           filename: 'profile-upload.jpg'),
       // Add other fields if needed
       'id': hrmsEmployeePostModel.id,
@@ -207,6 +170,7 @@ class EmployeeDataController with ChangeNotifier {
       'confirmation_date': hrmsEmployeePostModel.confirmDate,
       'designation': hrmsEmployeePostModel.designation,
       'department_id': hrmsEmployeePostModel.departmentId,
+      "self_access": hrmsEmployeePostModel.selfAccess
     });
     try {
       Response response = await dio.post(url, data: formData);
@@ -247,35 +211,39 @@ class EmployeeDataController with ChangeNotifier {
   }
 
   Future<HrmsDepartmentListModel> getDepartmentList(String apiLink) async {
-    final url = Uri.parse(apiLink);
-    final response = await http.get(url);
+    Dio dio = Dio();
+    //final url = Uri.parse(apiLink);
+    final response = await dio.get(apiLink);
     HrmsDepartmentListModel jsonResponse =
-        hrmsDepartmentListModelFromJson(utf8.decode(response.bodyBytes));
+        hrmsDepartmentListModelFromJson(jsonEncode(response.data));
     return jsonResponse;
   }
 
   Future<HrmsShifttypesModel> getShiftList(String apiLink) async {
-    final url = Uri.parse(apiLink);
-    final response = await http.get(url);
+    Dio dio = Dio();
+    //final url = Uri.parse(apiLink);
+    final response = await dio.get(apiLink);
     HrmsShifttypesModel jsonResponse =
-        hrmsShifttypesModelFromJson(utf8.decode(response.bodyBytes));
+        hrmsShifttypesModelFromJson(jsonEncode(response.data));
     return jsonResponse;
   }
 
   Future<HrmsNationalityListModel> getNationalityList(String apiLink) async {
-    final url = Uri.parse(apiLink);
-    final response = await http.get(url);
+    Dio dio = Dio();
+    //final url = Uri.parse(apiLink);
+    final response = await dio.get(apiLink);
     HrmsNationalityListModel jsonResponse =
-        hrmsNationalityListModelFromJson(utf8.decode(response.bodyBytes));
+        hrmsNationalityListModelFromJson(jsonEncode(response.data));
 
     return jsonResponse;
   }
 
   Future<HrmsIdtypeListModel> getIdTypeList(String apiLink) async {
-    final url = Uri.parse(apiLink);
-    final response = await http.get(url);
+    Dio dio = Dio();
+    // final url = Uri.parse(apiLink);
+    final response = await dio.get(apiLink);
     HrmsIdtypeListModel jsonResponse =
-        hrmsIdtypeListModelFromJson(utf8.decode(response.bodyBytes));
+        hrmsIdtypeListModelFromJson(jsonEncode(response.data));
 
     return jsonResponse;
   }
