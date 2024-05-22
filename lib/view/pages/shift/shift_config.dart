@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hrms_app/controller/employee_data_controller.dart';
 import 'package:hrms_app/controller/employee_shift_controller.dart';
+import 'package:hrms_app/model/hrms_shift_post_model.dart';
+import 'package:hrms_app/utils/app_methods/app_methods.dart';
 import 'package:hrms_app/utils/app_variables/api_links.dart';
+import 'package:hrms_app/view/pages/shift/edit_shift_config.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/app_variables/app_vars.dart';
@@ -21,6 +25,15 @@ class ShiftConfig extends StatefulWidget {
 
 class _ShiftConfigState extends State<ShiftConfig> {
   final TextEditingController _gracePeriodController = TextEditingController();
+  bool? didDefaultShift;
+
+  String _totalWorkingHour = "";
+  int? _selectedShift;
+  TimeOfDay _selectedStartTime = TimeOfDay.now();
+  TimeOfDay _selectedEndTime = TimeOfDay.now();
+
+  TimeOfDay _selectedBreakStartTime = TimeOfDay.now();
+  TimeOfDay _selectedBreakEndTime = TimeOfDay.now();
 
   EdgeInsetsGeometry contentPadding =
       const EdgeInsets.symmetric(horizontal: 20);
@@ -55,13 +68,35 @@ class _ShiftConfigState extends State<ShiftConfig> {
   Color actionButtonBgColor = const Color.fromARGB(255, 68, 156, 204);
   Color actionButtonFgColor = Colors.white;
 
-//enums
-  Shift? _selectedShift;
-  TimeOfDay _selectedStartTime = TimeOfDay.now();
-  TimeOfDay _selectedEndTime = TimeOfDay.now();
+  String calculateTotalWorkingHours(
+      TimeOfDay shiftStartTime,
+      TimeOfDay shiftEndTime,
+      TimeOfDay breakStartTime,
+      TimeOfDay breakEndTime) {
+    // Convert TimeOfDay to DateTime
+    final now = DateTime.now();
+    DateTime startTime =
+        DateTime(now.year, 1, 1, shiftStartTime.hour, shiftStartTime.minute);
+    DateTime endTime =
+        DateTime(now.year, 1, 1, shiftEndTime.hour, shiftEndTime.minute);
+    DateTime breakStart =
+        DateTime(now.year, 1, 1, breakStartTime.hour, breakStartTime.minute);
+    DateTime breakEnd =
+        DateTime(now.year, 1, 1, breakEndTime.hour, breakEndTime.minute);
 
-  TimeOfDay _selectedBreakStartTime = TimeOfDay.now();
-  TimeOfDay _selectedBreakEndTime = TimeOfDay.now();
+    // Calculate total working minutes
+    Duration totalShiftDuration = endTime.difference(startTime);
+    Duration breakDuration = breakEnd.difference(breakStart);
+    Duration totalWorkingDuration = totalShiftDuration - breakDuration;
+
+    // Calculate total working hours and minutes
+    int totalHours = totalWorkingDuration.inHours;
+    int totalMinutes = totalWorkingDuration.inMinutes.remainder(60);
+
+    // Format the result into string
+    String result = "$totalHours hours $totalMinutes minutes";
+    return result;
+  }
 
   Future<void> _selectTime(BuildContext context, bool isEnd) async {
     final TimeOfDay? picked = await showTimePicker(
@@ -116,7 +151,9 @@ class _ShiftConfigState extends State<ShiftConfig> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<EmployeeShiftController>(context);
+    final providerShift = Provider.of<EmployeeShiftController>(context);
+    final provider =
+        Provider.of<EmployeeDataController>(context, listen: false);
     var now = DateTime.now();
     return Scaffold(
       appBar: (widget.title != null)
@@ -157,37 +194,40 @@ class _ShiftConfigState extends State<ShiftConfig> {
                         decoration: AppVars.customInputboxDecoration,
                         // BoxDecoration(border: Border.all(width: 0.4)),
                         margin: EdgeInsets.symmetric(vertical: marginHeight),
-                        child: DropdownButton(
-                            hint: Text(
-                              "Choose Shift",
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                              style: TextStyle(
-                                  fontSize: mediumLabelFontSize,
-                                  color: Colors.black54),
-                            ),
-                            value: _selectedShift,
-                            items: Shift.values
-                                .map(
-                                  (shift) => DropdownMenuItem(
-                                    value: shift,
-                                    child: Text(
-                                      shift.name.toUpperCase(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelSmall,
-                                    ),
+                        child: FutureBuilder(
+                          future: provider.getShiftList(ApiLinks.shiftTypeLink),
+                          builder: (ctx, snapshot) => (!snapshot.hasData)
+                              ? const SizedBox.shrink()
+                              : DropdownButton(
+                                  hint: Text(
+                                    "Choose Shift",
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                        fontSize: mediumLabelFontSize,
+                                        color: Colors.black54),
                                   ),
-                                )
-                                .toList(),
-                            onChanged: (val) {
-                              if (val == null) {
-                                return;
-                              }
-                              setState(() {
-                                _selectedShift = val;
-                              });
-                            }),
+                                  value: _selectedShift,
+                                  items: List.generate(
+                                      snapshot.data!.data.length,
+                                      (index) => DropdownMenuItem(
+                                          value: snapshot.data!.data[index].id,
+                                          child: Text(
+                                            snapshot
+                                                .data!.data[index].shiftName,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .labelSmall,
+                                          ))),
+                                  onChanged: (val) {
+                                    if (val == null) {
+                                      return;
+                                    }
+                                    setState(() {
+                                      _selectedShift = val;
+                                    });
+                                  }),
+                        ),
                       ),
                     ),
                   ),
@@ -243,8 +283,14 @@ class _ShiftConfigState extends State<ShiftConfig> {
                 children: [
                   Text("Default Shift"),
                   Checkbox(
-                    value: false,
-                    onChanged: (val) {},
+                    value: (didDefaultShift == null) ? false : didDefaultShift,
+                    onChanged: (val) {
+                      setState(() {
+                        (didDefaultShift == null)
+                            ? didDefaultShift = true
+                            : didDefaultShift = !didDefaultShift!;
+                      });
+                    },
                   ),
                 ],
               ),
@@ -253,7 +299,7 @@ class _ShiftConfigState extends State<ShiftConfig> {
               margin: EdgeInsets.symmetric(vertical: marginHeight),
               decoration: boxDecoration,
               child: TextFormField(
-                //    controller: _employeeIdController,
+                controller: _gracePeriodController,
                 decoration: InputDecoration(
                   labelText: 'Grace Period (min)',
                   contentPadding: contentPadding,
@@ -291,7 +337,7 @@ class _ShiftConfigState extends State<ShiftConfig> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Start Time: ${DateFormat.jm().format(DateTime(now.year, now.month, now.day, _selectedStartTime.hour, _selectedStartTime.minute))}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
+                      'Start Time: ${DateFormat.jm().format(DateTime(now.year, now.month, now.day, _selectedBreakStartTime.hour, _selectedBreakStartTime.minute))}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
                       style: TextStyle(fontSize: mediumLabelFontSize),
                     ),
                     SizedBox(width: 20),
@@ -312,7 +358,7 @@ class _ShiftConfigState extends State<ShiftConfig> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'End Time: ${DateFormat.jm().format(DateTime(now.year, now.month, now.day, _selectedEndTime.hour, _selectedEndTime.minute))}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
+                      'End Time: ${DateFormat.jm().format(DateTime(now.year, now.month, now.day, _selectedBreakStartTime.hour, _selectedBreakEndTime.minute))}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
                       style: TextStyle(fontSize: mediumLabelFontSize),
                     ),
                     SizedBox(width: 20),
@@ -340,7 +386,7 @@ class _ShiftConfigState extends State<ShiftConfig> {
                       height: 50,
                     ),
                     Text(
-                      "7 hours 30 minutes",
+                      _totalWorkingHour,
                       style: TextStyle(fontSize: mediumLabelFontSize),
                     ),
                   ],
@@ -356,7 +402,36 @@ class _ShiftConfigState extends State<ShiftConfig> {
                   ),
                   backgroundColor: actionButtonBgColor,
                   foregroundColor: actionButtonFgColor),
-              onPressed: () {
+              onPressed: () async {
+                if (_selectedShift == null ||
+                    _gracePeriodController.text.isEmpty) {
+                  print("Sift failed");
+                  return;
+                }
+                _totalWorkingHour = calculateTotalWorkingHours(
+                    _selectedStartTime,
+                    _selectedEndTime,
+                    _selectedBreakStartTime,
+                    _selectedBreakEndTime);
+                final shiftPostModel = HrmsShiftPostModel(
+                    shiftId: _selectedShift!,
+                    shiftStartTime:
+                        AppMethods().dateTimeToTimeString(_selectedStartTime),
+                    shiftEndTime:
+                        AppMethods().dateTimeToTimeString(_selectedEndTime),
+                    defaultShift: didDefaultShift,
+                    gracePeriod: _gracePeriodController.text,
+                    breakStartTime: AppMethods()
+                        .dateTimeToTimeString(_selectedBreakStartTime),
+                    breakEndTime: AppMethods()
+                        .dateTimeToTimeString(_selectedBreakEndTime),
+                    totalWorkingHour: _totalWorkingHour,
+                    userID: null);
+                print("create shift");
+                await providerShift.createShift(
+                    ApiLinks.shiftCreateLink, shiftPostModel);
+
+                setState(() {});
                 /* if (_formPersonalInfoKey.currentState == null) {
                 return;
               }
@@ -378,8 +453,8 @@ class _ShiftConfigState extends State<ShiftConfig> {
               height: 20,
             ),
             FutureBuilder(
-              future:
-                  provider.loadEmployeeList(ApiLinks.employeeShiftIndexLink),
+              future: providerShift
+                  .loadEmployeeList(ApiLinks.employeeShiftIndexLink),
               builder: (ctx, snap) => (snap.connectionState ==
                       ConnectionState.waiting)
                   ? SizedBox(
@@ -435,7 +510,24 @@ class _ShiftConfigState extends State<ShiftConfig> {
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               5))),
-                                              onPressed: () {},
+                                              onPressed: () async {
+                                                await Navigator.of(context)
+                                                    .push(MaterialPageRoute(
+                                                        builder: (ctx) =>
+                                                            EditShiftConfigForm(
+                                                              title:
+                                                                  "Edit Shift",
+                                                              id: snap
+                                                                  .data!
+                                                                  .data[index]
+                                                                  .id,
+                                                              userId: snap
+                                                                  .data!
+                                                                  .data[index]
+                                                                  .userId,
+                                                            )));
+                                                setState(() {});
+                                              },
                                               child: Text(
                                                 'Edit',
                                                 style: TextStyle(
@@ -497,7 +589,7 @@ class _ShiftConfigState extends State<ShiftConfig> {
                                                     null) {
                                                   return;
                                                 }
-                                                provider.deleteShiftById(
+                                                providerShift.deleteShiftById(
                                                     ApiLinks.shiftDeleteLink,
                                                     snap.data!.data[index].id!);
                                               },

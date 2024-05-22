@@ -29,4 +29,9 @@ class ApiLinks {
 
   static String shiftDeleteLink =
       "https://hrms.szamantech.com/api/shift-config/destroy/";
+
+  static String shiftConfigUpdateLink =
+      "https://hrms.szamantech.com/api/shift-config/update/";
+  static String shiftCreateLink =
+      "https://hrms.szamantech.com/api/shift-config/store";
 }
