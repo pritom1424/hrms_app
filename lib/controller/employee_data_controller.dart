@@ -8,7 +8,7 @@ import '../model/hrms_employee_model.dart';
 import '../model/hrms_idtypes_model.dart';
 import '../model/hrms_nationality_model.dart';
 import '../model/hrms_shifttypes_model.dart';
-//import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as http;
 
 import 'package:dio/dio.dart';
 
@@ -18,11 +18,21 @@ class EmployeeDataController with ChangeNotifier {
 
   Future<HrmsEmployeeModel> loadEmployeeList(String apiLink) async {
     Dio dio = Dio();
-    //final url = Uri.parse(apiLink);
+    // final url = Uri.parse(apiLink);
+
+    //http package
+    //  final url = Uri.parse(ApiConstant.homePageSpecialContentLink);
+/* 
+    final response = await http.get(url);
+
+    HrmsEmployeeModel jsonResponse = hrmsEmployeeModelFromJson(response.body); */
+
+    //
+
     final response = await dio.get(apiLink);
 
     HrmsEmployeeModel jsonResponse =
-        hrmsEmployeeModelFromJson(jsonEncode(response.data));
+        hrmsEmployeeModelFromJson(json.encode(response.data));
 
     _userData = jsonResponse.data;
     _filterData = _userData;
