@@ -7,7 +7,7 @@ import 'package:pdf/pdf.dart';
 // import 'package:path_provider/path_provider.dart';
 
 import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
+// import 'package:printing/printing.dart';
 
 import 'dart:io';
 
@@ -497,7 +497,7 @@ class DocumentationPage extends StatelessWidget {
     await file.writeAsBytes(bytes);
 
     // Open the PDF
-    Printing.sharePdf(bytes: bytes, filename: 'users.pdf');
+    // Printing.sharePdf(bytes: bytes, filename: 'users.pdf');
   }
 
   Future<Uint8List> _getImageBytes(String imagePath) async {
