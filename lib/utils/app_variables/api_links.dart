@@ -20,4 +20,13 @@ class ApiLinks {
 
   static String employeeUserListLink =
       "https://hrms.szamantech.com/api/dashboard-user-api";
+
+  static String employeeShiftIndexLink =
+      "https://hrms.szamantech.com/api/shift-config/index";
+
+  static String employeeShiftLink =
+      "https://hrms.szamantech.com/api/shift-config/show/";
+
+  static String shiftDeleteLink =
+      "https://hrms.szamantech.com/api/shift-config/destroy/";
 }

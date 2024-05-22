@@ -11,6 +11,23 @@ class AppMethods {
     FocusScope.of(context).requestFocus(nextFocus);
   }
 
+  String dateTimeToTimeString(TimeOfDay timeOfDay) {
+    final now = DateTime.now();
+    return DateFormat.jm().format(DateTime(
+        now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute));
+  }
+
+  TimeOfDay dateStringToTimeOfDay(String? timeString) {
+    if (timeString == null || timeString.isEmpty) {
+      return TimeOfDay.now();
+    }
+    TimeOfDay resultTime = TimeOfDay(
+        hour: int.parse(timeString.split(":")[0]),
+        minute: int.parse(timeString.split(":")[1]));
+
+    return resultTime;
+  }
+
   String? stripLink(String htmlString) {
     if (htmlString.isEmpty || htmlString == "") {
       return null;
