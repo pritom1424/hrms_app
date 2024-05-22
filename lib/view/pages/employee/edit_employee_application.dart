@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hrms_app/controller/employee_edit_data_controller.dart';
+import 'package:hrms_app/controller/employee_user_controller.dart';
 import 'package:hrms_app/model/hrms_employee_edit_model.dart';
 import 'package:hrms_app/model/hrms_employee_post_model.dart';
 import 'package:hrms_app/utils/app_methods/app_methods.dart';
@@ -24,9 +26,13 @@ import '../../../utils/enums/enums.dart';
 class EditEmployeeApplicationForm extends StatefulWidget {
   final String? title;
   final int? employeeID;
+  final String? employeeCode;
 
   const EditEmployeeApplicationForm(
-      {super.key, this.title, required this.employeeID});
+      {super.key,
+      this.title,
+      required this.employeeID,
+      required this.employeeCode});
 
   @override
   State<EditEmployeeApplicationForm> createState() =>
@@ -109,6 +115,7 @@ class _EditEmployeeApplicationFormState
   DateTime _selectedConfirmationDate = DateTime.now();
 
   File? _storedImage;
+  String? imageLink;
   Future<void> _clickOrChoosePhoto(ImageSource imageSource) async {
     final picker = ImagePicker();
     Navigator.of(context).pop();
@@ -120,6 +127,8 @@ class _EditEmployeeApplicationFormState
 
     setState(() {
       _storedImage = File(imageFile.path);
+
+      print("stored image $_storedImage");
       //widget.onSelectImage(_storedImage);
     });
   }
@@ -237,6 +246,11 @@ class _EditEmployeeApplicationFormState
   }
 
   void initField(HrmsEmployeeEditModel hrmsEmployeeEditModel) {
+    (hrmsEmployeeEditModel.image != null)
+        ? imageLink =
+            "https://hrms.szamantech.com/storage/employee/${hrmsEmployeeEditModel.image}"
+        : imageLink = null;
+
     _employeeNameController.text = hrmsEmployeeEditModel.employeeName ?? "";
     /*   _employeeFatherNameController.text =
         hrmsEmployeeEditModel.employeeFather ?? ""; */
@@ -708,12 +722,12 @@ class _EditEmployeeApplicationFormState
                 labelStyle:
                     TextStyle(fontSize: labelFontSize, color: labelFontColor),
               ),
-              validator: (value) {
+              /*   validator: (value) {
                 if (value != null && value == "") {
                   return AppStrings.punchIdErrorText;
                 }
                 return null;
-              },
+              }, */
             ),
           ),
           Container(
@@ -770,70 +784,90 @@ class _EditEmployeeApplicationFormState
               },
             ),
           ),
-          Container(
-            //  decoration: AppVars.customInputboxDecoration,
-            margin: EdgeInsets.symmetric(vertical: marginHeight),
-            child: ExpansionTile(
-              onExpansionChanged: (value) {
-                if (value == true) {
-                  _selectSelfAccess = "has_self_access";
-                } else {
-                  _selectSelfAccess = null;
+          FutureBuilder(
+              future:
+                  Provider.of<EmployeeUserController>(context, listen: false)
+                      .getUserLogin(
+                          ApiLinks.employeeUserCheckLink, widget.employeeCode!),
+              builder: (context, snap) {
+                if (!snap.hasData) {
+                  return SizedBox.shrink();
                 }
-              },
-              shape: Border(),
-              title: Text("Self Access"),
-              children: [
-                Container(
+                (snap.data!.email != null)
+                    ? _selectSelfAccess = "has_self_access"
+                    : null;
+
+                if (_selectSelfAccess != null) {
+                  _employeeEmailController.text = snap.data!.email;
+                }
+                return Container(
+                  //  decoration: AppVars.customInputboxDecoration,
                   margin: EdgeInsets.symmetric(vertical: marginHeight),
-                  decoration: AppVars.customInputboxDecoration,
-                  child: TextFormField(
-                    controller: _employeeEmailController,
-                    decoration: InputDecoration(
-                      labelText: 'Employee Email',
-                      contentPadding: AppVars.inputContentPadding,
-                      hintStyle: AppVars.customHintTextStyle,
-                      /* prefixIcon: Icon(
-                    Icons.abc,
-                    color: iconColor,
-                  ), */
-                      border: InputBorder.none,
-                      hintText: 'Employee Email',
-                      labelStyle: TextStyle(
-                          fontSize: labelFontSize, color: labelFontColor),
-                    ),
-                    /* validator: (val) => (val?.isEmpty ?? val == null)
-                        ? AppStrings.nameErrorText
-                        : null, */
+                  child: ExpansionTile(
+                    initiallyExpanded:
+                        (_selectSelfAccess == null) ? false : true,
+                    onExpansionChanged: (value) {
+                      if (value == true) {
+                        _selectSelfAccess = "has_self_access";
+                      } else {
+                        _selectSelfAccess = null;
+                      }
+                    },
+                    shape: Border(),
+                    title: Text("Self Access"),
+                    children: [
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: marginHeight),
+                        decoration: AppVars.customInputboxDecoration,
+                        child: TextFormField(
+                          controller: _employeeEmailController,
+                          decoration: InputDecoration(
+                            labelText: 'Employee Email',
+                            contentPadding: AppVars.inputContentPadding,
+                            hintStyle: AppVars.customHintTextStyle,
+                            /* prefixIcon: Icon(
+                      Icons.abc,
+                      color: iconColor,
+                    ), */
+                            border: InputBorder.none,
+                            hintText: 'Employee Email',
+                            labelStyle: TextStyle(
+                                fontSize: labelFontSize, color: labelFontColor),
+                          ),
+                          /* validator: (val) => (val?.isEmpty ?? val == null)
+                          ? AppStrings.nameErrorText
+                          : null, */
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: marginHeight),
+                        decoration: AppVars.customInputboxDecoration,
+                        child: TextFormField(
+                          readOnly: (_selectSelfAccess == null) ? false : true,
+                          controller: _employeePasswordController,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            labelText: 'Employee Password',
+                            contentPadding: AppVars.inputContentPadding,
+                            hintStyle: AppVars.customHintTextStyle,
+                            /* prefixIcon: Icon(
+                      Icons.abc,
+                      color: iconColor,
+                    ), */
+                            border: InputBorder.none,
+                            hintText: 'Employee Password',
+                            labelStyle: TextStyle(
+                                fontSize: labelFontSize, color: labelFontColor),
+                          ),
+                          /*  validator: (val) => (val?.isEmpty ?? val == null)
+                          ? AppStrings.fatherNameErrorText
+                          : null, */
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: marginHeight),
-                  decoration: AppVars.customInputboxDecoration,
-                  child: TextFormField(
-                    controller: _employeePasswordController,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: 'Employee Password',
-                      contentPadding: AppVars.inputContentPadding,
-                      hintStyle: AppVars.customHintTextStyle,
-                      /* prefixIcon: Icon(
-                    Icons.abc,
-                    color: iconColor,
-                  ), */
-                      border: InputBorder.none,
-                      hintText: 'Employee Password',
-                      labelStyle: TextStyle(
-                          fontSize: labelFontSize, color: labelFontColor),
-                    ),
-                    /*  validator: (val) => (val?.isEmpty ?? val == null)
-                        ? AppStrings.fatherNameErrorText
-                        : null, */
-                  ),
-                ),
-              ],
-            ),
-          ),
+                );
+              }),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 5),
@@ -843,7 +877,9 @@ class _EditEmployeeApplicationFormState
                 backgroundColor: Appcolors.assignButtonColor,
                 foregroundColor: actionButtonFgColor),
             onPressed: () {
-              if (_formPersonalInfoKey.currentState == null) {
+              if (_formPersonalInfoKey.currentState == null &&
+                  _selectedIdType != null &&
+                  _selectedNation != null) {
                 return;
               }
               if (_formPersonalInfoKey.currentState!.validate()) {
@@ -1093,13 +1129,20 @@ class _EditEmployeeApplicationFormState
                 backgroundColor: Appcolors.assignButtonColor,
                 foregroundColor: actionButtonFgColor),
             onPressed: () async {
+              print("update tes");
               if (_formOfficialInfoKey.currentState == null) {
+                print("not valid");
                 return;
               }
-              if (_formOfficialInfoKey.currentState!.validate()) {
+              if (_formOfficialInfoKey.currentState!.validate() &&
+                  _selectedDepartment != null &&
+                  _selectedShift != null) {
                 _formOfficialInfoKey.currentState!.save();
-
-                print("email: ${_employeeEmailController.text}");
+                print("image path");
+                //    print("Image path ${_storedImage!.path}");
+                if (_employeeEmailController.text.isNotEmpty) {
+                  _selectSelfAccess = "has_self_access";
+                }
                 HrmsEmployeePostModel employeeData = HrmsEmployeePostModel(
                     id: widget.employeeID,
                     punchId: _employeePunchIdController.text,
@@ -1113,7 +1156,7 @@ class _EditEmployeeApplicationFormState
                     idNumber: _employeeIdController.text,
                     permanentAddress: _employeePermanentAddressController.text,
                     presentAddress: _employeePermanentAddressController.text,
-                    image: null,
+                    image: _storedImage,
                     userId: null,
                     email: _employeeEmailController.text,
                     password: _employeePasswordController.text,
@@ -1128,15 +1171,20 @@ class _EditEmployeeApplicationFormState
                     selfAccess: _selectSelfAccess);
 
                 if (widget.employeeID != null) {
+                  /*   await econtrol.updateEmployee(ApiLinks.employeeUpdateLink,
+                      widget.employeeID!, employeeData); */
+                  print("employee ID ${widget.employeeID!}");
                   await econtrol.updateEmployee(ApiLinks.employeeUpdateLink,
                       widget.employeeID!, employeeData);
                 }
 
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (ctx) => EmployeeList()));
+                /*   Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (ctx) => EmployeeList())); */
+                Navigator.of(context).pop();
                 // Do something with the validated data
                 //print('Name: $_name');
               }
+              print("nothing matched");
               // Handle apply button press
               // You can access the values using controller.text for each field
             },
@@ -1217,17 +1265,20 @@ class _EditEmployeeApplicationFormState
           child: Column(
             children: [
               CircleAvatar(
-                radius: 50,
-                backgroundImage: (_storedImage != null)
-                    ? FileImage(_storedImage!)
-                    : AssetImage(ImagePath.proPicPlaceholderPath)
-                        as ImageProvider,
-                //  backgroundColor: Color(0xFFFFCFDA),
-              ),
+                  radius: 50,
+                  backgroundImage: (imageLink != null && _storedImage == null)
+                      ? NetworkImage(imageLink!)
+                      : (_storedImage != null)
+                          ? FileImage(_storedImage!)
+                          : AssetImage(ImagePath.proPicPlaceholderPath)
+                              as ImageProvider
+
+                  //  backgroundColor: Color(0xFFFFCFDA),
+                  ),
               TextButton(
                 onPressed: _pictureButtonMethod,
                 child: Text(
-                  (_storedImage == null)
+                  (_storedImage == null && imageLink == null)
                       ? "Add Profile Picture"
                       : "Update Profile Picture",
                   style: const TextStyle(
@@ -1245,6 +1296,19 @@ class _EditEmployeeApplicationFormState
                 .headlineSmall /* TextStyle(fontSize: 17, fontWeight: FontWeight.bold) */,
             controller: tabController,
             isScrollable: false,
+            onTap: (value) {
+              if (_formPersonalInfoKey.currentState == null) {
+                return;
+              }
+              if (_formPersonalInfoKey.currentState!.validate() &&
+                  _selectedIdType != null &&
+                  _selectedNation != null) {
+                tabController.index = 1;
+                _formPersonalInfoKey.currentState!.save();
+              } else {
+                tabController.index = 0;
+              }
+            },
             tabs: const [
               Tab(
                 icon: Text(

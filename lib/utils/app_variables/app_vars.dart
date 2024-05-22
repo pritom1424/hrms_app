@@ -118,6 +118,7 @@ class AppVars {
     "Employee": [
       AddNewApplicationForm(
         title: "Add Employee",
+        isReplace: true,
       ),
       EmployeeList()
     ],
