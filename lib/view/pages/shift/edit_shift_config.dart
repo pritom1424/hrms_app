@@ -432,7 +432,7 @@ class _EditShiftConfigFormState extends State<EditShiftConfigForm> {
                     'End Time: ${AppMethods().dateTimeToTimeString(_selectedBreakEndTime)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
                     style: TextStyle(fontSize: mediumLabelFontSize),
                   ),
-                  SizedBox(width: 20),
+                  const SizedBox(width: 20),
                   TextButton(
                     onPressed: () => _selectBreakTime(context, true),
                     child: Text(
