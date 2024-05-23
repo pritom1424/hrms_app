@@ -721,6 +721,8 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                   _selectedNation != null) {
                 tabController.index = 1;
                 _formPersonalInfoKey.currentState!.save();
+              } else {
+                AppMethods.snackBar(AppStrings.formErrorText, context);
               }
             },
             child: const Text(
@@ -1011,6 +1013,8 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (ctx) => const EmployeeList()));
                 }
+              } else {
+                AppMethods.snackBar(AppStrings.formErrorText, context);
               }
             },
             child: const Text(
@@ -1082,6 +1086,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                     _formPersonalInfoKey.currentState!.save();
                   } else {
                     tabController.index = 0;
+                    AppMethods.snackBar(AppStrings.formErrorText, context);
                   }
                 },
                 tabs: const [

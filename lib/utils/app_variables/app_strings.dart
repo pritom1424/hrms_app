@@ -14,4 +14,6 @@ class AppStrings {
   static const designationErrorText = "Please enter your designation!";
   //
   static const currentFontFamily = "Poppins";
+
+  static String formErrorText = "Please fill required fields";
 }

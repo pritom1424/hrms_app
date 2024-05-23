@@ -6,6 +6,7 @@ import 'package:hrms_app/model/hrms_shift_model.dart';
 import 'package:hrms_app/model/hrms_shift_post_model.dart';
 import 'package:hrms_app/utils/app_methods/app_methods.dart';
 import 'package:hrms_app/utils/app_variables/api_links.dart';
+import 'package:hrms_app/utils/app_variables/app_strings.dart';
 import 'package:hrms_app/utils/app_variables/app_vars.dart';
 import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
 import 'package:intl/intl.dart';
@@ -473,8 +474,9 @@ class _EditShiftConfigFormState extends State<EditShiftConfigForm> {
                 backgroundColor: actionButtonBgColor,
                 foregroundColor: actionButtonFgColor),
             onPressed: () async {
-              if (_selectedShift == null ||
-                  _gracePeriodController.text.isEmpty) {
+              // _gracePeriodController.text.isEmpty
+              if (_selectedShift == null) {
+                AppMethods.snackBar(AppStrings.formErrorText, context);
                 return;
               }
               _totalWorkingHour = calculateTotalWorkingHours(

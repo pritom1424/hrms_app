@@ -885,6 +885,8 @@ class _EditEmployeeApplicationFormState
               if (_formPersonalInfoKey.currentState!.validate()) {
                 tabController.index = 1;
                 _formPersonalInfoKey.currentState!.save();
+              } else {
+                AppMethods.snackBar(AppStrings.formErrorText, context);
               }
 
               // Handle apply button press
@@ -1183,6 +1185,8 @@ class _EditEmployeeApplicationFormState
                 Navigator.of(context).pop();
                 // Do something with the validated data
                 //print('Name: $_name');
+              } else {
+                AppMethods.snackBar(AppStrings.formErrorText, context);
               }
               print("nothing matched");
               // Handle apply button press
@@ -1307,6 +1311,7 @@ class _EditEmployeeApplicationFormState
                 _formPersonalInfoKey.currentState!.save();
               } else {
                 tabController.index = 0;
+                AppMethods.snackBar(AppStrings.formErrorText, context);
               }
             },
             tabs: const [

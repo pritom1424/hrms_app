@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hrms_app/controller/employee_data_controller.dart';
 import 'package:hrms_app/controller/employee_shift_controller.dart';
+import 'package:hrms_app/model/hrms_shift_list_model.dart';
 import 'package:hrms_app/model/hrms_shift_post_model.dart';
 import 'package:hrms_app/utils/app_methods/app_methods.dart';
 import 'package:hrms_app/utils/app_variables/api_links.dart';
+import 'package:hrms_app/utils/app_variables/app_strings.dart';
 import 'package:hrms_app/view/pages/shift/edit_shift_config.dart';
 import 'package:provider/provider.dart';
 
@@ -25,8 +27,9 @@ class ShiftConfig extends StatefulWidget {
 
 class _ShiftConfigState extends State<ShiftConfig> {
   final TextEditingController _gracePeriodController = TextEditingController();
+  DataTable? dataTable;
   bool? didDefaultShift;
-
+  bool isInit = false;
   String _totalWorkingHour = "";
   int? _selectedShift;
   TimeOfDay _selectedStartTime = TimeOfDay.now();
@@ -140,6 +143,13 @@ class _ShiftConfigState extends State<ShiftConfig> {
         }
       }
     }
+  }
+
+  @override
+  void initState() {
+    isInit = true;
+    // TODO: implement initState
+    super.initState();
   }
 
   @override
@@ -403,9 +413,9 @@ class _ShiftConfigState extends State<ShiftConfig> {
                   backgroundColor: actionButtonBgColor,
                   foregroundColor: actionButtonFgColor),
               onPressed: () async {
-                if (_selectedShift == null ||
-                    _gracePeriodController.text.isEmpty) {
-                  print("Sift failed");
+                // _gracePeriodController.text.isEmpty
+                if (_selectedShift == null) {
+                  AppMethods.snackBar(AppStrings.formErrorText, context);
                   return;
                 }
                 _totalWorkingHour = calculateTotalWorkingHours(
@@ -430,7 +440,7 @@ class _ShiftConfigState extends State<ShiftConfig> {
                 print("create shift");
                 await providerShift.createShift(
                     ApiLinks.shiftCreateLink, shiftPostModel);
-
+                isInit = true;
                 setState(() {});
                 /* if (_formPersonalInfoKey.currentState == null) {
                 return;
@@ -452,160 +462,144 @@ class _ShiftConfigState extends State<ShiftConfig> {
             SizedBox(
               height: 20,
             ),
-            FutureBuilder(
-              future: providerShift
-                  .loadEmployeeList(ApiLinks.employeeShiftIndexLink),
-              builder: (ctx, snap) => (snap.connectionState ==
-                      ConnectionState.waiting)
-                  ? SizedBox(
-                      height: AppVars.screenSize.height * 0.2,
-                      child: Center(child: CircularProgressIndicator()))
-                  : (!snap.hasData)
-                      ? Text("No data available")
-                      : DataTable(
-                          headingRowHeight: AppVars.screenSize.height * 0.05,
-                          dataTextStyle: TextStyle(color: Colors.black),
-                          headingTextStyle: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                          dividerThickness: 1,
-                          columnSpacing: 5,
-                          headingRowColor: MaterialStateColor.resolveWith(
-                              (states) =>
-                                  Color(0xFF7A59AD)), //Colors.blue.shade400
-                          /*   dataRowColor:
-                      MaterialStateColor.resolveWith((states) => Colors.black26), */
-                          sortAscending: true,
-                          columns: [
-                            DataColumn(label: Text('ID')),
-                            DataColumn(
-                                label: Expanded(
-                                    child: Center(child: Text('Shift')))),
-                            DataColumn(
-                                label: Expanded(
-                              child: Center(
-                                child: Text(
-                                  'Action',
-                                ),
-                              ),
-                            ))
-                          ],
-                          rows: List.generate(
-                              snap.data!.data.length,
-                              (index) => DataRow(cells: [
-                                    DataCell(
-                                        Text('${snap.data!.data[index].id}')),
-                                    DataCell(Text(
-                                        '${snap.data!.data[index].shiftName}')),
-                                    DataCell(Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(6),
-                                          child: ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  padding: EdgeInsets.all(0),
-                                                  backgroundColor:
-                                                      Color(0xFF1DC9B7),
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5))),
-                                              onPressed: () async {
-                                                await Navigator.of(context)
-                                                    .push(MaterialPageRoute(
-                                                        builder: (ctx) =>
-                                                            EditShiftConfigForm(
-                                                              title:
-                                                                  "Edit Shift",
-                                                              id: snap
-                                                                  .data!
-                                                                  .data[index]
-                                                                  .id,
-                                                              userId: snap
-                                                                  .data!
-                                                                  .data[index]
-                                                                  .userId,
-                                                            )));
-                                                setState(() {});
-                                              },
-                                              child: Text(
-                                                'Edit',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              )),
-                                        ),
-                                        SizedBox(
-                                          width: 2,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(6),
-                                          child: ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                padding: EdgeInsets.all(0),
-                                                backgroundColor:
-                                                    Color(0xFF886AB5),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5)),
-                                              ),
-                                              onPressed: () {
-                                                Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                        builder: (ctx) =>
-                                                            ShiftConfigView(
-                                                              title:
-                                                                  "Shift Config View",
-                                                              id: snap
-                                                                  .data!
-                                                                  .data[index]
-                                                                  .id,
-                                                            )));
-                                              },
-                                              child: Text(
-                                                'View',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              )),
-                                        ),
-                                        SizedBox(
-                                          width: 2,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(6),
-                                          child: ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                padding: EdgeInsets.all(0),
-                                                backgroundColor:
-                                                    Color(0xFFFD3995),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5)),
-                                              ),
-                                              onPressed: () {
-                                                // _deleteUser(index);
-                                                if (snap.data!.data[index].id ==
-                                                    null) {
-                                                  return;
-                                                }
-                                                providerShift.deleteShiftById(
-                                                    ApiLinks.shiftDeleteLink,
-                                                    snap.data!.data[index].id!);
-                                              },
-                                              child: Text(
-                                                'Delete',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              )),
-                                        )
-                                      ],
-                                    ))
-                                  ]))),
-            )
+            (isInit)
+                ? FutureBuilder(
+                    future: providerShift
+                        .loadEmployeeList(ApiLinks.employeeShiftIndexLink),
+                    builder: (ctx, snap) {
+                      if (snap.connectionState == ConnectionState.waiting) {
+                        return SizedBox(
+                            height: AppVars.screenSize.height * 0.2,
+                            child: Center(child: CircularProgressIndicator()));
+                      } else {
+                        if (!snap.hasData) {
+                          return Text("No data available");
+                        } else {
+                          isInit = false;
+                          dataTable =
+                              loadDataTable(snap, context, providerShift);
+                          return dataTable!;
+                        }
+                      }
+                    },
+                  )
+                : dataTable ?? SizedBox.shrink()
           ],
         ),
       ),
     );
+  }
+
+  DataTable loadDataTable(AsyncSnapshot<HrmsShiftListModel> snap,
+      BuildContext context, EmployeeShiftController providerShift) {
+    return DataTable(
+        headingRowHeight: AppVars.screenSize.height * 0.05,
+        dataTextStyle: TextStyle(color: Colors.black),
+        headingTextStyle:
+            TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        dividerThickness: 1,
+        columnSpacing: 5,
+        headingRowColor: MaterialStateColor.resolveWith(
+            (states) => Color(0xFF7A59AD)), //Colors.blue.shade400
+        /*   dataRowColor:
+                    MaterialStateColor.resolveWith((states) => Colors.black26), */
+        sortAscending: true,
+        columns: [
+          DataColumn(label: Text('ID')),
+          DataColumn(label: Expanded(child: Center(child: Text('Shift')))),
+          DataColumn(
+              label: Expanded(
+            child: Center(
+              child: Text(
+                'Action',
+              ),
+            ),
+          ))
+        ],
+        rows: List.generate(
+            snap.data!.data.length,
+            (index) => DataRow(cells: [
+                  DataCell(Text('${snap.data!.data[index].id}')),
+                  DataCell(Text('${snap.data!.data[index].shiftName}')),
+                  DataCell(Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(6),
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.all(0),
+                                backgroundColor: Color(0xFF1DC9B7),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5))),
+                            onPressed: () async {
+                              await Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                      builder: (ctx) => EditShiftConfigForm(
+                                            title: "Edit Shift",
+                                            id: snap.data!.data[index].id,
+                                            userId:
+                                                snap.data!.data[index].userId,
+                                          )));
+                              setState(() {});
+                            },
+                            child: Text(
+                              'Edit',
+                              style: TextStyle(color: Colors.white),
+                            )),
+                      ),
+                      SizedBox(
+                        width: 2,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(6),
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.all(0),
+                              backgroundColor: Color(0xFF886AB5),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5)),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (ctx) => ShiftConfigView(
+                                        title: "Shift Config View",
+                                        id: snap.data!.data[index].id,
+                                      )));
+                            },
+                            child: Text(
+                              'View',
+                              style: TextStyle(color: Colors.white),
+                            )),
+                      ),
+                      SizedBox(
+                        width: 2,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(6),
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.all(0),
+                              backgroundColor: Color(0xFFFD3995),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5)),
+                            ),
+                            onPressed: () {
+                              // _deleteUser(index);
+                              if (snap.data!.data[index].id == null) {
+                                return;
+                              }
+                              providerShift.deleteShiftById(
+                                  ApiLinks.shiftDeleteLink,
+                                  snap.data!.data[index].id!);
+                            },
+                            child: Text(
+                              'Delete',
+                              style: TextStyle(color: Colors.white),
+                            )),
+                      )
+                    ],
+                  ))
+                ])));
   }
 }

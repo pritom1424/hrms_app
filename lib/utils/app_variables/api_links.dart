@@ -34,4 +34,7 @@ class ApiLinks {
       "https://hrms.szamantech.com/api/shift-config/update/";
   static String shiftCreateLink =
       "https://hrms.szamantech.com/api/shift-config/store";
+
+  static String userStatusUpdate =
+      "https://hrms.szamantech.com/api/dashboard-user-api/status/";
 }

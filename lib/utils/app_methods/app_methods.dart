@@ -132,10 +132,11 @@ class AppMethods {
               ],
             ));
   }
-}
 
-// we will utilise this for showing errors or success messages
-snackBar(String message, BuildContext context) {
-  return ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(backgroundColor: Colors.red, content: Text(message)));
+  // we will utilise this for showing errors or success messages
+  static snackBar(String message, BuildContext context) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    return ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(backgroundColor: Colors.red, content: Text(message)));
+  }
 }
