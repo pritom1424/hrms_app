@@ -21,6 +21,13 @@ class EmployeeUserController with ChangeNotifier {
     return jsonResponse;
   }
 
+  Future<void> updateUserStatus(String apiLink, int id) async {
+    Dio dio = Dio();
+    // final url = Uri.parse(apiLink + employeeCode.toString());
+    final urlString = apiLink + id.toString();
+    final response = await dio.get(urlString);
+  }
+
   Future<HrmsEmployeeUserModel> loadAllUser(String apiLink) async {
     Dio dio = Dio();
     // final url = Uri.parse(apiLink);

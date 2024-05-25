@@ -67,6 +67,8 @@ class NoticeListPage extends StatelessWidget {
             ? null
             : AppbarDefault(
                 appbarName: title,
+                isShowNotification: false,
+                isShowLeading: false,
               ),
         body: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 5),

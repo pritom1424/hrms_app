@@ -21,11 +21,22 @@ class AppMethods {
     if (timeString == null || timeString.isEmpty) {
       return TimeOfDay.now();
     }
-    TimeOfDay resultTime = TimeOfDay(
-        hour: int.parse(timeString.split(":")[0]),
-        minute: int.parse(timeString.split(":")[1]));
+    List<String> parts = timeString.split(' '); // Split the string by space
+    String timePart = parts[0]; // Get the time part (e.g., "5:00")
+    List<String> timeParts =
+        timePart.split(':'); // Split the time part by colon
 
-    return resultTime;
+    int hour = int.parse(timeParts[0]); // Parse the hour part
+    int minute = int.parse(timeParts[1]); // Parse the minute part
+
+    if (parts[1].toLowerCase() == 'pm' && hour != 12) {
+      hour +=
+          12; // Convert hour to 24-hour format if it's PM and not already 12 PM
+    } else if (parts[1].toLowerCase() == 'am' && hour == 12) {
+      hour = 0; // Convert 12 AM to 0 (midnight) in 24-hour format
+    }
+
+    return TimeOfDay(hour: hour, minute: minute);
   }
 
   String? stripLink(String htmlString) {
@@ -121,10 +132,11 @@ class AppMethods {
               ],
             ));
   }
-}
 
-// we will utilise this for showing errors or success messages
-snackBar(String message, BuildContext context) {
-  return ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(backgroundColor: Colors.red, content: Text(message)));
+  // we will utilise this for showing errors or success messages
+  static snackBar(String message, BuildContext context) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    return ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(backgroundColor: Colors.red, content: Text(message)));
+  }
 }

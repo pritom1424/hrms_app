@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:hrms_app/controller/employee_data_controller.dart';
 import 'package:hrms_app/controller/employee_shift_controller.dart';
+import 'package:hrms_app/model/hrms_employee_post_model.dart';
 import 'package:hrms_app/model/hrms_shift_model.dart';
+import 'package:hrms_app/model/hrms_shift_post_model.dart';
 import 'package:hrms_app/utils/app_methods/app_methods.dart';
 import 'package:hrms_app/utils/app_variables/api_links.dart';
+import 'package:hrms_app/utils/app_variables/app_strings.dart';
 import 'package:hrms_app/utils/app_variables/app_vars.dart';
 import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class EditShiftConfigForm extends StatefulWidget {
+  final int? userId;
   final int? id;
   final String? title;
-  const EditShiftConfigForm({super.key, this.id, this.title});
+  const EditShiftConfigForm({super.key, this.id, this.title, this.userId});
 
   @override
   State<EditShiftConfigForm> createState() => _EditShiftConfigFormState();
@@ -21,6 +25,7 @@ class EditShiftConfigForm extends StatefulWidget {
 class _EditShiftConfigFormState extends State<EditShiftConfigForm> {
   final TextEditingController _gracePeriodController = TextEditingController();
   bool isInit = false;
+  bool? didDefaultShift;
   EdgeInsetsGeometry contentPadding =
       const EdgeInsets.symmetric(horizontal: 20);
   BorderRadius borderRadius = const BorderRadius.all(Radius.circular(10));
@@ -55,12 +60,44 @@ class _EditShiftConfigFormState extends State<EditShiftConfigForm> {
   Color actionButtonFgColor = Colors.white;
 
 //enums
-  String? _selectedShift;
+  int? _selectedShift;
   TimeOfDay _selectedStartTime = TimeOfDay.now();
   TimeOfDay _selectedEndTime = TimeOfDay.now();
 
   TimeOfDay _selectedBreakStartTime = TimeOfDay.now();
   TimeOfDay _selectedBreakEndTime = TimeOfDay.now();
+
+  String _totalWorkingHour = "";
+
+  String calculateTotalWorkingHours(
+      TimeOfDay shiftStartTime,
+      TimeOfDay shiftEndTime,
+      TimeOfDay breakStartTime,
+      TimeOfDay breakEndTime) {
+    // Convert TimeOfDay to DateTime
+    final now = DateTime.now();
+    DateTime startTime =
+        DateTime(now.year, 1, 1, shiftStartTime.hour, shiftStartTime.minute);
+    DateTime endTime =
+        DateTime(now.year, 1, 1, shiftEndTime.hour, shiftEndTime.minute);
+    DateTime breakStart =
+        DateTime(now.year, 1, 1, breakStartTime.hour, breakStartTime.minute);
+    DateTime breakEnd =
+        DateTime(now.year, 1, 1, breakEndTime.hour, breakEndTime.minute);
+
+    // Calculate total working minutes
+    Duration totalShiftDuration = endTime.difference(startTime);
+    Duration breakDuration = breakEnd.difference(breakStart);
+    Duration totalWorkingDuration = totalShiftDuration - breakDuration;
+
+    // Calculate total working hours and minutes
+    int totalHours = totalWorkingDuration.inHours;
+    int totalMinutes = totalWorkingDuration.inMinutes.remainder(60);
+
+    // Format the result into string
+    String result = "$totalHours hours $totalMinutes minutes";
+    return result;
+  }
 
   Future<void> _selectTime(BuildContext context, bool isEnd) async {
     final TimeOfDay? picked = await showTimePicker(
@@ -108,16 +145,29 @@ class _EditShiftConfigFormState extends State<EditShiftConfigForm> {
 
   void initShiftConfigForm(HrmsShiftModel hrmsShiftModel) {
     _gracePeriodController.text = hrmsShiftModel.gracePeriod ?? "";
-    _selectedShift = hrmsShiftModel.shift.shiftName;
+    _selectedShift = hrmsShiftModel.shift.id;
 
+    print("_selectedStartTime: }");
+    /*   _selectedStartTime =
+        AppMethods().dateStringToTimeOfDay(hrmsShiftModel.shiftStartTime); */
+    final format = DateFormat.jm(); //"6:00 AM"
     _selectedStartTime =
-        AppMethods().dateStringToTimeOfDay(hrmsShiftModel.shiftStartTime);
+        TimeOfDay.fromDateTime(format.parse(hrmsShiftModel.shiftStartTime!));
     _selectedEndTime =
+        TimeOfDay.fromDateTime(format.parse(hrmsShiftModel.shiftEndTime!));
+    _selectedBreakStartTime =
+        TimeOfDay.fromDateTime(format.parse(hrmsShiftModel.breakStartTime!));
+    _selectedBreakEndTime =
+        TimeOfDay.fromDateTime(format.parse(hrmsShiftModel.breakEndTime!));
+    _totalWorkingHour = hrmsShiftModel.totalWorkingHour ?? "";
+
+    /*  _selectedEndTime =
         AppMethods().dateStringToTimeOfDay(hrmsShiftModel.shiftEndTime);
     _selectedBreakStartTime =
         AppMethods().dateStringToTimeOfDay(hrmsShiftModel.breakStartTime);
     _selectedBreakEndTime =
-        AppMethods().dateStringToTimeOfDay(hrmsShiftModel.breakEndTime);
+        AppMethods().dateStringToTimeOfDay(hrmsShiftModel.breakEndTime); */
+    /*    _totalWorkingHour = hrmsShiftModel.totalWorkingHour ?? ""; */
   }
 
   @override
@@ -175,15 +225,17 @@ class _EditShiftConfigFormState extends State<EditShiftConfigForm> {
                               );
                             } else {
                               isInit = false;
-                              return _editForm(provider, context, now);
+                              initShiftConfigForm(snap.data!);
+                              return _editForm(
+                                  provider, context, now, providerShift);
                             }
                           }
                         })
-                    : _editForm(provider, context, now)));
+                    : _editForm(provider, context, now, providerShift)));
   }
 
-  SingleChildScrollView _editForm(
-      EmployeeDataController provider, BuildContext context, DateTime now) {
+  SingleChildScrollView _editForm(EmployeeDataController provider,
+      BuildContext context, DateTime now, EmployeeShiftController provShif) {
     return SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
         child:
@@ -231,8 +283,7 @@ class _EditShiftConfigFormState extends State<EditShiftConfigForm> {
                                 items: List.generate(
                                     snapshot.data!.data.length,
                                     (index) => DropdownMenuItem(
-                                        value: snapshot
-                                            .data!.data[index].shiftName,
+                                        value: snapshot.data!.data[index].id,
                                         child: Text(
                                           snapshot.data!.data[index].shiftName,
                                           style: Theme.of(context)
@@ -303,8 +354,14 @@ class _EditShiftConfigFormState extends State<EditShiftConfigForm> {
               children: [
                 Text("Default Shift"),
                 Checkbox(
-                  value: false,
-                  onChanged: (val) {},
+                  value: (didDefaultShift == null) ? false : didDefaultShift,
+                  onChanged: (val) {
+                    setState(() {
+                      (didDefaultShift == null)
+                          ? didDefaultShift = true
+                          : didDefaultShift = !didDefaultShift!;
+                    });
+                  },
                 ),
               ],
             ),
@@ -375,7 +432,7 @@ class _EditShiftConfigFormState extends State<EditShiftConfigForm> {
                     'End Time: ${AppMethods().dateTimeToTimeString(_selectedBreakEndTime)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
                     style: TextStyle(fontSize: mediumLabelFontSize),
                   ),
-                  SizedBox(width: 20),
+                  const SizedBox(width: 20),
                   TextButton(
                     onPressed: () => _selectBreakTime(context, true),
                     child: Text(
@@ -400,7 +457,7 @@ class _EditShiftConfigFormState extends State<EditShiftConfigForm> {
                     height: 50,
                   ),
                   Text(
-                    "7 hours 30 minutes",
+                    _totalWorkingHour,
                     style: TextStyle(fontSize: mediumLabelFontSize),
                   ),
                 ],
@@ -416,21 +473,48 @@ class _EditShiftConfigFormState extends State<EditShiftConfigForm> {
                 ),
                 backgroundColor: actionButtonBgColor,
                 foregroundColor: actionButtonFgColor),
-            onPressed: () {
-              /* if (_formPersonalInfoKey.currentState == null) {
-              return;
-            }
-            if (_formPersonalInfoKey.currentState!.validate()) {
-              _formPersonalInfoKey.currentState!.save();
-              // Do something with the validated data
-              // print('Name: $_name');
-            } */
+            onPressed: () async {
+              // _gracePeriodController.text.isEmpty
+              if (_selectedShift == null) {
+                AppMethods.snackBar(AppStrings.formErrorText, context);
+                return;
+              }
+              _totalWorkingHour = calculateTotalWorkingHours(
+                  _selectedStartTime,
+                  _selectedEndTime,
+                  _selectedBreakStartTime,
+                  _selectedBreakEndTime);
+              final shiftPostModel = HrmsShiftPostModel(
+                  shiftId: _selectedShift!,
+                  shiftStartTime:
+                      AppMethods().dateTimeToTimeString(_selectedStartTime),
+                  shiftEndTime:
+                      AppMethods().dateTimeToTimeString(_selectedEndTime),
+                  defaultShift: didDefaultShift,
+                  gracePeriod: _gracePeriodController.text,
+                  breakStartTime: AppMethods()
+                      .dateTimeToTimeString(_selectedBreakStartTime),
+                  breakEndTime:
+                      AppMethods().dateTimeToTimeString(_selectedBreakEndTime),
+                  totalWorkingHour: _totalWorkingHour,
+                  userID: widget.userId);
+
+              await provShif.updateShift(
+                  ApiLinks.shiftConfigUpdateLink, widget.id!, shiftPostModel);
+
+              Navigator.of(context).pop();
+
+              /* if (_formPersonalInfoKey.currentState!.validate()) {
+                _formPersonalInfoKey.currentState!.save();
+                // Do something with the validated data
+                // print('Name: $_name');
+              } */
 
               // Handle apply button press
               // You can access the values using controller.text for each field
             },
             child: const Text(
-              'Save',
+              'Update',
               style: TextStyle(fontSize: 25),
             ),
           )

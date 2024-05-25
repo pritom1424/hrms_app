@@ -82,7 +82,7 @@ class AppbarDefault extends StatelessWidget implements PreferredSize {
                           CupertinoIcons.bell,
                         ),
                         onPressed: () {
-                          Navigator.pushReplacement(
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => const NoticeListPage(

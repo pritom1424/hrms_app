@@ -50,6 +50,7 @@ class _UsersListState extends State<UsersList> {
   Widget build(BuildContext context) {
     final provider =
         Provider.of<EmployeeUserController>(context, listen: false);
+
     return Scaffold(
         appBar: AppBar(
           title:
@@ -80,7 +81,8 @@ class _UsersListState extends State<UsersList> {
                     _hrmsEmployeeUserModel = snap.data!;
 
                     for (int i = 0; i < snap.data!.data.length; i++) {
-                      didEnable.add(false);
+                      didEnable
+                          .add((snap.data!.data[i].status == 2) ? true : false);
                     }
 
                     return mainDataTable(_hrmsEmployeeUserModel);
@@ -210,6 +212,10 @@ class _UsersListState extends State<UsersList> {
                                         } else {
                                           didEnable[index] = !didEnable[index];
                                         }
+                                        await consumer.updateUserStatus(
+                                            ApiLinks.userStatusUpdate,
+                                            consumer.userData[index].id);
+
                                         setState(() {});
                                       },
                                       child: Text(
