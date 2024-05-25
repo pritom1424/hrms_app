@@ -38,6 +38,7 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
   }
 
   Future<void> _generatePdf(HrmsEmployeeEditModel hrmsEmployeeEditModel) async {
+    final pw.MemoryImage pdfImage;
     if (_isPDFCreated) {
       // PDF has already been created, no need to create again
       return;
@@ -56,17 +57,24 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
     // });
     final pdf = pw.Document();
     FocusScope.of(context).unfocus();
-    /* final Uint8List imageBytes = await _getImageBytes((widget.user == null)
-        ? imgPlaceHolder
-        : (widget.user!['image'].toString().isEmpty)
+/*     final Uint8List imageBytes = await _getImageBytes(
+        (hrmsEmployeeEditModel.image == null)
             ? imgPlaceHolder
-            : widget.user!['image']
-                .toString()); //'assets/images/profile_pic.png'
-       final pdfImage = pw.MemoryImage(imageBytes); */
-    final imageResponse = await http.get(Uri.parse(
-        "https://hrms.szamantech.com/storage/employee/${hrmsEmployeeEditModel.image}"));
-    final Uint8List imageBytes = imageResponse.bodyBytes;
-    final pdfImage = pw.MemoryImage(imageBytes);
+            : (hrmsEmployeeEditModel.image.toString().isEmpty)
+                ? imgPlaceHolder
+                : widget.user!['image']
+                    .toString()); //'assets/images/profile_pic.png'
+    final pdfImage = pw.MemoryImage(imageBytes); */
+
+    if (hrmsEmployeeEditModel.image != null) {
+      final imageResponse = await http.get(Uri.parse(
+          "https://hrms.szamantech.com/storage/employee/${hrmsEmployeeEditModel.image}"));
+      final Uint8List imageBytes = imageResponse.bodyBytes;
+      pdfImage = pw.MemoryImage(imageBytes);
+    } else {
+      final Uint8List imageBytes = await _getImageBytes(imgPlaceHolder);
+      pdfImage = pw.MemoryImage(imageBytes);
+    }
 
     pdf.addPage(
       pw.Page(
