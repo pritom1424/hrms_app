@@ -8,7 +8,6 @@ import '../model/hrms_employee_model.dart';
 import '../model/hrms_idtypes_model.dart';
 import '../model/hrms_nationality_model.dart';
 import '../model/hrms_shifttypes_model.dart';
-import 'package:http/http.dart' as http;
 
 import 'package:dio/dio.dart';
 

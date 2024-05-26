@@ -14,7 +14,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:provider/provider.dart';
 
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 class TextToPdfConverter extends StatefulWidget {
   final int id;
@@ -85,12 +85,20 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
                 : widget.user!['image']
                     .toString()); //'assets/images/profile_pic.png'
     final pdfImage = pw.MemoryImage(imageBytes); */
-
+    Dio dio = Dio();
     if (hrmsEmployeeEditModel.image != null) {
-      final imageResponse = await http.get(Uri.parse(
-          "https://hrms.szamantech.com/storage/employee/${hrmsEmployeeEditModel.image}"));
-      final Uint8List imageBytes = imageResponse.bodyBytes;
-      pdfImage = pw.MemoryImage(imageBytes);
+      final imageResponse = await dio.get(
+          "https://hrms.szamantech.com/storage/employee/${hrmsEmployeeEditModel.image}",
+          options: Options(responseType: ResponseType.bytes));
+
+      if (imageResponse.statusCode == 200) {
+        final Uint8List imageBytes = imageResponse.data;
+
+        pdfImage = pw.MemoryImage(imageBytes);
+      } else {
+        final Uint8List imageBytes = await _getImageBytes(imgPlaceHolder);
+        pdfImage = pw.MemoryImage(imageBytes);
+      }
     } else {
       final Uint8List imageBytes = await _getImageBytes(imgPlaceHolder);
       pdfImage = pw.MemoryImage(imageBytes);

@@ -30,6 +30,7 @@ class EmployeeList extends StatefulWidget {
 class _EmployeeListState extends State<EmployeeList> {
   //search
   //late List<Map<String, dynamic>> filteredUsers;
+  bool isErrorOccured = false;
   TextEditingController searchController = TextEditingController();
   Gender _selectedGender = Gender.male;
   //List<EmployeeDatum> fileredModel = [];
@@ -387,8 +388,6 @@ class _EmployeeListState extends State<EmployeeList> {
                                               .userData[index].nationality
                                               .toString())),
                                           DataCell(CircleAvatar(
-                                            onBackgroundImageError: (st, ob) =>
-                                                Text("e"),
                                             backgroundImage: (consumer
                                                         .userData[index]
                                                         .image !=

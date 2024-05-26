@@ -10,6 +10,7 @@ class AppStrings {
   static const idNumberErrorText = "Please enter your id number!";
   static const fatherNameErrorText = "Please enter your father name!";
   static const motherNameErrorText = "Please enter your mother name!";
+  static const phoneNumberErrorText = "Please enter your phone number!";
   static const nameErrorText = "Please enter your name!";
   static const designationErrorText = "Please enter your designation!";
   //
