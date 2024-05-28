@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:hrms_app/model/hrms_employee_post_model.dart';
+import 'package:hrms_app/utils/app_variables/user_credential.dart';
 import '../model/hrms_departments_model.dart';
 import '../model/hrms_employee_model.dart';
 import '../model/hrms_idtypes_model.dart';
@@ -28,7 +29,9 @@ class EmployeeDataController with ChangeNotifier {
 
     //
 
-    final response = await dio.get(apiLink);
+    final response = await dio.get(apiLink,
+        options: Options(
+            headers: {'Authorization': 'Bearer ${UserCredential.usertoken}'}));
 
     HrmsEmployeeModel jsonResponse =
         hrmsEmployeeModelFromJson(json.encode(response.data));
@@ -43,7 +46,9 @@ class EmployeeDataController with ChangeNotifier {
     Dio dio = Dio();
     final urlString = apiLink + employeeId.toString();
     //final url = Uri.parse(urlString);
-    final response = await dio.get(urlString);
+    final response = await dio.get(urlString,
+        options: Options(
+            headers: {'Authorization': 'Bearer ${UserCredential.usertoken}'}));
 
     if (response.statusCode == 200) {
       print("Employee deleted successfully");
@@ -64,7 +69,10 @@ class EmployeeDataController with ChangeNotifier {
 
       final response = await dio.post(apiLink,
           data: hrmsEmployeePostModel,
-          options: Options(headers: {'Content-Type': 'application/json'}));
+          options: Options(headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ${UserCredential.usertoken}'
+          }));
 
       // {'Content-Type': 'application/json'});
 
@@ -91,7 +99,10 @@ class EmployeeDataController with ChangeNotifier {
 
       final response = await dio.post(urlString,
           data: bodyData,
-          options: Options(headers: {'Content-Type': 'application/json'}));
+          options: Options(headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ${UserCredential.usertoken}'
+          }));
 
       if (response.statusCode == 200) {
         print("post created successfully");
@@ -138,7 +149,11 @@ class EmployeeDataController with ChangeNotifier {
       "self_access": hrmsEmployeePostModel.selfAccess
     });
     try {
-      Response response = await dio.post(url, data: formData);
+      Response response = await dio.post(url,
+          data: formData,
+          options: Options(headers: {
+            'Authorization': 'Bearer ${UserCredential.usertoken}'
+          }));
       if (response.statusCode == 200) {
         print('Image uploaded successfully.');
       } else {
@@ -182,7 +197,11 @@ class EmployeeDataController with ChangeNotifier {
       "self_access": hrmsEmployeePostModel.selfAccess
     });
     try {
-      Response response = await dio.post(url, data: formData);
+      Response response = await dio.post(url,
+          data: formData,
+          options: Options(headers: {
+            'Authorization': 'Bearer ${UserCredential.usertoken}'
+          }));
       if (response.statusCode == 200) {
         print('Image Created successfully.');
       } else {
@@ -222,7 +241,9 @@ class EmployeeDataController with ChangeNotifier {
   Future<HrmsDepartmentListModel> getDepartmentList(String apiLink) async {
     Dio dio = Dio();
     //final url = Uri.parse(apiLink);
-    final response = await dio.get(apiLink);
+    final response = await dio.get(apiLink,
+        options: Options(
+            headers: {'Authorization': 'Bearer ${UserCredential.usertoken}'}));
     HrmsDepartmentListModel jsonResponse =
         hrmsDepartmentListModelFromJson(jsonEncode(response.data));
     return jsonResponse;
@@ -231,7 +252,9 @@ class EmployeeDataController with ChangeNotifier {
   Future<HrmsShifttypesModel> getShiftList(String apiLink) async {
     Dio dio = Dio();
     //final url = Uri.parse(apiLink);
-    final response = await dio.get(apiLink);
+    final response = await dio.get(apiLink,
+        options: Options(
+            headers: {'Authorization': 'Bearer ${UserCredential.usertoken}'}));
     HrmsShifttypesModel jsonResponse =
         hrmsShifttypesModelFromJson(jsonEncode(response.data));
     return jsonResponse;
@@ -240,7 +263,9 @@ class EmployeeDataController with ChangeNotifier {
   Future<HrmsNationalityListModel> getNationalityList(String apiLink) async {
     Dio dio = Dio();
     //final url = Uri.parse(apiLink);
-    final response = await dio.get(apiLink);
+    final response = await dio.get(apiLink,
+        options: Options(
+            headers: {'Authorization': 'Bearer ${UserCredential.usertoken}'}));
     HrmsNationalityListModel jsonResponse =
         hrmsNationalityListModelFromJson(jsonEncode(response.data));
 
@@ -250,7 +275,9 @@ class EmployeeDataController with ChangeNotifier {
   Future<HrmsIdtypeListModel> getIdTypeList(String apiLink) async {
     Dio dio = Dio();
     // final url = Uri.parse(apiLink);
-    final response = await dio.get(apiLink);
+    final response = await dio.get(apiLink,
+        options: Options(
+            headers: {'Authorization': 'Bearer ${UserCredential.usertoken}'}));
     HrmsIdtypeListModel jsonResponse =
         hrmsIdtypeListModelFromJson(jsonEncode(response.data));
 

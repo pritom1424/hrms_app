@@ -6,12 +6,15 @@ import 'package:hrms_app/model/hrms_employee_post_model.dart';
 import 'package:hrms_app/model/hrms_shift_list_model.dart';
 import 'package:hrms_app/model/hrms_shift_model.dart';
 import 'package:hrms_app/model/hrms_shift_post_model.dart';
+import 'package:hrms_app/utils/app_variables/user_credential.dart';
 
 class EmployeeShiftController with ChangeNotifier {
   Future<HrmsShiftListModel> loadEmployeeList(String apiLink) async {
     Dio dio = Dio();
     //final url = Uri.parse(apiLink);
-    final response = await dio.get(apiLink);
+    final response = await dio.get(apiLink,
+        options: Options(
+            headers: {'Authorization': 'Bearer ${UserCredential.usertoken}'}));
     HrmsShiftListModel jsonResponse =
         hrmsShiftListModelFromJson(jsonEncode(response.data));
 
@@ -24,7 +27,9 @@ class EmployeeShiftController with ChangeNotifier {
   Future<HrmsShiftModel> loadShiftById(String apilink, int id) async {
     Dio dio = Dio();
     String urlString = apilink + id.toString();
-    final response = await dio.get(urlString);
+    final response = await dio.get(urlString,
+        options: Options(
+            headers: {'Authorization': 'Bearer ${UserCredential.usertoken}'}));
     HrmsShiftModel jsonResponse =
         hrmsShiftModelFromJson(jsonEncode(response.data));
 
@@ -40,7 +45,10 @@ class EmployeeShiftController with ChangeNotifier {
 
     final response = await dio.post(urlString,
         data: bodyData,
-        options: Options(headers: {'Content-Type': 'application/json'}));
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${UserCredential.usertoken}'
+        }));
 
     if (response.statusCode == 200) {
       print("post update successfully");
@@ -60,7 +68,10 @@ class EmployeeShiftController with ChangeNotifier {
 
     final response = await dio.post(urlString,
         data: bodyData,
-        options: Options(headers: {'Content-Type': 'application/json'}));
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${UserCredential.usertoken}'
+        }));
 
     if (response.statusCode == 200) {
       print("post created successfully");
@@ -74,7 +85,9 @@ class EmployeeShiftController with ChangeNotifier {
   Future<void> deleteShiftById(String apilink, int id) async {
     Dio dio = Dio();
     String urlString = apilink + id.toString();
-    final response = await dio.get(urlString);
+    final response = await dio.get(urlString,
+        options: Options(
+            headers: {'Authorization': 'Bearer ${UserCredential.usertoken}'}));
     if (response.statusCode == 200) {
       print("shift deleted successfully");
     } else {
