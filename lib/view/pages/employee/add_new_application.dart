@@ -49,7 +49,8 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
       TextEditingController();
   final TextEditingController _employeeMotherNameController =
       TextEditingController();
-
+  final TextEditingController _employeePhoneNumberController =
+      TextEditingController();
   final TextEditingController _employeePermanentAddressController =
       TextEditingController();
   final TextEditingController _employeePresentAddressController =
@@ -246,6 +247,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
     _employeeConfirmDateController.dispose();
     _employeeEmailController.dispose();
     _employeePassController.dispose();
+    _employeePhoneNumberController.dispose();
     // TODO: implement dispose
     super.dispose();
   }
@@ -322,6 +324,30 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
               ),
               validator: (val) => (val?.isEmpty ?? val == null)
                   ? AppStrings.motherNameErrorText
+                  : null,
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(vertical: marginHeight),
+            decoration: AppVars.customInputboxDecoration,
+            child: TextFormField(
+              controller: _employeePhoneNumberController,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                labelText: 'Employee Phone Number',
+                contentPadding: AppVars.inputContentPadding,
+                hintStyle: AppVars.customHintTextStyle,
+                /* prefixIcon: Icon(
+                  Icons.abc,
+                  color: iconColor,
+                ), */
+                border: InputBorder.none,
+                hintText: 'Employee Phone Number',
+                labelStyle:
+                    TextStyle(fontSize: labelFontSize, color: labelFontColor),
+              ),
+              validator: (val) => (val?.isEmpty ?? val == null)
+                  ? AppStrings.phoneNumberErrorText
                   : null,
             ),
           ),
@@ -979,6 +1005,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                     employeeName: _employeeNameController.text,
                     employeeFather: _employeeFatherNameController.text,
                     employeeMother: _employeeMotherNameController.text,
+                    employeePhoneNumber: _employeePhoneNumberController.text,
                     gender: _selectedGender.name,
                     dateOfBirth: AppMethods.dateOfBirthFormat(_selectedDate),
                     nationality: _selectedNation,

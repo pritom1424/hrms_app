@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../app_variables/app_vars.dart';
+import 'package:dio/dio.dart';
 
 class AppMethods {
   // we will use this function to shift focus from one text field to another text field
@@ -49,6 +50,18 @@ class AppMethods {
     return imageUrl;
   }
 
+  Future<String?> testLink(String url) async {
+    Dio dio = Dio();
+    if (url.isEmpty) {
+      return null;
+    }
+    final response = await dio.get(url);
+    if (response.statusCode == 200) {
+      return url;
+    }
+    return null;
+  }
+
   static int? employeeCodeToId(String employeeCode) {
     return int.tryParse(RegExp(r'\d+').firstMatch(employeeCode)!.group(0)!);
   }
@@ -61,6 +74,17 @@ class AppMethods {
     }
     String formattedDate = DateFormat('yyyy-MM-dd').format(currentDate);
     return formattedDate;
+  }
+
+  static String timeIn24Hour(DateTime? dateTime, TimeOfDay tDay) {
+    DateTime currentDate = DateTime.now();
+    if (dateTime != null) {
+      currentDate = DateTime(
+          dateTime.year, dateTime.month, dateTime.day, tDay.hour, tDay.minute);
+    }
+
+    String formatteDate = DateFormat('HH:mm').format(currentDate);
+    return formatteDate;
   }
 
   // generic toast message imported from toast package

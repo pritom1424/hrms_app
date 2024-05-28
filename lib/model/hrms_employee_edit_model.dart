@@ -17,6 +17,7 @@ class HrmsEmployeeEditModel {
   String? employeeName;
   String? employeeFather;
   String? employeeMother;
+  String? employeePhoneNumber;
   String? gender;
   String? dateOfBirth;
   String? nationality;
@@ -40,6 +41,7 @@ class HrmsEmployeeEditModel {
     required this.employeeName,
     required this.employeeFather,
     required this.employeeMother,
+    required this.employeePhoneNumber,
     required this.gender,
     required this.dateOfBirth,
     required this.nationality,
@@ -79,6 +81,7 @@ class HrmsEmployeeEditModel {
       employeeName: json["employee_name"],
       employeeFather: json["employee_father"],
       employeeMother: json["employee_mother"],
+      employeePhoneNumber: json["phone_number"],
       gender: json["gender"],
       dateOfBirth: json["date_of_birth"],
       nationality: json["nationality"],
@@ -118,6 +121,7 @@ class HrmsEmployeeEditModel {
         "employee_name": employeeName,
         "employee_father": employeeFather,
         "employee_mother": employeeMother,
+        "phone_number": employeePhoneNumber,
         "gender": gender,
         "date_of_birth": dateOfBirth,
         "nationality": nationality,

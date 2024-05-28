@@ -77,6 +77,8 @@ class _EditEmployeeApplicationFormState
       TextEditingController();
   final TextEditingController _employeeConfirmDateController =
       TextEditingController();
+  final TextEditingController _employeePhoneNumberController =
+      TextEditingController();
   /*************************************************************** */
 
 // form vars
@@ -267,6 +269,11 @@ class _EditEmployeeApplicationFormState
             ? ""
             : hrmsEmployeeEditModel.employeeMother!;
 
+    _employeePhoneNumberController.text =
+        (hrmsEmployeeEditModel.employeePhoneNumber == null)
+            ? ""
+            : hrmsEmployeeEditModel.employeePhoneNumber!;
+
     (hrmsEmployeeEditModel.gender == null)
         ? _selectedGender = Gender.male
         : (hrmsEmployeeEditModel.gender?.toLowerCase() ==
@@ -371,6 +378,7 @@ class _EditEmployeeApplicationFormState
 
     _employeeEmailController.dispose();
     _employeePasswordController.dispose();
+    _employeePhoneNumberController.dispose();
     // TODO: implement dispose
     super.dispose();
   }
@@ -447,6 +455,30 @@ class _EditEmployeeApplicationFormState
               ),
               validator: (val) => (val?.isEmpty ?? val == null)
                   ? AppStrings.motherNameErrorText
+                  : null,
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(vertical: marginHeight),
+            decoration: AppVars.customInputboxDecoration,
+            child: TextFormField(
+              keyboardType: TextInputType.number,
+              controller: _employeePhoneNumberController,
+              decoration: InputDecoration(
+                labelText: 'Employee Phone Number',
+                contentPadding: AppVars.inputContentPadding,
+                hintStyle: AppVars.customHintTextStyle,
+                /* prefixIcon: Icon(
+                  Icons.abc,
+                  color: iconColor,
+                ), */
+                border: InputBorder.none,
+                hintText: 'Employee Phone Number',
+                labelStyle:
+                    TextStyle(fontSize: labelFontSize, color: labelFontColor),
+              ),
+              validator: (val) => (val?.isEmpty ?? val == null)
+                  ? AppStrings.phoneNumberErrorText
                   : null,
             ),
           ),
@@ -1151,6 +1183,7 @@ class _EditEmployeeApplicationFormState
                     employeeName: _employeeNameController.text,
                     employeeFather: _employeeFatherNameController.text,
                     employeeMother: _employeeMotherNameController.text,
+                    employeePhoneNumber: _employeePhoneNumberController.text,
                     gender: _selectedGender.name,
                     dateOfBirth: AppMethods.dateOfBirthFormat(_selectedDate),
                     nationality: _selectedNation,

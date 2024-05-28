@@ -37,4 +37,17 @@ class ApiLinks {
 
   static String userStatusUpdate =
       "https://hrms.szamantech.com/api/dashboard-user-api/status/";
+
+  static String employeeAttendanceListLink =
+      "https://hrms.szamantech.com/api/attendance/getlist";
+
+  //optional
+  static String employeeAttendanceDeleteLink =
+      "https://hrms.szamantech.com/api/attendance/delete/";
+
+  static String employeeAttendanceLink =
+      "https://hrms.szamantech.com/api/attendance/show/";
+
+  static String employeeAttendanceUpdateLink =
+      "https://hrms.szamantech.com/api/attendance/update/";
 }

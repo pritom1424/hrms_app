@@ -14,7 +14,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:provider/provider.dart';
 
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 class TextToPdfConverter extends StatefulWidget {
   final int id;
@@ -39,6 +39,26 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
 
   Future<void> _generatePdf(HrmsEmployeeEditModel hrmsEmployeeEditModel) async {
     final pw.MemoryImage pdfImage;
+    double columnSpaceHeight = 5;
+
+    final theme = pw.PageTheme(
+      margin: pw.EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+      theme: pw.ThemeData(
+          defaultTextStyle: pw.TextStyle(fontSize: 18),
+          paragraphStyle: pw.TextStyle(fontSize: 15)),
+      pageFormat: PdfPageFormat.a4, // Background color
+      buildBackground: (pw.Context context) {
+        // Draw a rectangle with the background color
+        return pw.Container(
+          width: PdfPageFormat.a4.width,
+          height: PdfPageFormat.a4.height,
+          color: PdfColor.fromInt(0xFFE2E1E1),
+        );
+      },
+
+      // Optionally, you can also define other properties of the page theme
+      // such as margins, padding, etc.
+    );
     if (_isPDFCreated) {
       // PDF has already been created, no need to create again
       return;
@@ -65,12 +85,20 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
                 : widget.user!['image']
                     .toString()); //'assets/images/profile_pic.png'
     final pdfImage = pw.MemoryImage(imageBytes); */
-
+    Dio dio = Dio();
     if (hrmsEmployeeEditModel.image != null) {
-      final imageResponse = await http.get(Uri.parse(
-          "https://hrms.szamantech.com/storage/employee/${hrmsEmployeeEditModel.image}"));
-      final Uint8List imageBytes = imageResponse.bodyBytes;
-      pdfImage = pw.MemoryImage(imageBytes);
+      final imageResponse = await dio.get(
+          "https://hrms.szamantech.com/storage/employee/${hrmsEmployeeEditModel.image}",
+          options: Options(responseType: ResponseType.bytes));
+
+      if (imageResponse.statusCode == 200) {
+        final Uint8List imageBytes = imageResponse.data;
+
+        pdfImage = pw.MemoryImage(imageBytes);
+      } else {
+        final Uint8List imageBytes = await _getImageBytes(imgPlaceHolder);
+        pdfImage = pw.MemoryImage(imageBytes);
+      }
     } else {
       final Uint8List imageBytes = await _getImageBytes(imgPlaceHolder);
       pdfImage = pw.MemoryImage(imageBytes);
@@ -78,45 +106,51 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
 
     pdf.addPage(
       pw.Page(
-          theme: pw.ThemeData(defaultTextStyle: pw.TextStyle(fontSize: 18)),
-          pageFormat: PdfPageFormat.a4,
-          build:
-              (context) /* pw.Center(
+        pageTheme: theme,
+        //  theme: pw.ThemeData(defaultTextStyle: pw.TextStyle(fontSize: 18)),
+        // pageFormat: PdfPageFormat.a4,
+        build:
+            (context) /* pw.Center(
           child: pw.Text(defaultText /* _textEditingController.text */,
               textScaleFactor: 2, style: pw.TextStyle(font: pw.Font.times())),
         ), */
-              {
-            return pw.Column(
-              mainAxisAlignment: pw.MainAxisAlignment.start,
-              crossAxisAlignment: pw.CrossAxisAlignment.start,
-              children: [
-                pw.Container(
-                  color: PdfColors.red,
-                  width: double.infinity,
-                  height: 2, // Adjust border thickness as needed
-                  margin: const pw.EdgeInsets.all(
-                      0.0), // Remove gap from right side
-                ),
-                pw.SizedBox(height: 5),
-                pw.Column(children: [
-                  pw.Text('SZamanTech',
-                      style: pw.TextStyle(
-                          fontWeight: pw.FontWeight.bold, fontSize: 25)),
-                  pw.SizedBox(height: 5),
-                  pw.Text(
-                    'Phone:+8801713694070, Address: 93, Kazi Nazrul Islam Avenue, (5th Floor),',
-                  ),
-                  pw.SizedBox(height: 5),
-                  pw.Text(
-                    'Kawran Bazar, Dhaka-1215',
-                  ),
-                  pw.Divider(
-                    color: PdfColors.black,
-                  )
-                ]),
+            {
+          return pw.Column(
+            mainAxisAlignment: pw.MainAxisAlignment.start,
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Container(
+                color: PdfColors.blueAccent, //PdfColors.red,
+                width: double.infinity,
+                height: 5, // Adjust border thickness as needed
+                margin:
+                    const pw.EdgeInsets.all(0.0), // Remove gap from right side
+              ),
+              pw.SizedBox(height: columnSpaceHeight),
+              pw.Container(
+                child: pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.center,
+                    children: [
+                      pw.Text('SZamanTech',
+                          style: pw.TextStyle(
+                              fontWeight: pw.FontWeight.bold, fontSize: 25)),
+                      pw.SizedBox(height: 5),
+                      pw.Text(
+                          'Phone:+8801713694070, Address: 93, Kazi Nazrul Islam Avenue, (5th Floor),',
+                          style: pw.Theme.of(context).paragraphStyle),
+                      pw.SizedBox(height: 5),
+                      pw.Text('Kawran Bazar, Dhaka-1215',
+                          style: pw.Theme.of(context).paragraphStyle),
+                      pw.Divider(
+                        color: PdfColors.black,
+                      )
+                    ]),
+              ),
 
-                pw.SizedBox(height: 10),
-                pw.Row(children: [
+              pw.SizedBox(height: 10),
+              pw.Container(
+                padding: pw.EdgeInsets.symmetric(horizontal: 20),
+                child: pw.Row(children: [
                   pw.Column(
                       crossAxisAlignment: pw.CrossAxisAlignment.start,
                       children: [
@@ -127,45 +161,97 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
                             style: pw.TextStyle(
                                 fontSize: 18, fontWeight: pw.FontWeight.bold)),
                         pw.SizedBox(height: 5),
-                        pw.Text((hrmsEmployeeEditModel
-                                    .officeInformation?.designation ==
-                                null)
-                            ? "Designation"
-                            : hrmsEmployeeEditModel
-                                    .officeInformation?.designation
-                                    .toString() ??
-                                "Designation"), //'testtest_designation'
+                        pw.Text(
+                            (hrmsEmployeeEditModel
+                                        .officeInformation?.designation ==
+                                    null)
+                                ? "Designation"
+                                : hrmsEmployeeEditModel
+                                        .officeInformation?.designation
+                                        .toString() ??
+                                    "Designation",
+                            style: pw.TextStyle(
+                                fontWeight: pw
+                                    .FontWeight.bold)), //'testtest_designation'
                         pw.SizedBox(height: 5),
-                        pw.Text((hrmsEmployeeEditModel.employeeCode == null)
-                            ? "ID"
-                            : "ID: ${hrmsEmployeeEditModel.employeeCode.toString()}"),
+                        pw.Text(
+                            (hrmsEmployeeEditModel.employeeCode == null)
+                                ? "ID"
+                                : "ID: ${hrmsEmployeeEditModel.employeeCode.toString()}",
+                            style:
+                                pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                       ]),
                   pw.Spacer(),
-                  pw.Image(pdfImage,
+                  pw.Container(
+                      width: 100,
+                      height: 100,
+                      child: pw.ClipRRect(
+                        horizontalRadius: 50,
+                        verticalRadius: 50,
+                        child: pw.Image(pdfImage, fit: pw.BoxFit.cover),
+                      ))
+                  /*  pw.ClipRRect(
+                  child: pw.Image(pdfImage,
                       width: 75, height: 100, fit: pw.BoxFit.contain),
+                  horizontalRadius: 60,
+                  verticalRadius: 60) */
                 ]),
-                pw.SizedBox(height: 10),
+              ),
 
-                // General Information
-                pw.SizedBox(height: 20),
-                pw.Text('General Information',
-                    style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                pw.SizedBox(height: 5),
-                pw.Row(children: [
+              pw.SizedBox(height: 10),
+              pw.Divider(color: PdfColors.black, indent: 20, endIndent: 20),
+              // General Information
+              pw.SizedBox(height: 20),
+              pw.Padding(
+                padding: pw.EdgeInsets.symmetric(horizontal: 20),
+                child: pw.Text('General Information',
+                    style: pw.TextStyle(
+                        fontWeight: pw.FontWeight.bold, fontSize: 22)),
+              ),
+
+              pw.SizedBox(height: 5),
+              pw.Padding(
+                padding: pw.EdgeInsets.symmetric(horizontal: 20),
+                child: pw.Row(children: [
                   pw.Column(
                       mainAxisAlignment: pw.MainAxisAlignment.start,
                       crossAxisAlignment: pw.CrossAxisAlignment.start,
                       children: [
                         pw.Text('Father Name :'),
+                        pw.SizedBox(
+                          height: columnSpaceHeight,
+                        ),
                         pw.Text('Mother Name :'),
+                        pw.SizedBox(
+                          height: columnSpaceHeight,
+                        ),
                         pw.Text('Gender :'),
+                        pw.SizedBox(
+                          height: columnSpaceHeight,
+                        ),
                         pw.Text('Date Of Birth :'),
+                        pw.SizedBox(
+                          height: columnSpaceHeight,
+                        ),
                         pw.Text('Nationality :'),
-                        pw.Text('NID :'),
+                        pw.SizedBox(
+                          height: columnSpaceHeight,
+                        ),
+                        pw.Text((hrmsEmployeeEditModel.idType == null)
+                            ? "Id"
+                            : hrmsEmployeeEditModel.idType.toString() + ' :'),
+                        pw.SizedBox(
+                          height: columnSpaceHeight,
+                        ),
                         pw.Text('Present Address :'),
+                        pw.SizedBox(
+                          height: columnSpaceHeight,
+                        ),
                         pw.Text('Permanent Address :'),
                       ]),
-                  // pw.SizedBox(width: 20,),
+                  pw.SizedBox(
+                    width: 20,
+                  ),
                   pw.Column(
                       mainAxisAlignment: pw.MainAxisAlignment.start,
                       crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -173,110 +259,145 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
                         pw.Text((hrmsEmployeeEditModel.employeeFather == null)
                             ? "Father"
                             : hrmsEmployeeEditModel.employeeFather.toString()),
+                        pw.SizedBox(
+                          height: columnSpaceHeight,
+                        ),
                         pw.Text((hrmsEmployeeEditModel.employeeMother == null)
                             ? "Mother"
                             : hrmsEmployeeEditModel.employeeFather.toString()),
+                        pw.SizedBox(
+                          height: columnSpaceHeight,
+                        ),
                         pw.Text((hrmsEmployeeEditModel.gender == null)
                             ? "Gender"
                             : hrmsEmployeeEditModel.gender.toString()),
+                        pw.SizedBox(
+                          height: columnSpaceHeight,
+                        ),
                         pw.Text((hrmsEmployeeEditModel.dateOfBirth == null)
                             ? "BirthDate"
                             : hrmsEmployeeEditModel.dateOfBirth.toString()),
+                        pw.SizedBox(
+                          height: columnSpaceHeight,
+                        ),
                         pw.Text((hrmsEmployeeEditModel.nationality == null)
                             ? "Bangladesh"
                             : hrmsEmployeeEditModel.nationality.toString()),
-                        pw.Text((hrmsEmployeeEditModel.idType == null)
-                            ? "Id"
-                            : hrmsEmployeeEditModel.idType.toString()),
+                        pw.SizedBox(
+                          height: columnSpaceHeight,
+                        ),
+                        pw.Text((hrmsEmployeeEditModel.idNumber == null)
+                            ? ""
+                            : hrmsEmployeeEditModel.idNumber.toString()),
                         pw.Text((hrmsEmployeeEditModel.permanentAddress == null)
                             ? "permanent address"
                             : hrmsEmployeeEditModel.permanentAddress
                                 .toString()),
+                        pw.SizedBox(
+                          height: columnSpaceHeight,
+                        ),
                         pw.Text((hrmsEmployeeEditModel.presentAddress == null)
                             ? "present address"
                             : hrmsEmployeeEditModel.presentAddress.toString()),
                       ]),
                 ]),
+              ),
 
-                // Education
+              // Education
 
-                /* pw.SizedBox(height: 20),
-                pw.Text('Education',
-                    style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                pw.SizedBox(height: 5),
-                pw.Row(children: [
-                  pw.Column(
-                      mainAxisAlignment: pw.MainAxisAlignment.start,
-                      crossAxisAlignment: pw.CrossAxisAlignment.start,
-                      children: [
-                        pw.Text('Father Name :'),
-                        pw.Text('Mother Name :'),
-                        pw.Text('Gender :'),
-                        pw.Text('Date Of Birth :'),
-                        pw.Text('Nationality :'),
-                        pw.Text('NID :'),
-                        pw.Text('Present Address :'),
-                        pw.Text('Permanent Address :'),
-                      ]),
-                  // pw.SizedBox(width: 20,),
-                  pw.Column(
-                      mainAxisAlignment: pw.MainAxisAlignment.start,
-                      crossAxisAlignment: pw.CrossAxisAlignment.start,
-                      children: [
-                        pw.Text('Father'),
-                        pw.Text('Mother'),
-                        pw.Text('Male'),
-                        pw.Text('07/05/2024'),
-                        pw.Text('Bangladesh'),
-                        pw.Text('15523322311'),
-                        pw.Text('Dhaka'),
-                        pw.Text('Dhaka'),
-                      ]),
-                ]),
-                pw.SizedBox(height: 20),
-                pw.Text('Employee',
-                    style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                pw.SizedBox(height: 5),
-                pw.Row(children: [
-                  pw.Column(
-                      mainAxisAlignment: pw.MainAxisAlignment.start,
-                      crossAxisAlignment: pw.CrossAxisAlignment.start,
-                      children: [
-                        pw.Text('Father Name :'),
-                        pw.Text('Mother Name :'),
-                        pw.Text('Gender :'),
-                        pw.Text('Date Of Birth :'),
-                        pw.Text('Nationality :'),
-                        pw.Text('NID :'),
-                        pw.Text('Present Address :'),
-                        pw.Text('Permanent Address :'),
-                      ]),
-                  // pw.SizedBox(width: 20,),
-                  pw.Column(
-                      mainAxisAlignment: pw.MainAxisAlignment.start,
-                      crossAxisAlignment: pw.CrossAxisAlignment.start,
-                      children: [
-                        pw.Text('Father'),
-                        pw.Text('Mother'),
-                        pw.Text('Male'),
-                        pw.Text('07/05/2024'),
-                        pw.Text('Bangladesh'),
-                        pw.Text('15523322311'),
-                        pw.Text('Dhaka'),
-                        pw.Text('Dhaka'),
-                      ]),
-                ]), */
-                pw.Spacer(),
-                pw.Container(
-                  color: PdfColors.greenAccent,
-                  width: double.infinity,
-                  height: 2, // Adjust border thickness as needed
-                  margin: const pw.EdgeInsets.all(
-                      0.0), // Remove gap from right side
-                ),
-              ],
-            );
-          }),
+              /* pw.SizedBox(height: 20),
+            pw.Text('Education',
+                style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+            pw.SizedBox(height: 5),
+            pw.Row(children: [
+              pw.Column(
+                  mainAxisAlignment: pw.MainAxisAlignment.start,
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.Text('Father Name :'),
+                    pw.Text('Mother Name :'),
+                    pw.Text('Gender :'),
+                    pw.Text('Date Of Birth :'),
+                    pw.Text('Nationality :'),
+                    pw.Text('NID :'),
+                    pw.Text('Present Address :'),
+                    pw.Text('Permanent Address :'),
+                  ]),
+              // pw.SizedBox(width: 20,),
+              pw.Column(
+                  mainAxisAlignment: pw.MainAxisAlignment.start,
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.Text('Father'),
+                    pw.Text('Mother'),
+                    pw.Text('Male'),
+                    pw.Text('07/05/2024'),
+                    pw.Text('Bangladesh'),
+                    pw.Text('15523322311'),
+                    pw.Text('Dhaka'),
+                    pw.Text('Dhaka'),
+                  ]),
+            ]),
+            pw.SizedBox(height: 20),
+            pw.Text('Employee',
+                style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+            pw.SizedBox(height: 5),
+            pw.Row(children: [
+              pw.Column(
+                  mainAxisAlignment: pw.MainAxisAlignment.start,
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.Text('Father Name :'),
+                    pw.Text('Mother Name :'),
+                    pw.Text('Gender :'),
+                    pw.Text('Date Of Birth :'),
+                    pw.Text('Nationality :'),
+                    pw.Text('NID :'),
+                    pw.Text('Present Address :'),
+                    pw.Text('Permanent Address :'),
+                  ]),
+              // pw.SizedBox(width: 20,),
+              pw.Column(
+                  mainAxisAlignment: pw.MainAxisAlignment.start,
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.Text('Father'),
+                    pw.Text('Mother'),
+                    pw.Text('Male'),
+                    pw.Text('07/05/2024'),
+                    pw.Text('Bangladesh'),
+                    pw.Text('15523322311'),
+                    pw.Text('Dhaka'),
+                    pw.Text('Dhaka'),
+                  ]),
+            ]), */
+              pw.Spacer(),
+              pw.Container(
+                color: PdfColors.red,
+                width: double.infinity,
+                height: 5, // Adjust border thickness as needed
+                margin:
+                    const pw.EdgeInsets.all(0.0), // Remove gap from right side
+              ),
+            ],
+          );
+        },
+      ),
+    );
+    pdf.addPage(
+      pw.Page(
+        pageTheme: theme,
+        //  theme: pw.ThemeData(defaultTextStyle: pw.TextStyle(fontSize: 18)),
+        // pageFormat: PdfPageFormat.a4,
+        build:
+            (context) /* pw.Center(
+          child: pw.Text(defaultText /* _textEditingController.text */,
+              textScaleFactor: 2, style: pw.TextStyle(font: pw.Font.times())),
+        ), */
+            {
+          return pw.Center(child: pw.Text("This page is intentionally blank"));
+        },
+      ),
     );
     /* pdf.addPage(
       pw.Page(
@@ -353,15 +474,27 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
                     } else {
                       isInit = false;
                       _generatePdf(snapshot.data!);
-                      return mainPdfForn(scSize);
+                      return mainPdfForm(scSize);
                     }
                   }
                 })
-            : mainPdfForn(scSize));
+            : mainPdfForm(scSize));
   }
 
-  Container mainPdfForn(Size scSize) {
-    return Container(
+  Widget mainPdfForm(Size scSize) {
+    return (_pdfPath == null)
+        ? SizedBox.shrink()
+        : PDFView(
+            fitPolicy: FitPolicy.BOTH,
+            filePath: _pdfPath,
+            enableSwipe: true,
+            swipeHorizontal: true,
+            autoSpacing: true,
+            pageFling: true,
+            pageSnap: false,
+          );
+
+    /* Container(
       height: scSize.height * 1,
       width: double.infinity,
       child: SingleChildScrollView(
@@ -373,7 +506,7 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
             if (_pdfPath != null)
               Container(
                 height: scSize.height * 1,
-                //color: Colors.red,
+                //         color: Colors.red,
                 width: double.infinity,
                 child: PDFView(
                   fitPolicy: FitPolicy.BOTH,
@@ -388,6 +521,6 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
           ],
         ),
       ),
-    );
+    ); */
   }
 }
