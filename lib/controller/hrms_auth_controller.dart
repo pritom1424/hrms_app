@@ -32,6 +32,10 @@ class HrmsAuthController with ChangeNotifier {
     return "";
   }
 
+  DateTime get expiryDate {
+    return _expiryDate;
+  }
+
   Future<bool> Authenticate(String email, String password) async {
     Dio dio = Dio();
     final url = ApiLinks.employeeAuthLink;
@@ -108,6 +112,7 @@ class HrmsAuthController with ChangeNotifier {
     _expiryDate = expiryDate;
     UserCredential.userid = _userId;
     UserCredential.usertoken = _token;
+    UserCredential.expiryDate = expiryDate;
     notifyListeners();
     autoLogout();
     return true;

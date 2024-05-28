@@ -18,6 +18,7 @@ class EmployeeAttendanceController with ChangeNotifier {
       String apiLink) async {
     Dio dio = Dio();
     // final url = Uri.parse(apiLink + employeeCode.toString());
+    print("token: ${UserCredential.usertoken}");
 
     final urlString = apiLink;
     final response = await dio.get(urlString,

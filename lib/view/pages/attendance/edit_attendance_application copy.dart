@@ -248,37 +248,32 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
                     ),
                   )
                 : (isInit)
-                    ? SingleChildScrollView(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-                        child: FutureBuilder(
-                            future: provider.showEmployeeAttendance(
-                                ApiLinks.employeeAttendanceLink, widget.id!),
-                            builder: (ctx, snap) {
-                              if (snap.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Container(
-                                  height: AppVars.screenSize.height,
-                                  child: const Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                );
-                              } else {
-                                if (!snap.hasData) {
-                                  return Container(
-                                    height: AppVars.screenSize.height,
-                                    child: const Center(
-                                      child: Text("No data available"),
-                                    ),
-                                  );
-                                } else {
-                                  isInit = false;
-                                  initEditAttendanceForm(snap.data!);
-                                  return _editForm(provider, context, now);
-                                }
-                              }
-                            }),
-                      )
+                    ? FutureBuilder(
+                        future: provider.showEmployeeAttendance(
+                            ApiLinks.employeeAttendanceLink, widget.id!),
+                        builder: (ctx, snap) {
+                          if (snap.connectionState == ConnectionState.waiting) {
+                            return Container(
+                              height: AppVars.screenSize.height,
+                              child: const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          } else {
+                            if (!snap.hasData) {
+                              return Container(
+                                height: AppVars.screenSize.height,
+                                child: const Center(
+                                  child: Text("No data available"),
+                                ),
+                              );
+                            } else {
+                              isInit = false;
+                              initEditAttendanceForm(snap.data!);
+                              return _editForm(provider, context, now);
+                            }
+                          }
+                        })
                     : _editForm(provider, context, now)));
   }
 

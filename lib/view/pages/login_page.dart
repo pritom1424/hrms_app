@@ -42,9 +42,7 @@ class _LoginFormState extends State<LoginForm> {
   @override
   void initState() {
     print("init login");
-    if (widget.isLogOut != null && widget.isLogOut == true) {
-      Provider.of<HrmsAuthController>(context, listen: false).logout();
-    }
+
     // TODO: implement initState
     super.initState();
   }
