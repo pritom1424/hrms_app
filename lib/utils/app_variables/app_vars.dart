@@ -156,6 +156,7 @@ class AppVars {
       )
     ] */
   };
+
   static List<Map<String, String>> noticeData = [
     {
       'title': "Scheduled meeting with Managing Director Sir regarding website",

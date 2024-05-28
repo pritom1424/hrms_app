@@ -2,9 +2,13 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:hrms_app/controller/hrms_auth_controller.dart';
 import 'package:hrms_app/model/hrms_attendance_post_model.dart';
 import 'package:hrms_app/model/hrms_employee_attendance_list_model.dart';
 import 'package:hrms_app/model/hrms_employee_attendance_model.dart';
+import 'package:hrms_app/utils/app_variables/app_vars.dart';
+import 'package:hrms_app/utils/app_variables/user_credential.dart';
+import 'package:provider/provider.dart';
 
 class EmployeeAttendanceController with ChangeNotifier {
   List<AttendanceDatum> _userData = [];
@@ -14,8 +18,11 @@ class EmployeeAttendanceController with ChangeNotifier {
       String apiLink) async {
     Dio dio = Dio();
     // final url = Uri.parse(apiLink + employeeCode.toString());
+
     final urlString = apiLink;
-    final response = await dio.get(urlString);
+    final response = await dio.get(urlString,
+        options: Options(
+            headers: {'Authorization': 'Bearer ${UserCredential.usertoken}'}));
     HrmsEmployeeAttendanceListModel jsonResponse =
         hrmsEmployeeAttendanceListModelFromJson(jsonEncode(response.data));
     _userData = jsonResponse.data;
@@ -24,12 +31,14 @@ class EmployeeAttendanceController with ChangeNotifier {
     return jsonResponse;
   }
 
-  Future<HrmsEmployeeAttendanceModel> shpwEmployeeAttendance(
+  Future<HrmsEmployeeAttendanceModel> showEmployeeAttendance(
       String apiLink, int id) async {
     Dio dio = Dio();
     // final url = Uri.parse(apiLink + employeeCode.toString());
     final urlString = apiLink + id.toString();
-    final response = await dio.get(urlString);
+    final response = await dio.get(urlString,
+        options: Options(
+            headers: {'Authorization': 'Bearer ${UserCredential.usertoken}'}));
     HrmsEmployeeAttendanceModel jsonResponse =
         hrmsEmployeeAttendanceModelFromJson(jsonEncode(response.data));
 
@@ -49,7 +58,10 @@ class EmployeeAttendanceController with ChangeNotifier {
 
     final response = await dio.post(urlString,
         data: bodyData,
-        options: Options(headers: {'Content-Type': 'application/json'}));
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${UserCredential.usertoken}'
+        }));
     print("update attendance before post");
     if (response.statusCode == 200) {
       print("attendance update successfully");
@@ -112,9 +124,12 @@ class EmployeeAttendanceController with ChangeNotifier {
 
   Future<void> deleteEmployee(String apiLink, int employeeId) async {
     Dio dio = Dio();
+
     final urlString = apiLink + employeeId.toString();
     //final url = Uri.parse(urlString);
-    final response = await dio.get(urlString);
+    final response = await dio.get(urlString,
+        options: Options(
+            headers: {'Authorization': 'Bearer ${UserCredential.usertoken}'}));
 
     if (response.statusCode == 200) {
       print("Employee deleted successfully");

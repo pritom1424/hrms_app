@@ -3,6 +3,7 @@ import 'package:hrms_app/controller/employee_attendance_controller.dart';
 import 'package:hrms_app/controller/employee_edit_data_controller.dart';
 import 'package:hrms_app/controller/employee_shift_controller.dart';
 import 'package:hrms_app/controller/employee_user_controller.dart';
+import 'package:hrms_app/controller/hrms_auth_controller.dart';
 import 'utils/app_variables/app_strings.dart';
 import 'utils/app_variables/app_vars.dart';
 import 'controller/employee_data_controller.dart';
@@ -14,6 +15,9 @@ import 'utils/app_colors/app_colors.dart';
 void main() {
   runApp(MultiProvider(
     providers: [
+      ChangeNotifierProvider<HrmsAuthController>(
+        create: (_) => HrmsAuthController(),
+      ),
       ChangeNotifierProvider<EmployeeDataController>(
         create: (_) => EmployeeDataController(),
       ),
@@ -83,17 +87,18 @@ class MyApp extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontFamily: AppStrings.currentFontFamily),
                 /*   bodyLarge:
-                    TextStyle(fontSize: 25, fontWeight: FontWeight.normal), */
+                      TextStyle(fontSize: 25, fontWeight: FontWeight.normal), */
                 /*   bodyMedium:
-                    TextStyle(fontSize: 18, fontWeight: FontWeight.normal), */
+                      TextStyle(fontSize: 18, fontWeight: FontWeight.normal), */
                 bodySmall: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.normal,
                     fontFamily: AppStrings.currentFontFamily))
-//        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            //        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             // useMaterial3: true,
             ),
-        home: SplashPage2() //SplashScreen(),
+        home: SplashPage2()
+        //SplashScreen(),
         );
   }
 }

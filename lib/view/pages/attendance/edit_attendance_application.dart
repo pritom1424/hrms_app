@@ -249,7 +249,7 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
                   )
                 : (isInit)
                     ? FutureBuilder(
-                        future: provider.shpwEmployeeAttendance(
+                        future: provider.showEmployeeAttendance(
                             ApiLinks.employeeAttendanceLink, widget.id!),
                         builder: (ctx, snap) {
                           if (snap.connectionState == ConnectionState.waiting) {

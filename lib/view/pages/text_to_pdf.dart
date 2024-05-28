@@ -8,6 +8,7 @@ import 'package:hrms_app/controller/employee_edit_data_controller.dart';
 import 'package:hrms_app/model/hrms_employee_edit_model.dart';
 import 'package:hrms_app/utils/app_variables/api_links.dart';
 import 'package:hrms_app/utils/app_variables/app_vars.dart';
+import 'package:hrms_app/utils/app_variables/user_credential.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
@@ -89,7 +90,9 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
     if (hrmsEmployeeEditModel.image != null) {
       final imageResponse = await dio.get(
           "https://hrms.szamantech.com/storage/employee/${hrmsEmployeeEditModel.image}",
-          options: Options(responseType: ResponseType.bytes));
+          options: Options(responseType: ResponseType.bytes, headers: {
+            'Authorization': 'Bearer ${UserCredential.usertoken}'
+          }));
 
       if (imageResponse.statusCode == 200) {
         final Uint8List imageBytes = imageResponse.data;

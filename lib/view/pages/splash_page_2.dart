@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hrms_app/controller/hrms_auth_controller.dart';
+import 'package:hrms_app/view/pages/root_nav_page.dart';
+import 'package:provider/provider.dart';
 import '../../utils/app_colors/app_colors.dart';
 import '../../utils/app_variables/app_vars.dart';
 import 'login_page.dart';
@@ -113,9 +116,17 @@ class _SplashPage2State extends State<SplashPage2> {
               height: 40,
             ),
             ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (ctx) => LoginForm()));
+              onPressed: () async {
+                final didLogin = await Provider.of<HrmsAuthController>(context,
+                        listen: false)
+                    .tryAutoLogin();
+                if (!didLogin) {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (ctx) => LoginForm()));
+                } else {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (ctx) => RootNavPage()));
+                }
               },
               child: Text("Get Started"),
               style: ElevatedButton.styleFrom(

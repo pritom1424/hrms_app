@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hrms_app/model/hrms_employee_user_api.dart';
 import 'package:hrms_app/model/hrms_user_model.dart';
+import 'package:hrms_app/utils/app_variables/user_credential.dart';
 
 class EmployeeUserController with ChangeNotifier {
   List<UserDatum> _userData = [];
@@ -14,7 +15,9 @@ class EmployeeUserController with ChangeNotifier {
     Dio dio = Dio();
     // final url = Uri.parse(apiLink + employeeCode.toString());
     final urlString = apiLink + employeeCode.toString();
-    final response = await dio.get(urlString);
+    final response = await dio.get(urlString,
+        options: Options(
+            headers: {'Authorization': 'Bearer ${UserCredential.usertoken}'}));
     HrmsEmployeeUserApiModel jsonResponse =
         hrmsEmployeeUserApiModelFromJson(jsonEncode(response.data));
 
@@ -24,14 +27,20 @@ class EmployeeUserController with ChangeNotifier {
   Future<void> updateUserStatus(String apiLink, int id) async {
     Dio dio = Dio();
     // final url = Uri.parse(apiLink + employeeCode.toString());
+
     final urlString = apiLink + id.toString();
-    final response = await dio.get(urlString);
+    final response = await dio.get(urlString,
+        options: Options(
+            headers: {'Authorization': 'Bearer ${UserCredential.usertoken}'}));
   }
 
   Future<HrmsEmployeeUserModel> loadAllUser(String apiLink) async {
     Dio dio = Dio();
     // final url = Uri.parse(apiLink);
-    final response = await dio.get(apiLink);
+    print("user status: ${UserCredential.usertoken}");
+    final response = await dio.get(apiLink,
+        options: Options(
+            headers: {'Authorization': 'Bearer ${UserCredential.usertoken}'}));
     HrmsEmployeeUserModel jsonResponse =
         hrmsEmployeeUserModelFromJson(jsonEncode(response.data));
 

@@ -13,6 +13,8 @@ class AppStrings {
   static const phoneNumberErrorText = "Please enter your phone number!";
   static const nameErrorText = "Please enter your name!";
   static const designationErrorText = "Please enter your designation!";
+  static const emailErrorText = "Please enter your email!";
+  static const passErrorText = "Please enter your password!";
   //
   static const currentFontFamily = "Poppins";
 
