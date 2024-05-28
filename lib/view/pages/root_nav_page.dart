@@ -1,6 +1,12 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hrms_app/controller/hrms_auth_controller.dart';
+import 'package:hrms_app/utils/app_variables/user_credential.dart';
+import 'package:hrms_app/view/pages/splash_page_2.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'employee/add_new_application.dart';
 import 'leave_application.dart';
 import 'navigation_pages/attendance_page.dart';
@@ -26,7 +32,28 @@ class _RootNavPageState extends State<RootNavPage> {
 
   @override
   void initState() {
+    TimeExpire();
     super.initState();
+  }
+
+  void TimeExpire() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey("userData")) {
+      return;
+    }
+    final extractedData =
+        json.decode(prefs.getString('userData')!) as Map<String, dynamic>;
+    final expiryDate = DateTime.parse(extractedData['expiryDate'] as String);
+    final timeToExpiry = expiryDate.difference(DateTime.now()).inSeconds;
+
+    print("expire:${expiryDate}");
+
+    Timer(Duration(seconds: timeToExpiry), () {
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (ctx) => SplashPage2()));
+      }
+    });
   }
 
   @override

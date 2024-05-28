@@ -4,4 +4,5 @@ class UserCredential {
 
   static int? userid;
   static String? usertoken;
+  static DateTime? expiryDate;
 }
