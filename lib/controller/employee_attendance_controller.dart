@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hrms_app/controller/hrms_auth_controller.dart';
+import 'package:hrms_app/model/hrms_add_attendance_post_model.dart';
 import 'package:hrms_app/model/hrms_attendance_post_model.dart';
 import 'package:hrms_app/model/hrms_employee_attendance_list_model.dart';
 import 'package:hrms_app/model/hrms_employee_attendance_model.dart';
@@ -54,6 +55,32 @@ class EmployeeAttendanceController with ChangeNotifier {
     String urlString = apiLink + employeeId.toString();
     final bodyData =
         hrmsAttendancePostModelToJson(hrmsEmployeeAttendancePostModel);
+
+    print("update attendance before post");
+
+    final response = await dio.post(urlString,
+        data: bodyData,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${UserCredential.usertoken}'
+        }));
+    print("update attendance before post");
+    if (response.statusCode == 200) {
+      print("attendance update successfully");
+    } else {
+      print("attendance update failed");
+    }
+
+    notifyListeners();
+  }
+
+  Future<void> addAttendance(
+      String apiLink, HrmsAddAttendancePostModel hrmsAddAttendanceModel) async {
+    Dio dio = Dio();
+
+    // final url = Uri.parse(apiLink + employeeId.toString());
+    String urlString = apiLink;
+    final bodyData = hrmsAddAttendancePostModelToJson(hrmsAddAttendanceModel);
 
     print("update attendance before post");
 
@@ -128,10 +155,11 @@ class EmployeeAttendanceController with ChangeNotifier {
 
     final urlString = apiLink + employeeId.toString();
     //final url = Uri.parse(urlString);
-    final response = await dio.get(urlString,
+    print("respnse delete attend ${UserCredential.usertoken}");
+    final response = await dio.delete(urlString,
         options: Options(
             headers: {'Authorization': 'Bearer ${UserCredential.usertoken}'}));
-
+    print("respnse delete attend");
     if (response.statusCode == 200) {
       print("Employee deleted successfully");
     } else {

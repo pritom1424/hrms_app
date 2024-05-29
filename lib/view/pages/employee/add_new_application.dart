@@ -748,7 +748,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                 tabController.index = 1;
                 _formPersonalInfoKey.currentState!.save();
               } else {
-                AppMethods.snackBar(AppStrings.formErrorText, context);
+                AppMethods().snackBar(AppStrings.formErrorText, context);
               }
             },
             child: const Text(
@@ -1007,7 +1007,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                     employeeMother: _employeeMotherNameController.text,
                     employeePhoneNumber: _employeePhoneNumberController.text,
                     gender: _selectedGender.name,
-                    dateOfBirth: AppMethods.dateOfBirthFormat(_selectedDate),
+                    dateOfBirth: AppMethods().dateOfBirthFormat(_selectedDate),
                     nationality: _selectedNation,
                     idType: _selectedIdType,
                     idNumber: _employeeIdController.text,
@@ -1017,12 +1017,13 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                     userId: null,
                     email: _employeeEmailController.text,
                     password: _employeePassController.text,
-                    shiftDate: AppMethods.dateOfBirthFormat(_selectedShiftDate),
+                    shiftDate:
+                        AppMethods().dateOfBirthFormat(_selectedShiftDate),
                     shiftId: _selectedShift,
                     joiningDate:
-                        AppMethods.dateOfBirthFormat(_selectedJoiningDate),
-                    confirmDate:
-                        AppMethods.dateOfBirthFormat(_selectedConfirmationDate),
+                        AppMethods().dateOfBirthFormat(_selectedJoiningDate),
+                    confirmDate: AppMethods()
+                        .dateOfBirthFormat(_selectedConfirmationDate),
                     designation: _employeeDesignationController.text,
                     departmentId: _selectedDepartment,
                     selfAccess: _selectSelfAccess);
@@ -1041,7 +1042,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                       builder: (ctx) => const EmployeeList()));
                 }
               } else {
-                AppMethods.snackBar(AppStrings.formErrorText, context);
+                AppMethods().snackBar(AppStrings.formErrorText, context);
               }
             },
             child: const Text(
@@ -1113,7 +1114,7 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                     _formPersonalInfoKey.currentState!.save();
                   } else {
                     tabController.index = 0;
-                    AppMethods.snackBar(AppStrings.formErrorText, context);
+                    AppMethods().snackBar(AppStrings.formErrorText, context);
                   }
                 },
                 tabs: const [

@@ -252,7 +252,7 @@ class _ShiftConfigState extends State<ShiftConfig> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Start Time: ${DateFormat.jm().format(DateTime(now.year, now.month, now.day, _selectedStartTime.hour, _selectedStartTime.minute))}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
+                      'Start Time: ${AppMethods().dateTimeToTimeString(_selectedStartTime)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
                       style: TextStyle(fontSize: mediumLabelFontSize),
                     ),
                     SizedBox(width: 20),
@@ -273,7 +273,7 @@ class _ShiftConfigState extends State<ShiftConfig> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'End Time: ${DateFormat.jm().format(DateTime(now.year, now.month, now.day, _selectedEndTime.hour, _selectedEndTime.minute))}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
+                      'End Time: ${AppMethods().dateTimeToTimeString(_selectedEndTime)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
                       style: TextStyle(fontSize: mediumLabelFontSize),
                     ),
                     SizedBox(width: 20),
@@ -347,7 +347,7 @@ class _ShiftConfigState extends State<ShiftConfig> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Start Time: ${DateFormat.jm().format(DateTime(now.year, now.month, now.day, _selectedBreakStartTime.hour, _selectedBreakStartTime.minute))}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
+                      'Start Time: ${AppMethods().dateTimeToTimeString(_selectedBreakStartTime)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
                       style: TextStyle(fontSize: mediumLabelFontSize),
                     ),
                     SizedBox(width: 20),
@@ -368,7 +368,7 @@ class _ShiftConfigState extends State<ShiftConfig> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'End Time: ${DateFormat.jm().format(DateTime(now.year, now.month, now.day, _selectedBreakStartTime.hour, _selectedBreakEndTime.minute))}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
+                      'End Time: ${AppMethods().dateTimeToTimeString(_selectedBreakEndTime)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
                       style: TextStyle(fontSize: mediumLabelFontSize),
                     ),
                     SizedBox(width: 20),
@@ -415,7 +415,7 @@ class _ShiftConfigState extends State<ShiftConfig> {
               onPressed: () async {
                 // _gracePeriodController.text.isEmpty
                 if (_selectedShift == null) {
-                  AppMethods.snackBar(AppStrings.formErrorText, context);
+                  AppMethods().snackBar(AppStrings.formErrorText, context);
                   return;
                 }
                 _totalWorkingHour = calculateTotalWorkingHours(

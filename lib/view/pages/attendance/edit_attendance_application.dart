@@ -191,6 +191,8 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
     _totalWorkingHourController.text =
         hrmsAttendanceModel.totalWorkingHour ?? "";
 
+    (hrmsAttendanceModel.status == 1) ? didPresent = true : didPresent = false;
+
     print("_selectedStartTime: }");
     /*   _selectedStartTime =
         AppMethods().dateStringToTimeOfDay(hrmsShiftModel.shiftStartTime); */
@@ -302,7 +304,7 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Attendance Date: ${AppMethods.dateOfBirthFormat(_selectedAttendanceTime)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
+                      'Attendance Date: ${AppMethods().dateOfBirthFormat(_selectedAttendanceTime)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
                       style: TextStyle(fontSize: mediumLabelFontSize),
                     ),
                     /* 
@@ -553,20 +555,20 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
 
                 final postAttendanceModel = HrmsAttendancePostModel(
                     attendanceDate:
-                        AppMethods.dateOfBirthFormat(_selectedAttendanceTime),
+                        AppMethods().dateOfBirthFormat(_selectedAttendanceTime),
                     employeeId: widget.employeeId,
-                    employeeInTime: AppMethods.timeIn24Hour(
-                        _selectedAttendanceTime, _selectedInTime),
-                    employeeOutTime: AppMethods.timeIn24Hour(
+                    employeeInTime: AppMethods()
+                        .timeIn24Hour(_selectedAttendanceTime, _selectedInTime),
+                    employeeOutTime: AppMethods().timeIn24Hour(
                         _selectedAttendanceTime, _selectedOutTime),
                     employeeShiftDuration:
                         _employeeShiftDurationController.text,
-                    employeeLateTime: AppMethods.timeIn24Hour(
+                    employeeLateTime: AppMethods().timeIn24Hour(
                         _selectedAttendanceTime, _selectedLateTime),
-                    employeeOverTime: AppMethods.timeIn24Hour(
+                    employeeOverTime: AppMethods().timeIn24Hour(
                         _selectedAttendanceTime, _selectedOverTime),
                     employeeTotalWorkingHour: _totalWorkingHourController.text,
-                    employeeStatus: (didPresent!) ? "Present" : "Absent");
+                    employeeStatus: (didPresent!) ? 1 : 0);
 
                 await provider.updateAttendance(
                     ApiLinks.employeeAttendanceUpdateLink,
@@ -575,7 +577,7 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
 
                 Navigator.of(context).pop();
               } else {
-                AppMethods.snackBar(AppStrings.formErrorText, context);
+                AppMethods().snackBar(AppStrings.formErrorText, context);
               }
               /* if (_formPersonalInfoKey.currentState!.validate()) {
                 _formPersonalInfoKey.currentState!.save();

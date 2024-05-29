@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:hrms_app/utils/app_methods/app_methods.dart';
+
 HrmsEmployeeAttendanceListModel hrmsEmployeeAttendanceListModelFromJson(
         String str) =>
     HrmsEmployeeAttendanceListModel.fromJson(json.decode(str));
@@ -47,21 +49,21 @@ class HrmsEmployeeAttendanceListModel {
 }
 
 class AttendanceDatum {
-  int id;
-  DateTime attendanceDate;
-  int employeeId;
-  String inTime;
-  String outTime;
-  String shiftDuration;
-  String lateTime;
-  String overTime;
-  String totalWorkingHour;
-  String status;
-  DateTime createdAt;
-  DateTime updatedAt;
-  String employeeName;
-  String action;
-  int dtRowIndex;
+  int? id;
+  DateTime? attendanceDate;
+  int? employeeId;
+  String? inTime;
+  String? outTime;
+  String? shiftDuration;
+  String? lateTime;
+  String? overTime;
+  String? totalWorkingHour;
+  String? status;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  String? employeeName;
+  String? action;
+  int? dtRowIndex;
 
   AttendanceDatum({
     required this.id,
@@ -84,7 +86,8 @@ class AttendanceDatum {
   factory AttendanceDatum.fromJson(Map<String, dynamic> json) =>
       AttendanceDatum(
         id: json["id"],
-        attendanceDate: DateTime.parse(json["attendance_date"]),
+        attendanceDate:
+            DateTime.tryParse(json["attendance_date"]) ?? DateTime.now(),
         employeeId: json["employee_id"],
         inTime: json["in_time"],
         outTime: json["out_time"],
@@ -102,8 +105,9 @@ class AttendanceDatum {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "attendance_date":
-            "${attendanceDate.year.toString().padLeft(4, '0')}-${attendanceDate.month.toString().padLeft(2, '0')}-${attendanceDate.day.toString().padLeft(2, '0')}",
+        "attendance_date": (attendanceDate == null)
+            ? AppMethods().dateOfBirthFormat(DateTime.now())
+            : "${attendanceDate!.year.toString().padLeft(4, '0')}-${attendanceDate!.month.toString().padLeft(2, '0')}-${attendanceDate!.day.toString().padLeft(2, '0')}",
         "employee_id": employeeId,
         "in_time": inTime,
         "out_time": outTime,
@@ -112,8 +116,8 @@ class AttendanceDatum {
         "over_time": overTime,
         "total_working_hour": totalWorkingHour,
         "status": status,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
         "employee_name": employeeName,
         "action": action,
         "DT_RowIndex": dtRowIndex,

@@ -198,7 +198,7 @@ class _UsersListState extends State<UsersList> {
                                                       EditEmployeeApplicationForm(
                                                           title:
                                                               "Edit Employee",
-                                                          employeeID: AppMethods
+                                                          employeeID: AppMethods()
                                                               .employeeCodeToId(
                                                                   consumer
                                                                       .userData[

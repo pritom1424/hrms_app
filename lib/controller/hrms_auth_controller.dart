@@ -110,6 +110,7 @@ class HrmsAuthController with ChangeNotifier {
     _token = extractedData['token'].toString();
     _userId = int.tryParse(extractedData['userId'].toString());
     _expiryDate = expiryDate;
+    print("token $token");
     UserCredential.userid = _userId;
     UserCredential.usertoken = _token;
     UserCredential.expiryDate = expiryDate;

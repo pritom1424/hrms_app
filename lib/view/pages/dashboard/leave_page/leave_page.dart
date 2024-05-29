@@ -119,7 +119,7 @@ class _LeaveCardsState extends State<LeaveCards>
                             ),
                             TextButton(
                               onPressed: () {
-                                AppMethods.showAlertPop(
+                                AppMethods().showAlertPop(
                                     context,
                                     Text(
                                       "Are you sure?",

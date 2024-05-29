@@ -5,6 +5,7 @@ import 'package:hrms_app/controller/employee_attendance_controller.dart';
 import 'package:hrms_app/model/hrms_employee_attendance_list_model.dart';
 import 'package:hrms_app/utils/app_methods/app_methods.dart';
 import 'package:hrms_app/utils/app_variables/api_links.dart';
+import 'package:hrms_app/view/pages/attendance/add_attendance_application.dart';
 import 'package:hrms_app/view/pages/attendance/edit_attendance_application.dart';
 import 'package:provider/provider.dart';
 import '../../../utils/app_colors/app_colors.dart';
@@ -111,32 +112,68 @@ class _AttendancePageState extends State<AttendancePage> {
       children: [
         // SearcWidget(),
 
-        Padding(
+        Container(
+          width: AppVars.screenSize.width,
           padding: const EdgeInsets.all(8.0),
-          child: TextField(
-            controller: searchController,
-            decoration: InputDecoration(
-                filled: true,
-                fillColor: Appcolors.searchbarBgColor,
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(
-                        width: 1, color: Appcolors.searchbarBgColor)),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-                hintText: AppStrings.searchPlaceholderText,
-                prefixIcon: Icon(Icons.search),
-                hintStyle: const TextStyle(
-                    fontSize: 18,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.normal),
-                enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(
-                        width: 1, color: Appcolors.searchbarBgColor))),
-            onChanged: (value) {
-              Provider.of<EmployeeAttendanceController>(context, listen: false)
-                  .filterUserData(value);
-            },
+          child: Row(
+            children: [
+              Expanded(
+                flex: 3,
+                child: TextField(
+                  controller: searchController,
+                  decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Appcolors.searchbarBgColor,
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(
+                              width: 1, color: Appcolors.searchbarBgColor)),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+                      hintText: AppStrings.searchPlaceholderText,
+                      prefixIcon: Icon(Icons.search),
+                      hintStyle: const TextStyle(
+                          fontSize: 18,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.normal),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(
+                              width: 1, color: Appcolors.searchbarBgColor))),
+                  onChanged: (value) {
+                    Provider.of<EmployeeAttendanceController>(context,
+                            listen: false)
+                        .filterUserData(value);
+                  },
+                ),
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Expanded(
+                child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (ctx) => AddAttendanceForm(
+                                title: "Add Attendance",
+                              )));
+                    },
+                    style: ElevatedButton.styleFrom(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 5, vertical: 0),
+                        backgroundColor: Appcolors.assignButtonColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10))),
+                    child: const FittedBox(
+                      child: Text(
+                        "Add Attendance",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    )),
+              )
+            ],
           ),
         ),
         SizedBox(
@@ -189,20 +226,25 @@ class _AttendancePageState extends State<AttendancePage> {
                           cells: [
                             DataCell(
                                 Text(consumer.userData[index].id.toString())),
-                            DataCell(Text(AppMethods.dateOfBirthFormat(
+                            DataCell(Text(AppMethods().dateOfBirthFormat(
                                 consumer.userData[index].attendanceDate))),
                             DataCell(Text(consumer.userData[index].employeeId
                                 .toString())),
-                            DataCell(
-                                Text(consumer.userData[index].employeeName)),
-                            DataCell(Text(consumer.userData[index].inTime)),
-                            DataCell(Text(consumer.userData[index].outTime)),
-                            DataCell(
-                                Text(consumer.userData[index].shiftDuration)),
-                            DataCell(Text(consumer.userData[index].lateTime)),
-                            DataCell(Text(consumer.userData[index].overTime)),
                             DataCell(Text(
-                                consumer.userData[index].totalWorkingHour)),
+                                consumer.userData[index].employeeName ?? "")),
+                            DataCell(
+                                Text(consumer.userData[index].inTime ?? "")),
+                            DataCell(
+                                Text(consumer.userData[index].outTime ?? "")),
+                            DataCell(Text(
+                                consumer.userData[index].shiftDuration ?? "")),
+                            DataCell(
+                                Text(consumer.userData[index].lateTime ?? "")),
+                            DataCell(
+                                Text(consumer.userData[index].overTime ?? "")),
+                            DataCell(Text(
+                                consumer.userData[index].totalWorkingHour ??
+                                    "")),
                             DataCell(Container(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 3, vertical: 3),
@@ -211,8 +253,10 @@ class _AttendancePageState extends State<AttendancePage> {
                                 color: Colors.blueAccent,
                               ),
                               child: Text(
-                                Bidi.stripHtmlIfNeeded(
-                                    consumer.userData[index].status),
+                                (consumer.userData[index].status == null)
+                                    ? ""
+                                    : Bidi.stripHtmlIfNeeded(
+                                        consumer.userData[index].status!),
                                 style: TextStyle(color: Colors.white),
                               ),
                             )),
@@ -248,9 +292,16 @@ class _AttendancePageState extends State<AttendancePage> {
                                   IconButton(
                                     icon: Icon(Icons.delete),
                                     onPressed: () async {
+                                      if (consumer.userData[index].id == null) {
+                                        return;
+                                      }
+                                      print(
+                                          "delete attendance ${consumer.userData[index].id}");
                                       await consumer.deleteEmployee(
                                           ApiLinks.employeeAttendanceDeleteLink,
-                                          consumer.userData[index].id);
+                                          consumer.userData[index].id!);
+
+                                      isInit = true;
                                       setState(() {});
                                       // _deleteUser(index);
                                     },

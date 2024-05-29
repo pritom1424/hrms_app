@@ -918,7 +918,7 @@ class _EditEmployeeApplicationFormState
                 tabController.index = 1;
                 _formPersonalInfoKey.currentState!.save();
               } else {
-                AppMethods.snackBar(AppStrings.formErrorText, context);
+                AppMethods().snackBar(AppStrings.formErrorText, context);
               }
 
               // Handle apply button press
@@ -1185,7 +1185,7 @@ class _EditEmployeeApplicationFormState
                     employeeMother: _employeeMotherNameController.text,
                     employeePhoneNumber: _employeePhoneNumberController.text,
                     gender: _selectedGender.name,
-                    dateOfBirth: AppMethods.dateOfBirthFormat(_selectedDate),
+                    dateOfBirth: AppMethods().dateOfBirthFormat(_selectedDate),
                     nationality: _selectedNation,
                     idType: _selectedIdType,
                     idNumber: _employeeIdController.text,
@@ -1195,12 +1195,13 @@ class _EditEmployeeApplicationFormState
                     userId: null,
                     email: _employeeEmailController.text,
                     password: _employeePasswordController.text,
-                    shiftDate: AppMethods.dateOfBirthFormat(_selectedShiftDate),
+                    shiftDate:
+                        AppMethods().dateOfBirthFormat(_selectedShiftDate),
                     shiftId: _selectedShift,
                     joiningDate:
-                        AppMethods.dateOfBirthFormat(_selectedJoiningDate),
-                    confirmDate:
-                        AppMethods.dateOfBirthFormat(_selectedConfirmationDate),
+                        AppMethods().dateOfBirthFormat(_selectedJoiningDate),
+                    confirmDate: AppMethods()
+                        .dateOfBirthFormat(_selectedConfirmationDate),
                     designation: _employeeDesignationController.text,
                     departmentId: _selectedDepartment,
                     selfAccess: _selectSelfAccess);
@@ -1219,7 +1220,7 @@ class _EditEmployeeApplicationFormState
                 // Do something with the validated data
                 //print('Name: $_name');
               } else {
-                AppMethods.snackBar(AppStrings.formErrorText, context);
+                AppMethods().snackBar(AppStrings.formErrorText, context);
               }
               print("nothing matched");
               // Handle apply button press
@@ -1344,7 +1345,7 @@ class _EditEmployeeApplicationFormState
                 _formPersonalInfoKey.currentState!.save();
               } else {
                 tabController.index = 0;
-                AppMethods.snackBar(AppStrings.formErrorText, context);
+                AppMethods().snackBar(AppStrings.formErrorText, context);
               }
             },
             tabs: const [

@@ -6,11 +6,11 @@ import 'package:dio/dio.dart';
 class AppMethods {
   // we will use this function to shift focus from one text field to another text field
   // we are using to avoid duplications of code
-  static void fieldFocusChange(
+  /* static void fieldFocusChange(
       BuildContext context, FocusNode current, FocusNode nextFocus) {
     current.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
-  }
+  } */
 
   String dateTimeToTimeString(TimeOfDay timeOfDay) {
     final now = DateTime.now();
@@ -62,12 +62,18 @@ class AppMethods {
     return null;
   }
 
-  static int? employeeCodeToId(String employeeCode) {
+  int? employeeCodeToId(String employeeCode) {
     return int.tryParse(RegExp(r'\d+').firstMatch(employeeCode)!.group(0)!);
   }
 
+  String idToemployeeCode(int employeeId) {
+    String paddedId = employeeId.toString().padLeft(4, '0');
+
+    return 'SZT-$paddedId';
+  }
+
   ////
-  static String dateOfBirthFormat(DateTime? dateTime) {
+  String dateOfBirthFormat(DateTime? dateTime) {
     DateTime currentDate = DateTime.now();
     if (dateTime != null) {
       currentDate = dateTime;
@@ -76,7 +82,7 @@ class AppMethods {
     return formattedDate;
   }
 
-  static String timeIn24Hour(DateTime? dateTime, TimeOfDay tDay) {
+  String timeIn24Hour(DateTime? dateTime, TimeOfDay tDay) {
     DateTime currentDate = DateTime.now();
     if (dateTime != null) {
       currentDate = DateTime(
@@ -96,7 +102,7 @@ class AppMethods {
       textColor: Colors.white,
     );
   } */
-  static Future<void> showAlertPop(
+  Future<void> showAlertPop(
       BuildContext context,
       Widget titleWidget,
       Widget contentWidget,
@@ -158,7 +164,7 @@ class AppMethods {
   }
 
   // we will utilise this for showing errors or success messages
-  static snackBar(String message, BuildContext context) {
+  snackBar(String message, BuildContext context) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     return ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(backgroundColor: Colors.red, content: Text(message)));

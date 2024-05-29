@@ -476,7 +476,7 @@ class _EditShiftConfigFormState extends State<EditShiftConfigForm> {
             onPressed: () async {
               // _gracePeriodController.text.isEmpty
               if (_selectedShift == null) {
-                AppMethods.snackBar(AppStrings.formErrorText, context);
+                AppMethods().snackBar(AppStrings.formErrorText, context);
                 return;
               }
               _totalWorkingHour = calculateTotalWorkingHours(

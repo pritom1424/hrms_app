@@ -1,22 +1,17 @@
 // loginForm widget
-import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:hrms_app/controller/hrms_auth_controller.dart';
 import 'package:hrms_app/utils/app_colors/app_colors.dart';
 import 'package:hrms_app/utils/app_methods/app_methods.dart';
 import 'package:hrms_app/utils/app_variables/app_strings.dart';
 import 'package:hrms_app/utils/app_variables/app_vars.dart';
 import 'package:hrms_app/utils/app_variables/image_paths.dart';
-import 'package:hrms_app/view/pages/navigation_pages/dashboard_page_2.dart';
-import 'package:hrms_app/view/pages/register_page.dart';
+
 import 'package:hrms_app/view/pages/root_nav_page.dart';
 import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
-import 'package:hrms_app/view/widgets/login_registration/login_page/emailfield_widget.dart';
-import 'package:hrms_app/view/widgets/login_registration/login_page/loginbutton_widget.dart';
-import 'package:hrms_app/view/widgets/login_registration/login_page/passwordfiled_widget.dart';
+
 import 'package:provider/provider.dart';
 
 class LoginForm extends StatefulWidget {
@@ -90,8 +85,11 @@ class _LoginFormState extends State<LoginForm> {
                       style: TextStyle(
                           fontSize: 18, fontWeight: FontWeight.normal),
                       //autofocus: false,
-
+                      enabled: true,
                       decoration: const InputDecoration(
+                        errorBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.grey, width: 0.3)),
                         focusedBorder: OutlineInputBorder(
                             borderSide:
                                 BorderSide(color: Colors.grey, width: 0.3)),
@@ -132,6 +130,9 @@ class _LoginFormState extends State<LoginForm> {
                       obscureText: true,
                       obscuringCharacter: "*",
                       decoration: const InputDecoration(
+                        errorBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.grey, width: 0.3)),
                         focusedBorder: OutlineInputBorder(
                             borderSide:
                                 BorderSide(color: Colors.grey, width: 0.3)),
@@ -189,7 +190,7 @@ class _LoginFormState extends State<LoginForm> {
                                 MaterialPageRoute(
                                     builder: (ctx) => RootNavPage()));
                           } else {
-                            AppMethods.snackBar("Login Failed!", context);
+                            AppMethods().snackBar("Login Failed!", context);
                           }
                         }
                       },

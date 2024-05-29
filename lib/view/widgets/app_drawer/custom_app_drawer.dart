@@ -78,12 +78,12 @@ class CustomAppDrawer extends StatelessWidget {
                           )),
                 ),
               ),
-              const FittedBox(
+              /* const FittedBox(
                 child: Text(
                   "Footer",
                   style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
-              )
+              ) */
             ],
           ),
         ));

@@ -1,25 +1,25 @@
 import 'dart:convert';
 import 'dart:io';
 
-HrmsAttendancePostModel hrmsAttendancePostModelFromJson(String str) =>
-    HrmsAttendancePostModel.fromJson(json.decode(str));
+HrmsAddAttendancePostModel hrmsAddAttendancePostModelFromJson(String str) =>
+    HrmsAddAttendancePostModel.fromJson(json.decode(str));
 
-String hrmsAttendancePostModelToJson(HrmsAttendancePostModel data) =>
+String hrmsAddAttendancePostModelToJson(HrmsAddAttendancePostModel data) =>
     json.encode(data.toJson());
 
-class HrmsAttendancePostModel {
-  String? attendanceDate;
-  int? employeeId;
+class HrmsAddAttendancePostModel {
+  String attendanceDate;
+  List<int?> employeeId;
 
-  String? employeeInTime;
-  String? employeeOutTime;
-  String? employeeShiftDuration;
-  String? employeeLateTime;
-  String? employeeOverTime;
-  String? employeeTotalWorkingHour;
-  int? employeeStatus;
+  List<String?> employeeInTime;
+  List<String?> employeeOutTime;
+  List<String?> employeeShiftDuration;
+  List<String?> employeeLateTime;
+  List<String?> employeeOverTime;
+  List<String?> employeeTotalWorkingHour;
+  List<int?> employeeStatus;
 
-  HrmsAttendancePostModel({
+  HrmsAddAttendancePostModel({
     required this.attendanceDate,
     required this.employeeId,
     required this.employeeInTime,
@@ -30,8 +30,8 @@ class HrmsAttendancePostModel {
     required this.employeeTotalWorkingHour,
     required this.employeeStatus,
   });
-  factory HrmsAttendancePostModel.fromJson(Map<String, dynamic> json) =>
-      HrmsAttendancePostModel(
+  factory HrmsAddAttendancePostModel.fromJson(Map<String, dynamic> json) =>
+      HrmsAddAttendancePostModel(
         attendanceDate: json["attendance_date"],
         employeeId: json["employee_id"],
         employeeInTime: json["in_time"],
@@ -55,45 +55,3 @@ class HrmsAttendancePostModel {
         "status": employeeStatus,
       };
 }
-
-/*
-punch_id
-employee_name
-employee_father
-employee_mother
-gender
-date_of_birth
-nationality
-id_type
-id_number
-permanent_address
-present_address
-user_id
-image
-email_address
-password
-shift_date
-shift_id
-joining_date
-confirmation_date
-designation
-department_id
-
-9
-key list
----------------
-attendance_date
-employee_id
-in_time
-out_time
-shift_duration
-late_time
-over_time
-total_working_hour
-status
-
-
-
-
-
- */

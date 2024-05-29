@@ -46,7 +46,7 @@ class _RootNavPageState extends State<RootNavPage> {
     final expiryDate = DateTime.parse(extractedData['expiryDate'] as String);
     final timeToExpiry = expiryDate.difference(DateTime.now()).inSeconds;
 
-    print("expire:${expiryDate}");
+    print("expire:${timeToExpiry}");
 
     Timer(Duration(seconds: timeToExpiry), () {
       if (mounted) {
