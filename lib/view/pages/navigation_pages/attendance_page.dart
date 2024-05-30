@@ -1,11 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:hrms_app/controller/employee_attendance_controller.dart';
 import 'package:hrms_app/model/hrms_employee_attendance_list_model.dart';
 import 'package:hrms_app/utils/app_methods/app_methods.dart';
 import 'package:hrms_app/utils/app_variables/api_links.dart';
-import 'package:hrms_app/view/pages/attendance/add_attendance_application.dart';
+import 'package:hrms_app/view/pages/attendance/create_attendance_application.dart';
 import 'package:hrms_app/view/pages/attendance/edit_attendance_application.dart';
 import 'package:provider/provider.dart';
 import '../../../utils/app_colors/app_colors.dart';
@@ -153,9 +151,12 @@ class _AttendancePageState extends State<AttendancePage> {
                 child: ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (ctx) => AddAttendanceForm(
+                          builder: (ctx) => CreateAttendanceForm(
                                 title: "Add Attendance",
-                              )));
+                              ) /* AddAttendanceForm(
+                                title: "Add Attendance",
+                              ) */
+                          ));
                     },
                     style: ElevatedButton.styleFrom(
                         padding:

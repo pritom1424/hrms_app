@@ -1,24 +1,13 @@
 import 'package:flutter/material.dart';
 import '../admin_panel.dart';
-import '../employee_management.dart';
+
 import '../overview_page.dart';
-import '../statistics_page.dart';
 
 import '../../../utils/app_variables/app_vars.dart';
 import '../employee/add_new_application.dart';
-import '../admin_notice_page.dart';
-import '../calender_page.dart';
 
-import '../dashboard/files_page/files_page.dart';
 import '../dashboard/leave_page/leave_page.dart';
-import '../dashboard/organization_page/organization_page.dart';
-import '../dashboard/performance_page/performance_page.dart';
-import '../dashboard/timeSheet_page/time_sheet_page.dart';
-import '../employee_profile_page.dart';
-import '../leave_application.dart';
-import '../notice_list_page.dart';
-import '../notice_page.dart';
-import '../status_page.dart';
+
 import '../employee/employee_table.dart';
 import '../../widgets/appbar_default_widget.dart';
 import '../../widgets/dashboard_page/dashboard_menu_tile.dart';

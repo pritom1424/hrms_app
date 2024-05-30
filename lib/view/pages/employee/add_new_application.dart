@@ -539,7 +539,8 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                                         value:
                                             snapShot.data!.data[index].idType,
                                         child: Text(
-                                          snapShot.data!.data[index].idType,
+                                          snapShot.data!.data[index].idType ??
+                                              "type",
                                           style: Theme.of(context)
                                               .textTheme
                                               .labelSmall,

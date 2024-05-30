@@ -11,9 +11,9 @@ String hrmsShifttypesModelToJson(HrmsShifttypesModel data) =>
     json.encode(data.toJson());
 
 class HrmsShifttypesModel {
-  int draw;
-  int recordsTotal;
-  int recordsFiltered;
+  int? draw;
+  int? recordsTotal;
+  int? recordsFiltered;
   List<Datum> data;
   List<dynamic> input;
 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hrms_app/controller/employee_attendance_controller.dart';
 
 import 'package:hrms_app/model/hrms_attendance_post_model.dart';
+import 'package:hrms_app/model/hrms_employee_attendance_list_model.dart';
 
 import 'package:hrms_app/model/hrms_employee_attendance_model.dart';
 
@@ -14,26 +15,26 @@ import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class EditAttendanceForm extends StatefulWidget {
-  final int? id;
-  final int? employeeId;
+class CreateAttendanceForm extends StatefulWidget {
   final String? title;
-  const EditAttendanceForm({super.key, this.id, this.title, this.employeeId});
+  const CreateAttendanceForm({
+    super.key,
+    this.title,
+  });
 
   @override
-  State<EditAttendanceForm> createState() => _EditShiftConfigFormState();
+  State<CreateAttendanceForm> createState() => _CreateAttendanceFormState();
 }
 
-class _EditShiftConfigFormState extends State<EditAttendanceForm> {
+class _CreateAttendanceFormState extends State<CreateAttendanceForm> {
   final _formInfoKey = GlobalKey<FormState>();
-  final TextEditingController _employeeCodeController = TextEditingController();
-  final TextEditingController _employeeNameController = TextEditingController();
+
   final TextEditingController _employeeShiftDurationController =
       TextEditingController();
   final TextEditingController _totalWorkingHourController =
       TextEditingController();
   bool isInit = false;
-  bool? didPresent;
+  bool didPresent = true;
   EdgeInsetsGeometry contentPadding =
       const EdgeInsets.symmetric(horizontal: 20);
   BorderRadius borderRadius = const BorderRadius.all(Radius.circular(10));
@@ -69,16 +70,21 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
 
 //enums
 
-  TimeOfDay _selectedInTime = TimeOfDay.now();
-  TimeOfDay _selectedOutTime = TimeOfDay.now();
+  TimeOfDay? _selectedInTime;
+  TimeOfDay? _selectedOutTime;
 
-  TimeOfDay _selectedLateTime = TimeOfDay.now();
-  TimeOfDay _selectedOverTime = TimeOfDay.now();
+  TimeOfDay? _selectedLateTime;
+  TimeOfDay? _selectedOverTime;
 
   DateTime _selectedAttendanceTime = DateTime.now();
 
+  String? _selectedEmployee;
+  int? _selectedEmployeeID;
+
   String _employeeCode = "";
   String _employeeName = "";
+
+  HrmsEmployeeAttendanceListModel? currentModel;
 
   //String _totalWorkingHour = "";
 
@@ -113,23 +119,24 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
   } */
 
   Future<void> _selectTime(BuildContext context, bool isEnd) async {
+    _selectedInTime = TimeOfDay.now();
+    _selectedOutTime = TimeOfDay.now();
     final TimeOfDay? picked = await showTimePicker(
       context: context,
-      initialTime: (isEnd) ? _selectedOutTime : _selectedInTime,
+      initialTime: (isEnd) ? _selectedOutTime! : _selectedInTime!,
     );
-    if (picked != null) {
-      if (isEnd) {
-        if (picked != _selectedOutTime) {
-          setState(() {
-            _selectedInTime = picked;
-          });
-        }
-      } else {
-        if (picked != _selectedInTime) {
-          setState(() {
-            _selectedInTime = picked;
-          });
-        }
+
+    if (isEnd) {
+      if (picked != _selectedOutTime) {
+        setState(() {
+          _selectedOutTime = picked;
+        });
+      }
+    } else {
+      if (picked != _selectedInTime) {
+        setState(() {
+          _selectedInTime = picked;
+        });
       }
     }
   }
@@ -149,51 +156,52 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
   }
 
   Future<void> selectLateTime(BuildContext contex) async {
+    _selectedLateTime = TimeOfDay.now();
     final TimeOfDay? picked = await showTimePicker(
       context: context,
-      initialTime: _selectedLateTime,
+      initialTime: _selectedLateTime!,
     );
-    if (picked != null) {
-      if (picked != _selectedLateTime) {
-        setState(() {
-          _selectedLateTime = picked;
-        });
-      }
+
+    if (picked != _selectedLateTime) {
+      setState(() {
+        _selectedLateTime = picked;
+      });
     }
   }
 
   Future<void> selectOverTime(BuildContext contex) async {
+    _selectedOverTime = TimeOfDay.now();
     final TimeOfDay? picked = await showTimePicker(
       context: context,
-      initialTime: _selectedOverTime,
+      initialTime: _selectedOverTime!,
     );
-    if (picked != null) {
-      if (picked != _selectedOverTime) {
-        setState(() {
-          _selectedOverTime = picked;
-        });
-      }
+
+    if (picked != _selectedOverTime) {
+      setState(() {
+        _selectedOverTime = picked;
+      });
     }
   }
 
-  void initEditAttendanceForm(HrmsEmployeeAttendanceModel hrmsAttendanceModel) {
-    _employeeCode = hrmsAttendanceModel.employee.employeeCode;
-    _employeeName = hrmsAttendanceModel.employee.employeeName;
-    _employeeCodeController.text =
+  void initEditAttendanceForm(
+      HrmsEmployeeAttendanceListModel hrmsAttendanceModel) {
+    // _employeeCode = hrmsAttendanceModel.data.employeeCode;
+    //_employeeName = hrmsAttendanceModel.employee.employeeName;
+/*     _employeeCodeController.text =
         hrmsAttendanceModel.employee.employeeCode ?? "";
-    _employeeNameController.text =
-        hrmsAttendanceModel.employee.employeeName ?? "";
-    _employeeShiftDurationController.text =
-        hrmsAttendanceModel.shiftDuration ?? "";
-    _totalWorkingHourController.text =
-        hrmsAttendanceModel.totalWorkingHour ?? "";
+    _employeeNameController.text = */
+    //    hrmsAttendanceModel.employee.employeeName ?? "";
+    /*   _employeeShiftDurationController.text =
+        hrmsAttendanceModel.shiftDuration ?? ""; */
+    /*  _totalWorkingHourController.text =
+        hrmsAttendanceModel.totalWorkingHour ?? ""; */
 
-    (hrmsAttendanceModel.status == 1) ? didPresent = true : didPresent = false;
+    // (hrmsAttendanceModel.status == 1) ? didPresent = true : didPresent = false;
 
     print("_selectedStartTime: }");
     /*   _selectedStartTime =
         AppMethods().dateStringToTimeOfDay(hrmsShiftModel.shiftStartTime); */
-    final format = DateFormat("HH:mm"); //"6:00 AM"
+    /*  final format = DateFormat("HH:mm"); //"6:00 AM"
     _selectedInTime =
         TimeOfDay.fromDateTime(format.parse(hrmsAttendanceModel.inTime!));
     _selectedOutTime =
@@ -202,7 +210,7 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
         TimeOfDay.fromDateTime(format.parse(hrmsAttendanceModel.lateTime!));
     _selectedOverTime =
         TimeOfDay.fromDateTime(format.parse(hrmsAttendanceModel.overTime!));
-    _selectedAttendanceTime = hrmsAttendanceModel.attendanceDate!;
+    _selectedAttendanceTime = hrmsAttendanceModel.attendanceDate!; */
 
     /*  _selectedEndTime =
         AppMethods().dateStringToTimeOfDay(hrmsShiftModel.shiftEndTime);
@@ -239,50 +247,44 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
         body: Container(
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
             height: AppVars.screenSize.height * 1,
-            child: (widget.id == null)
-                ? Container(
-                    height: AppVars.screenSize.height,
-                    child: const Center(
-                      child: Text("No Id found"),
-                    ),
+            child: (isInit)
+                ? SingleChildScrollView(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                    child: FutureBuilder(
+                        future: provider.getEmployeeAttendanceList(
+                            ApiLinks.employeeAttendanceListLink),
+                        builder: (ctx, snap) {
+                          if (snap.connectionState == ConnectionState.waiting) {
+                            return Container(
+                              height: AppVars.screenSize.height,
+                              child: const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          } else {
+                            if (!snap.hasData) {
+                              return Container(
+                                height: AppVars.screenSize.height,
+                                child: const Center(
+                                  child: Text("No data available"),
+                                ),
+                              );
+                            } else {
+                              isInit = false;
+                              currentModel = snap.data;
+                              initEditAttendanceForm(currentModel!);
+                              return _editForm(currentModel!, context, now);
+                            }
+                          }
+                        }),
                   )
-                : (isInit)
-                    ? SingleChildScrollView(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-                        child: FutureBuilder(
-                            future: provider.showEmployeeAttendance(
-                                ApiLinks.employeeAttendanceLink, widget.id!),
-                            builder: (ctx, snap) {
-                              if (snap.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Container(
-                                  height: AppVars.screenSize.height,
-                                  child: const Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                );
-                              } else {
-                                if (!snap.hasData) {
-                                  return Container(
-                                    height: AppVars.screenSize.height,
-                                    child: const Center(
-                                      child: Text("No data available"),
-                                    ),
-                                  );
-                                } else {
-                                  isInit = false;
-                                  initEditAttendanceForm(snap.data!);
-                                  return _editForm(provider, context, now);
-                                }
-                              }
-                            }),
-                      )
-                    : _editForm(provider, context, now)));
+                : _editForm(currentModel!, context, now)));
   }
 
-  SingleChildScrollView _editForm(EmployeeAttendanceController provider,
+  SingleChildScrollView _editForm(HrmsEmployeeAttendanceListModel attendList,
       BuildContext context, DateTime now) {
+    final provider =
+        Provider.of<EmployeeAttendanceController>(context, listen: false);
     return SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
         child:
@@ -322,6 +324,86 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
                 )),
           ),
           Container(
+            padding: EdgeInsets.only(left: leftPadding),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    "Employee",
+                    style: TextStyle(
+                        fontSize: labelFontSize, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                DropdownButtonHideUnderline(
+                  child: Expanded(
+                    flex: 2,
+                    child: Container(
+                      //width: AppVars.screenSize.width * 0.40,
+                      padding: AppVars.inputContentPadding,
+                      decoration: AppVars
+                          .customInputboxDecoration, // BoxDecoration(border: Border.all(width: 0.4)),
+                      margin: EdgeInsets.symmetric(vertical: marginHeight),
+                      child: (attendList.data.isEmpty)
+                          ? SizedBox.shrink()
+                          : /* Text(nationSnap.data!.data[3].countryName!) */
+
+                          DropdownButton(
+                              padding: EdgeInsets.all(0),
+                              hint: Text(
+                                "Select employee",
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: TextStyle(
+                                    fontSize: mediumLabelFontSize,
+                                    color: Colors.black54),
+                              ),
+                              value: _selectedEmployee,
+                              items: List.generate(
+                                  attendList.data.length,
+                                  (index) => DropdownMenuItem(
+                                      value: currentModel!
+                                          .data[index].employeeName,
+                                      child: Text(
+                                        attendList.data[index].employeeName
+                                            .toString(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelSmall,
+                                      ))),
+
+                              /* Nationality.values
+                              .map(
+                                (nationality) => DropdownMenuItem(
+                                  value: nationality,
+                                  child: Text(
+                                    nationality.name.toUpperCase(),
+                                    style:
+                                        Theme.of(context).textTheme.labelSmall,
+                                  ),
+                                ),
+                              )
+                              .toList() */
+                              onChanged: (val) {
+                                if (val == null) {
+                                  return;
+                                }
+                                setState(() {
+                                  _selectedEmployee = val;
+                                  _selectedEmployeeID = attendList
+                                      .data[attendList.data.indexWhere((data) =>
+                                          data.employeeName ==
+                                          _selectedEmployee)]
+                                      .employeeId;
+                                });
+                              }),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          /*    Container(
               margin: EdgeInsets.symmetric(vertical: marginHeight),
               padding: EdgeInsets.only(left: leftPadding, right: 10),
               decoration: boxDecoration,
@@ -340,8 +422,8 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
                     style: TextStyle(fontSize: mediumLabelFontSize),
                   ),
                 ],
-              )),
-          Container(
+              )), */
+          /* Container(
               margin: EdgeInsets.symmetric(vertical: marginHeight),
               padding: EdgeInsets.only(left: leftPadding, right: 10),
               decoration: boxDecoration,
@@ -360,7 +442,7 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
                     style: TextStyle(fontSize: mediumLabelFontSize),
                   ),
                 ],
-              )),
+              )), */
           Container(
               margin: EdgeInsets.symmetric(vertical: marginHeight),
               padding: EdgeInsets.only(left: leftPadding),
@@ -369,7 +451,7 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'In Time: ${AppMethods().dateTimeToTimeString(_selectedInTime)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
+                    'In Time: ${(_selectedInTime == null) ? "" : AppMethods().dateTimeToTimeString(_selectedInTime!)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
                     style: TextStyle(fontSize: mediumLabelFontSize),
                   ),
                   SizedBox(width: 20),
@@ -390,7 +472,7 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Out Time: ${AppMethods().dateTimeToTimeString(_selectedOutTime)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
+                    'Out Time: ${(_selectedOutTime == null) ? "" : AppMethods().dateTimeToTimeString(_selectedOutTime!)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
                     style: TextStyle(fontSize: mediumLabelFontSize),
                   ),
                   SizedBox(width: 20),
@@ -438,7 +520,7 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Late Time: ${AppMethods().dateTimeToTimeString(_selectedLateTime)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
+                    'Late Time: ${(_selectedLateTime == null) ? "" : AppMethods().dateTimeToTimeString(_selectedLateTime!)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
                     style: TextStyle(fontSize: mediumLabelFontSize),
                   ),
                   SizedBox(width: 20),
@@ -459,7 +541,7 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Over Time: ${AppMethods().dateTimeToTimeString(_selectedOverTime)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
+                    'Over Time: ${(_selectedOverTime == null) ? "" : AppMethods().dateTimeToTimeString(_selectedOverTime!)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
                     style: TextStyle(fontSize: mediumLabelFontSize),
                   ),
                   SizedBox(width: 20),
@@ -491,12 +573,12 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
                 labelStyle: TextStyle(
                     fontSize: mediumLabelFontSize, color: labelFontColor),
               ),
-              validator: (value) {
+              /*   validator: (value) {
                 if (value != null && value == "") {
                   return 'Please enter leave type';
                 }
                 return null;
-              },
+              }, */
             ),
           ),
           SizedBox(
@@ -510,18 +592,42 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Status",
+                    "Present",
                     style: TextStyle(fontSize: mediumLabelFontSize),
                   ),
                   SizedBox(
                     height: 50,
                   ),
                   CupertinoSwitch(
-                      value: didPresent ?? false,
+                      value: didPresent,
                       onChanged: (val) {
                         didPresent = val;
                         print("didPresent: $val $didPresent");
                         didPresent = (val) ? true : false;
+                        setState(() {});
+                      })
+                ],
+              )),
+          Container(
+              margin: EdgeInsets.symmetric(vertical: marginHeight),
+              padding: EdgeInsets.only(left: leftPadding, right: 10),
+              decoration: boxDecoration,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Absent",
+                    style: TextStyle(fontSize: mediumLabelFontSize),
+                  ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  CupertinoSwitch(
+                      value: !didPresent,
+                      onChanged: (val) {
+                        didPresent = val;
+                        print("didPresent: $val $didPresent");
+                        didPresent = (val) ? false : true;
                         setState(() {});
                       })
                 ],
@@ -543,36 +649,43 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
                 AppMethods.snackBar(AppStrings.formErrorText, context);
                 return;
               } */
-              if (_formInfoKey.currentState!.validate()) {
+              if (_formInfoKey.currentState!.validate() &&
+                  _selectedInTime != null &&
+                  _selectedOutTime != null) {
                 _formInfoKey.currentState!.save();
-
-                if (didPresent == null) {
-                  didPresent = false;
-                }
 
                 final postAttendanceModel = HrmsAttendancePostModel(
                     attendanceDate:
                         AppMethods().dateOfBirthFormat(_selectedAttendanceTime),
-                    employeeId: widget.employeeId,
-                    employeeInTime: AppMethods()
-                        .timeIn24Hour(_selectedAttendanceTime, _selectedInTime),
+                    employeeId: _selectedEmployeeID, //widget.employeeId,
+                    employeeInTime: AppMethods().timeIn24Hour(
+                        _selectedAttendanceTime, _selectedInTime!),
                     employeeOutTime: AppMethods().timeIn24Hour(
-                        _selectedAttendanceTime, _selectedOutTime),
+                        _selectedAttendanceTime, _selectedOutTime!),
                     employeeShiftDuration:
                         _employeeShiftDurationController.text,
-                    employeeLateTime: AppMethods().timeIn24Hour(
-                        _selectedAttendanceTime, _selectedLateTime),
-                    employeeOverTime: AppMethods().timeIn24Hour(
-                        _selectedAttendanceTime, _selectedOverTime),
+                    employeeLateTime: (_selectedLateTime == null)
+                        ? null
+                        : AppMethods().timeIn24Hour(
+                            _selectedAttendanceTime, _selectedLateTime!),
+                    employeeOverTime: (_selectedOverTime == null)
+                        ? null
+                        : AppMethods().timeIn24Hour(
+                            _selectedAttendanceTime, _selectedOverTime!),
                     employeeTotalWorkingHour: _totalWorkingHourController.text,
-                    employeeStatus: (didPresent!) ? 1 : 0);
-
+                    employeeStatus: (didPresent) ? 1 : 0);
+/* 
                 await provider.updateAttendance(
                     ApiLinks.employeeAttendanceUpdateLink,
-                    widget.id!,
-                    postAttendanceModel);
-
-                Navigator.of(context).pop();
+                    1 /* widget.id! */,
+                    postAttendanceModel); */
+                final didSuccess = await provider.createAttendance(
+                    ApiLinks.addAttendanceLink, postAttendanceModel);
+                if (didSuccess) {
+                  Navigator.of(context).pop();
+                } else {
+                  AppMethods().snackBar("Employee already exists", context);
+                }
               } else {
                 AppMethods().snackBar(AppStrings.formErrorText, context);
               }
@@ -586,7 +699,7 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
               // You can access the values using controller.text for each field
             },
             child: const Text(
-              'Update',
+              'Add',
               style: TextStyle(fontSize: 25),
             ),
           )

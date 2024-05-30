@@ -1,28 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'app_strings.dart';
-import '../../view/pages/admin_panel.dart';
 import '../../view/pages/employee/add_new_application.dart';
-import '../../view/pages/employee_profile_page.dart';
 import '../../view/pages/employee/employee_table.dart';
-import '../../view/pages/navigation_pages/dashboard_page_2.dart';
-import '../../view/pages/settings/country_sett.dart';
-import '../../view/pages/settings/department_sett.dart';
-import '../../view/pages/settings/education_sett.dart';
-import '../../view/pages/settings/identity_type_sett.dart';
 import '../../view/pages/users/users_table.dart';
-import '../../view/pages/drawer_page/drawerpage_1.dart';
-import '../../view/pages/drawer_page/drawerpage_2.dart';
 import '../../view/pages/login_page.dart';
-import '../../view/pages/role/role_assign.dart';
-import '../../view/pages/role/role_assigned_list.dart';
-import '../../view/pages/role/role_create.dart';
-import '../../view/pages/settings/office_shift_sett.dart';
 import '../../view/pages/shift/shift_config.dart';
-import '../../view/pages/user_permission/user_permission.dart';
 import 'image_paths.dart';
-import '../../view/pages/notice_list_page.dart';
-import '../../view/pages/notice_page.dart';
 
 class AppVars {
   static Size screenSize = Size(600, 800);

@@ -2,14 +2,12 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:hrms_app/controller/hrms_auth_controller.dart';
-import 'package:hrms_app/model/hrms_add_attendance_post_model.dart';
+
 import 'package:hrms_app/model/hrms_attendance_post_model.dart';
 import 'package:hrms_app/model/hrms_employee_attendance_list_model.dart';
 import 'package:hrms_app/model/hrms_employee_attendance_model.dart';
-import 'package:hrms_app/utils/app_variables/app_vars.dart';
+
 import 'package:hrms_app/utils/app_variables/user_credential.dart';
-import 'package:provider/provider.dart';
 
 class EmployeeAttendanceController with ChangeNotifier {
   List<AttendanceDatum> _userData = [];
@@ -74,13 +72,13 @@ class EmployeeAttendanceController with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addAttendance(
-      String apiLink, HrmsAddAttendancePostModel hrmsAddAttendanceModel) async {
+  Future<bool> createAttendance(
+      String apiLink, HrmsAttendancePostModel hrmsAttendanceModel) async {
     Dio dio = Dio();
 
     // final url = Uri.parse(apiLink + employeeId.toString());
     String urlString = apiLink;
-    final bodyData = hrmsAddAttendancePostModelToJson(hrmsAddAttendanceModel);
+    final bodyData = hrmsAttendancePostModelToJson(hrmsAttendanceModel);
 
     print("update attendance before post");
 
@@ -91,13 +89,15 @@ class EmployeeAttendanceController with ChangeNotifier {
           'Authorization': 'Bearer ${UserCredential.usertoken}'
         }));
     print("update attendance before post");
-    if (response.statusCode == 200) {
-      print("attendance update successfully");
-    } else {
-      print("attendance update failed");
-    }
 
     notifyListeners();
+    if (response.statusCode == 200) {
+      print("attendance update successfully");
+      return true;
+    } else {
+      print("attendance update failed");
+      return false;
+    }
   }
 
   /* Future<void> updateUserStatus(String apiLink, int id) async {

@@ -11,19 +11,19 @@ String hrmsEmployeeAttendanceModelToJson(HrmsEmployeeAttendanceModel data) =>
     json.encode(data.toJson());
 
 class HrmsEmployeeAttendanceModel {
-  int id;
-  DateTime attendanceDate;
-  int employeeId;
-  String inTime;
-  String outTime;
-  String shiftDuration;
-  String lateTime;
-  String overTime;
-  String totalWorkingHour;
-  int status;
-  DateTime createdAt;
-  DateTime updatedAt;
-  Employee employee;
+  int? id;
+  DateTime? attendanceDate;
+  int? employeeId;
+  String? inTime;
+  String? outTime;
+  String? shiftDuration;
+  String? lateTime;
+  String? overTime;
+  String? totalWorkingHour;
+  int? status;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  Employee? employee;
 
   HrmsEmployeeAttendanceModel({
     required this.id,
@@ -61,7 +61,7 @@ class HrmsEmployeeAttendanceModel {
   Map<String, dynamic> toJson() => {
         "id": id,
         "attendance_date":
-            "${attendanceDate.year.toString().padLeft(4, '0')}-${attendanceDate.month.toString().padLeft(2, '0')}-${attendanceDate.day.toString().padLeft(2, '0')}",
+            "${attendanceDate?.year.toString().padLeft(4, '0')}-${attendanceDate?.month.toString().padLeft(2, '0')}-${attendanceDate?.day.toString().padLeft(2, '0')}",
         "employee_id": employeeId,
         "in_time": inTime,
         "out_time": outTime,
@@ -70,9 +70,9 @@ class HrmsEmployeeAttendanceModel {
         "over_time": overTime,
         "total_working_hour": totalWorkingHour,
         "status": status,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-        "employee": employee.toJson(),
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+        "employee": employee?.toJson(),
       };
 }
 

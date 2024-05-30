@@ -44,12 +44,12 @@ class HrmsIdtypeListModel {
 }
 
 class Datum {
-  int id;
-  String idType;
-  DateTime createdAt;
-  DateTime updatedAt;
+  int? id;
+  String? idType;
+  DateTime? createdAt;
+  DateTime? updatedAt;
   dynamic deletedAt;
-  String action;
+  String? action;
   int dtRowIndex;
 
   Datum({
@@ -75,8 +75,8 @@ class Datum {
   Map<String, dynamic> toJson() => {
         "id": id,
         "id_type": idType,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
         "deleted_at": deletedAt,
         "action": action,
         "DT_RowIndex": dtRowIndex,
