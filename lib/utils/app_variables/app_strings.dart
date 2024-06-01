@@ -19,4 +19,5 @@ class AppStrings {
   static const currentFontFamily = "Poppins";
 
   static String formErrorText = "Please fill required fields";
+  static String loginErrorMessage = "Invalid login credendtials";
 }

@@ -3,6 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hrms_app/controller/employee_profile_controller.dart';
+import 'package:hrms_app/utils/app_variables/api_links.dart';
+import 'package:hrms_app/utils/app_variables/user_credential.dart';
+import 'package:provider/provider.dart';
 import '../../../utils/app_colors/app_colors.dart';
 import '../../../utils/app_variables/app_vars.dart';
 import '../../../utils/app_variables/image_paths.dart';
@@ -36,14 +40,35 @@ class CustomAppDrawer extends StatelessWidget {
                     children: [
                       //  Image.asset("assets/images/dhakaprokash_logo.png"),
                       FittedBox(
-                        child: CircleAvatar(
-                          radius: 20,
-                          backgroundImage: AssetImage(ImagePath.proPicPath),
-                          /* child: Icon(
-                            CupertinoIcons.profile_circled,
-                            size: 40,
-                          ), */
-                        ),
+                        child: (UserCredential.userid == null)
+                            ? CircleAvatar(
+                                radius: 20,
+                                backgroundImage:
+                                    AssetImage(ImagePath.proPicPlaceholderPath),
+                                /* child: Icon(
+                              CupertinoIcons.profile_circled,
+                              size: 40,
+                            ), */
+                              )
+                            : FutureBuilder(
+                                future: Provider.of<EmployeeProfileController>(
+                                        context,
+                                        listen: false)
+                                    .getEmployeeProfile(
+                                        ApiLinks.employeeProfileLink,
+                                        UserCredential.userid!),
+                                builder: (ctx, snap) => (!snap.hasData)
+                                    ? CircleAvatar(
+                                        radius: 20,
+                                        backgroundImage: AssetImage(
+                                            ImagePath.proPicPlaceholderPath),
+                                      )
+                                    : CircleAvatar(
+                                        radius: 20,
+                                        backgroundImage: NetworkImage(
+                                            "https://hrms.szamantech.com/storage/employee/${snap.data!.image}"),
+                                      ),
+                              ),
                       ), // AssetImage("assets/images/character_placeholder.png")
                       const SizedBox(
                         width: 12,

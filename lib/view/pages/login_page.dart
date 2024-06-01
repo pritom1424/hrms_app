@@ -179,18 +179,21 @@ class _LoginFormState extends State<LoginForm> {
                         }
                         if (_formInfoKey.currentState!.validate()) {
                           _formInfoKey.currentState!.save();
-                          final result = await Provider.of<HrmsAuthController>(
-                                  context,
-                                  listen: false)
-                              .Authenticate(
-                                  emailController.text, passController.text);
+                          final prov = Provider.of<HrmsAuthController>(context,
+                              listen: false);
+                          prov.setLoading(true);
+                          final result = await prov.Authenticate(
+                              emailController.text, passController.text);
+
+                          prov.setLoading(false);
 
                           if (result) {
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
                                     builder: (ctx) => RootNavPage()));
                           } else {
-                            AppMethods().snackBar("Login Failed!", context);
+                            AppMethods().snackBar(
+                                AppStrings.loginErrorMessage, context);
                           }
                         }
                       },
@@ -202,6 +205,17 @@ class _LoginFormState extends State<LoginForm> {
                     const SizedBox(
                       height: 20,
                     ),
+                    Consumer<HrmsAuthController>(builder: (ctx, snap, ch) {
+                      if (snap.isLoading) {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            color: Appcolors.contentColorPurple,
+                          ),
+                        );
+                      } else {
+                        return SizedBox.shrink();
+                      }
+                    })
                     /* TextButton(
                         onPressed: () {},
                         child: const Text("Forgotten Password?")), */

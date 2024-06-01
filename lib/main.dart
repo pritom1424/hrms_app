@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hrms_app/controller/employee_attendance_controller.dart';
 import 'package:hrms_app/controller/employee_edit_data_controller.dart';
+import 'package:hrms_app/controller/employee_profile_controller.dart';
 import 'package:hrms_app/controller/employee_shift_controller.dart';
 import 'package:hrms_app/controller/employee_user_controller.dart';
 import 'package:hrms_app/controller/hrms_auth_controller.dart';
@@ -32,6 +33,9 @@ void main() {
       ),
       ChangeNotifierProvider<EmployeeAttendanceController>(
         create: (_) => EmployeeAttendanceController(),
+      ),
+      ChangeNotifierProvider<EmployeeProfileController>(
+        create: (_) => EmployeeProfileController(),
       )
     ],
     child: const MyApp(),

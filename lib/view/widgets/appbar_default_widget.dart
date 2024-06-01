@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:hrms_app/controller/employee_profile_controller.dart';
+import 'package:hrms_app/utils/app_variables/api_links.dart';
+import 'package:hrms_app/utils/app_variables/user_credential.dart';
+import 'package:provider/provider.dart';
 import '../../utils/app_variables/app_vars.dart';
 import '../../utils/app_variables/image_paths.dart';
 import '../pages/notice_list_page.dart';
@@ -38,13 +42,30 @@ class AppbarDefault extends StatelessWidget implements PreferredSize {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   FittedBox(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 5),
-                      child: CircleAvatar(
-                        backgroundImage: AssetImage(ImagePath.proPicPath),
-                      ),
-                    ),
-                  ),
+                      child: Padding(
+                    padding: const EdgeInsets.only(right: 5),
+                    child: (UserCredential.userid == null)
+                        ? CircleAvatar(
+                            backgroundImage:
+                                AssetImage(ImagePath.proPicPlaceholderPath))
+                        : FutureBuilder(
+                            future: Provider.of<EmployeeProfileController>(
+                                    context,
+                                    listen: false)
+                                .getEmployeeProfile(
+                                    ApiLinks.employeeProfileLink,
+                                    UserCredential.userid!),
+                            builder: (ctx, snap) => (!snap.hasData)
+                                ? CircleAvatar(
+                                    backgroundImage: AssetImage(
+                                        ImagePath.proPicPlaceholderPath),
+                                  )
+                                : CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                        "https://hrms.szamantech.com/storage/employee/${snap.data!.image}"),
+                                  ),
+                          ),
+                  )),
                   Text(
                     appbarName ?? "Home",
                     overflow: TextOverflow.ellipsis,

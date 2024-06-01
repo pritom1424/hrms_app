@@ -1,7 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
+import 'package:hrms_app/controller/employee_profile_controller.dart';
+import 'package:hrms_app/model/employee_profile_model.dart';
+import 'package:hrms_app/utils/app_methods/app_methods.dart';
+import 'package:hrms_app/utils/app_variables/api_links.dart';
+import 'package:hrms_app/utils/app_variables/user_credential.dart';
+import 'package:provider/provider.dart';
 import '../../utils/app_variables/app_vars.dart';
 import '../../utils/app_variables/image_paths.dart';
 import '../widgets/appbar_default_widget.dart';
@@ -36,22 +39,8 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage>
 
   @override
   Widget build(BuildContext context) {
-    Map<String, String> formDataTab1 = {
-      "Working Shift": "Regular",
-      "Joining Date": "01.06.2021",
-      "Gender": "Male",
-      "Position": "App Developer",
-      "General info1": "Demo info1",
-      "General info2": "Demo info2s",
-    };
-    Map<String, String> formDataTab2 = {
-      "Employee Name": "Regular",
-      "Joining Date": "01.06.2021",
-      "Gender": "Male",
-      "Date of birth": "05.08.1998",
-      "General info1": "Demo info1",
-      "General info2": "Demo info2s",
-    };
+    final prov = Provider.of<EmployeeProfileController>(context);
+
     // form vars
     EdgeInsetsGeometry contentPadding = const EdgeInsets.only(left: 60);
 
@@ -60,6 +49,8 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage>
 
     //font related
     TextStyle textStyle =
+        const TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
+    TextStyle textStyleVal =
         const TextStyle(fontSize: 18, fontWeight: FontWeight.normal);
 
     // profile
@@ -68,10 +59,28 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage>
     TextStyle profileDesignationTextStyle = const TextStyle(
         fontSize: 18, color: Colors.grey, fontWeight: FontWeight.bold);
 
-    Widget officialTabWidget() {
+    Widget officialTabWidget(HrmsEmployeeProfileModel eprofile) {
+      List<String> formDataTab2 = [
+        "Employee ID",
+        "Employee Code",
+        "Shift",
+        "Shift Date",
+        "Joining Date",
+        "Confirmation Date"
+      ];
+      List<String?> values = [
+        eprofile.officeInformation.employeeId,
+        eprofile.employeeCode,
+        eprofile.officeInformation.shiftId,
+        AppMethods().dateOfBirthFormat(eprofile.officeInformation.shiftDate),
+        AppMethods().dateOfBirthFormat(eprofile.officeInformation.joiningDate),
+        AppMethods()
+            .dateOfBirthFormat(eprofile.officeInformation.confirmationDate),
+      ];
+
       return Column(
         children: List.generate(
-            formDataTab1.length,
+            formDataTab2.length,
             (index) => Container(
                   height: AppVars.screenSize.height * 0.06,
                   decoration: BoxDecoration(
@@ -86,15 +95,11 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage>
                         child: Container(
                           alignment: Alignment.centerLeft,
                           padding: contentPadding,
-                          child: Row(
-                            children: [
-                              Text(
-                                formDataTab1.entries.toList()[index].key,
-                                style: textStyle,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                              ),
-                            ],
+                          child: Text(
+                            formDataTab2[index],
+                            style: textStyle,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
                           ),
                         ),
                       ),
@@ -103,9 +108,9 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage>
                           padding: contentPadding,
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            formDataTab1.entries.toList()[index].value,
+                            values[index] ?? "",
                             overflow: TextOverflow.ellipsis,
-                            style: textStyle,
+                            style: textStyleVal,
                             maxLines: 1,
                           ),
                         ),
@@ -116,7 +121,28 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage>
       );
     }
 
-    Widget personalTabWidget() {
+    Widget personalTabWidget(HrmsEmployeeProfileModel eprofile) {
+      List<String> formDataTab1 = [
+        "Date of Birth",
+        "Gender",
+        "Father Name",
+        "Mother Name",
+        "Nationality",
+        eprofile.idType ?? "Id Type",
+        "Permanent Address",
+        "Present Address"
+      ];
+      List<String?> values = [
+        AppMethods().dateOfBirthFormat(eprofile.dateOfBirth),
+        eprofile.gender,
+        eprofile.employeeFather,
+        eprofile.employeeMother,
+        eprofile.nationality,
+        eprofile.idNumber,
+        eprofile.presentAddress,
+        eprofile.permanentAddress
+      ];
+
       return Column(
         children: List.generate(
             formDataTab1.length,
@@ -134,13 +160,11 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage>
                         child: Container(
                           alignment: Alignment.centerLeft,
                           padding: contentPadding,
-                          child: FittedBox(
-                            child: Text(
-                              formDataTab2.entries.toList()[index].key,
-                              //  textAlign: TextAlign.center,
-                              overflow: TextOverflow.ellipsis,
-                              style: textStyle,
-                            ),
+                          child: Text(
+                            formDataTab1[index],
+                            //  textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                            style: textStyle,
                           ),
                         ),
                       ),
@@ -148,13 +172,11 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage>
                         child: Container(
                           alignment: Alignment.centerLeft,
                           padding: contentPadding,
-                          child: FittedBox(
-                            child: Text(
-                              formDataTab2.entries.toList()[index].value,
-                              //  textAlign: TextAlign.center,
-                              overflow: TextOverflow.ellipsis,
-                              style: textStyle,
-                            ),
+                          child: Text(
+                            values[index] ?? "",
+                            //  textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                            style: textStyleVal,
                           ),
                         ),
                       )
@@ -170,51 +192,105 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage>
           : AppbarDefault(
               appbarName: widget.title,
             ),
-      body: Container(
-        height: AppVars.screenSize.height,
-        width: double.infinity,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                backgroundImage: AssetImage(ImagePath.proPicPath),
-                radius: 50,
-              ),
-              Text(
-                "Sajjad Hossen",
-                style: profileNameTextStyle,
-              ),
-              Text(
-                "App Developer",
-                style: profileDesignationTextStyle,
-              ),
-              TabBar(
-                  tabAlignment: TabAlignment.fill,
-                  labelStyle:
-                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  controller: tabController,
-                  isScrollable: false,
-                  tabs: const [
-                    Tab(
-                      icon: Text('Official'),
+      body: (UserCredential.userid == null)
+          ? Center(
+              child: Text("No Id Found!"),
+            )
+          : FutureBuilder(
+              future: prov.getEmployeeProfile(
+                  ApiLinks.employeeProfileLink, UserCredential.userid!),
+              builder: (context, snap) {
+                if (snap.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (!snap.hasData) {
+                  return FutureBuilder(
+                      future: prov.getAdminProfile(
+                          ApiLinks.employeeProfileLink, UserCredential.userid!),
+                      builder: (ctx, snapAdmin) => (snapAdmin.hasData)
+                          ? Container(
+                              height: AppVars.screenSize.height,
+                              width: double.infinity,
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundImage: AssetImage(
+                                          ImagePath.proPicPlaceholderPath),
+                                      radius: 50,
+                                    ),
+                                    Text(
+                                      snapAdmin.data!.name ?? "",
+                                      style: profileNameTextStyle,
+                                    ),
+                                    Text(
+                                      snapAdmin.data!.email ?? "",
+                                      style: profileDesignationTextStyle,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          : SizedBox.shrink());
+                }
+                print("image ${snap.data!.image}");
+                return Container(
+                  height: AppVars.screenSize.height,
+                  width: double.infinity,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                          backgroundImage: (snap.data!.image != null)
+                              ? NetworkImage(
+                                      "https://hrms.szamantech.com/storage/employee/${snap.data!.image}")
+                                  as ImageProvider
+                              : AssetImage(ImagePath.proPicPlaceholderPath),
+                          radius: 50,
+                        ),
+                        Text(
+                          snap.data!.employeeName ?? "",
+                          style: profileNameTextStyle,
+                        ),
+                        Text(
+                          snap.data!.officeInformation.designation ?? "",
+                          style: profileDesignationTextStyle,
+                        ),
+                        TabBar(
+                            tabAlignment: TabAlignment.fill,
+                            labelStyle: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                            controller: tabController,
+                            isScrollable: false,
+                            tabs: const [
+                              Tab(
+                                icon: Text('Official'),
+                              ),
+                              Tab(
+                                icon: Text('Personal'),
+                              ),
+                            ]),
+                        Container(
+                          height: AppVars.screenSize.height * 0.6,
+                          width: double.infinity,
+                          child: TabBarView(
+                              controller: tabController,
+                              children: [
+                                officialTabWidget(snap.data!),
+                                personalTabWidget(snap.data!)
+                              ]),
+                        )
+                      ],
                     ),
-                    Tab(
-                      icon: Text('Personal'),
-                    ),
-                  ]),
-              Container(
-                height: AppVars.screenSize.height * 0.6,
-                width: double.infinity,
-                child: TabBarView(
-                    controller: tabController,
-                    children: [officialTabWidget(), personalTabWidget()]),
-              )
-            ],
-          ),
-        ),
-      ),
+                  ),
+                );
+              }),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:hrms_app/utils/app_variables/api_links.dart';
+import 'package:hrms_app/utils/app_variables/app_strings.dart';
 import 'package:hrms_app/utils/app_variables/user_credential.dart';
 import 'package:hrms_app/view/pages/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,6 +16,7 @@ class HrmsAuthController with ChangeNotifier {
   String _token = "";
   DateTime _expiryDate = DateTime(0);
   int? _userId;
+  bool _isLoading = false;
 
   Timer _authTimer = Timer(Duration.zero, () {});
   bool get isAuth {
@@ -54,6 +56,7 @@ class HrmsAuthController with ChangeNotifier {
 
       final responseData = response.data;
       if (responseData['error'] != null) {
+        AppStrings.loginErrorMessage = responseData['error'];
         return false;
         // throw Exception(responseData['error']);
       }
@@ -111,6 +114,7 @@ class HrmsAuthController with ChangeNotifier {
     _userId = int.tryParse(extractedData['userId'].toString());
     _expiryDate = expiryDate;
     print("token $token");
+    print("user id $userId");
     UserCredential.userid = _userId;
     UserCredential.usertoken = _token;
     UserCredential.expiryDate = expiryDate;
@@ -126,5 +130,14 @@ class HrmsAuthController with ChangeNotifier {
     final timeToExpiry = _expiryDate.difference(DateTime.now()).inSeconds;
 
     _authTimer = Timer(Duration(seconds: timeToExpiry), logout);
+  }
+
+  void setLoading(bool isLoad) {
+    _isLoading = isLoad;
+    notifyListeners();
+  }
+
+  bool get isLoading {
+    return _isLoading;
   }
 }

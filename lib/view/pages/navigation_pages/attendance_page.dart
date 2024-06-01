@@ -225,8 +225,8 @@ class _AttendancePageState extends State<AttendancePage> {
                                   ? Color.fromARGB(223, 179, 157, 219)
                                   : Colors.deepPurple.shade100),
                           cells: [
-                            DataCell(
-                                Text(consumer.userData[index].id.toString())),
+                            DataCell(Text((index + 1)
+                                .toString())), //consumer.userData[index].id.toString()
                             DataCell(Text(AppMethods().dateOfBirthFormat(
                                 consumer.userData[index].attendanceDate))),
                             DataCell(Text(consumer.userData[index].employeeId

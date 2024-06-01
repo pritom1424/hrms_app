@@ -54,4 +54,6 @@ class ApiLinks {
   static String employeeAuthLink = "https://hrms.szamantech.com/api/auth/login";
   static String addAttendanceLink =
       "https://hrms.szamantech.com/api/attendance/storeattendance";
+
+  static String employeeProfileLink = "http://hrms.szamantech.com/api/profile/";
 }

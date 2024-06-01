@@ -177,12 +177,12 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
   }
 
   void initEditAttendanceForm(HrmsEmployeeAttendanceModel hrmsAttendanceModel) {
-    _employeeCode = hrmsAttendanceModel.employee.employeeCode;
-    _employeeName = hrmsAttendanceModel.employee.employeeName;
+    _employeeCode = hrmsAttendanceModel.employee?.employeeCode??"";
+    _employeeName = hrmsAttendanceModel.employee?.employeeName??"";
     _employeeCodeController.text =
-        hrmsAttendanceModel.employee.employeeCode ?? "";
+        hrmsAttendanceModel.employee?.employeeCode ?? "";
     _employeeNameController.text =
-        hrmsAttendanceModel.employee.employeeName ?? "";
+        hrmsAttendanceModel.employee?.employeeName ?? "";
     _employeeShiftDurationController.text =
         hrmsAttendanceModel.shiftDuration ?? "";
     _totalWorkingHourController.text =
