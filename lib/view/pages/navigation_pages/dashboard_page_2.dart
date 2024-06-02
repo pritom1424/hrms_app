@@ -67,7 +67,7 @@ class DashboardPage2 extends StatelessWidget {
             )
           : null,
       body: SingleChildScrollView(
-        padding: EdgeInsets.only(bottom: 40),
+        padding: const EdgeInsets.only(bottom: 40),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -80,8 +80,8 @@ class DashboardPage2 extends StatelessWidget {
                   maxY: 100,
                   barTouchData: BarTouchData(enabled: false),
                   titlesData: FlTitlesData(
-                      leftTitles:
-                          AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      leftTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false)),
                       bottomTitles: AxisTitles(
                         sideTitles: SideTitles(
                             showTitles: true,

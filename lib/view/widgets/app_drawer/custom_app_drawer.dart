@@ -63,11 +63,18 @@ class CustomAppDrawer extends StatelessWidget {
                                         backgroundImage: AssetImage(
                                             ImagePath.proPicPlaceholderPath),
                                       )
-                                    : CircleAvatar(
-                                        radius: 20,
-                                        backgroundImage: NetworkImage(
-                                            "https://hrms.szamantech.com/storage/employee/${snap.data!.image}"),
-                                      ),
+                                    : (snap.data!.image == null)
+                                        ? CircleAvatar(
+                                            radius: 20,
+                                            backgroundImage: AssetImage(
+                                                ImagePath
+                                                    .proPicPlaceholderPath),
+                                          )
+                                        : CircleAvatar(
+                                            radius: 20,
+                                            backgroundImage: NetworkImage(
+                                                "https://hrms.szamantech.com/storage/employee/${snap.data!.image}"),
+                                          ),
                               ),
                       ), // AssetImage("assets/images/character_placeholder.png")
                       const SizedBox(

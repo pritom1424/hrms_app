@@ -56,4 +56,15 @@ class ApiLinks {
       "https://hrms.szamantech.com/api/attendance/storeattendance";
 
   static String employeeProfileLink = "http://hrms.szamantech.com/api/profile/";
+
+  static String employeeLeaveType =
+      "https://hrms.szamantech.com/api/leavetype-api";
+  static String employeeRemainLeaveDaysLink =
+      "https://hrms.szamantech.com/api/reminding-leave-api/getremindingleave";
+
+  static String leaveApplyLink =
+      "https://hrms.szamantech.com/api/leaveassign/store";
+
+  static String leaveListLink =
+      "https://hrms.szamantech.com/api/getallleaveassign";
 }

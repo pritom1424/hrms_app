@@ -5,6 +5,7 @@ import 'package:hrms_app/controller/employee_profile_controller.dart';
 import 'package:hrms_app/controller/employee_shift_controller.dart';
 import 'package:hrms_app/controller/employee_user_controller.dart';
 import 'package:hrms_app/controller/hrms_auth_controller.dart';
+import 'package:hrms_app/controller/leave_controller.dart';
 import 'utils/app_variables/app_strings.dart';
 import 'utils/app_variables/app_vars.dart';
 import 'controller/employee_data_controller.dart';
@@ -36,6 +37,9 @@ void main() {
       ),
       ChangeNotifierProvider<EmployeeProfileController>(
         create: (_) => EmployeeProfileController(),
+      ),
+      ChangeNotifierProvider<LeaveController>(
+        create: (_) => LeaveController(),
       )
     ],
     child: const MyApp(),

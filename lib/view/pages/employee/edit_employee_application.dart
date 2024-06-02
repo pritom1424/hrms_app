@@ -1213,11 +1213,12 @@ class _EditEmployeeApplicationFormState
                   print("employee ID ${widget.employeeID!}");
                   await econtrol.updateEmployee(ApiLinks.employeeUpdateLink,
                       widget.employeeID!, employeeData);
+                  Navigator.of(context).pop();
                 }
 
                 /*   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (ctx) => EmployeeList())); */
-                Navigator.of(context).pop();
+
                 // Do something with the validated data
                 //print('Name: $_name');
               } else {

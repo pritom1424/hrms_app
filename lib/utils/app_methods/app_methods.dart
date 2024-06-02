@@ -47,6 +47,17 @@ class AppMethods {
     RegExp regex = RegExp(r'https?://[^\s"]+\.(jpg|png)');
     String? imageUrl = regex.stringMatch(htmlString);
 
+    if (imageUrl != null) {
+      List<String> parts = imageUrl.split(".");
+      String extension = parts.last.toLowerCase();
+      bool didExist =
+          (extension == 'png' || extension == "jpg" || extension == "jpeg");
+      if (didExist) {
+        return imageUrl;
+      }
+      return null;
+    }
+
     return imageUrl;
   }
 

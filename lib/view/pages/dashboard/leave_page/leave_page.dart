@@ -1,4 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:hrms_app/controller/leave_controller.dart';
+import 'package:hrms_app/model/hrms_leave_list_model.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../utils/app_methods/app_methods.dart';
 import '../../../../utils/app_variables/app_vars.dart';
@@ -16,6 +22,7 @@ class LeaveCards extends StatefulWidget {
 class _LeaveCardsState extends State<LeaveCards>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
+
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
@@ -29,10 +36,10 @@ class _LeaveCardsState extends State<LeaveCards>
     super.dispose();
   }
 
-  Widget pendingRequests() {
+  Widget pendingRequests(List<LeaveListDatum> data) {
     return Column(
       children: List.generate(
-          10,
+          data.length,
           (index) => Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 child: Container(
@@ -62,9 +69,10 @@ class _LeaveCardsState extends State<LeaveCards>
                           leading: CircleAvatar(
                             child: Icon(Icons.person),
                           ),
-                          title: Text('Employee Name'),
-                          subtitle: Text('Name'),
-                          trailing: Text('Date'),
+                          title: Text(data[index].employeeName ?? ""),
+                          subtitle: Text(AppMethods()
+                              .dateOfBirthFormat(data[index].updatedAt)),
+                          // trailing: Text('Date'),
                         ),
                         Padding(
                             padding: EdgeInsets.symmetric(
@@ -73,16 +81,16 @@ class _LeaveCardsState extends State<LeaveCards>
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Column(
+                                const Column(
                                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    Text('Leave: '),
+                                    Text('Leave Type: '),
+                                    Text("Leave From"),
+                                    Text("Leave To"),
                                     Text('Duration: '),
-                                    Text('Leave Date: '),
-                                    Text('Leave Balance: '),
                                     Text('Reason: '),
                                   ],
                                 ),
@@ -91,11 +99,13 @@ class _LeaveCardsState extends State<LeaveCards>
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    Text('Leave: '),
-                                    Text('Duration: '),
-                                    Text('Leave Date: '),
-                                    Text('Leave Balance: '),
-                                    Text('Reason: '),
+                                    Text(data[index].leaveType ?? ""),
+                                    Text(data[index].fromDate ?? ""),
+                                    Text(data[index].toDate ?? ""),
+                                    Text(data[index].numberOfDays ?? ""),
+                                    Text(
+                                      data[index].leaveReason ?? "",
+                                    ),
                                   ],
                                 ),
                               ],
@@ -128,7 +138,7 @@ class _LeaveCardsState extends State<LeaveCards>
                                     Container(
                                       width: AppVars.screenSize.width * 0.9,
                                       child: Text(
-                                        "Do you want to delete this request?\n\nEmployee Name:Sajjad\nReason:this",
+                                        "Do you want to delete this request?\n\nEmployee Name:${data[index].employeeName}\nReason:${data[index].leaveReason}",
                                         textAlign: TextAlign.center,
                                         //maxLines: 3,
                                         // overflow: TextOverflow.ellipsis,
@@ -136,7 +146,6 @@ class _LeaveCardsState extends State<LeaveCards>
                                     ),
                                     () {},
                                     () {});
-                                print("Reject");
                               },
                               child: Text('Reject'),
                               style: ButtonStyle(
@@ -178,6 +187,7 @@ class _LeaveCardsState extends State<LeaveCards>
 
   @override
   Widget build(BuildContext context) {
+    final prov = Provider.of<LeaveController>(context, listen: false);
     return Scaffold(
       appBar: (widget.title == null)
           ? null
@@ -216,41 +226,84 @@ class _LeaveCardsState extends State<LeaveCards>
           : AppbarDefault(
               appbarName: widget.title,
             ), */
-      body: Column(
-        children: [
-          TabBar(
-            controller: _tabController,
-            tabs: const [
-              Tab(
-                  child: Text(
-                'Pending Request',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+      body: FutureBuilder(
+        future: prov.getLeaveList(),
+        builder: (ctx, snap) {
+          if (snap.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (!snap.hasData) {
+            Center(
+              child: Text("no data found!"),
+            );
+          }
+
+          List<LeaveListDatum> pendingList = snap.data!.data
+              .where(
+                (element) =>
+                    Bidi.stripHtmlIfNeeded(element.status!)
+                        .trim()
+                        .toLowerCase() ==
+                    "pending",
+              )
+              .toList();
+          List<LeaveListDatum> historyList = snap.data!.data
+              .where(
+                (element) =>
+                    Bidi.stripHtmlIfNeeded(element.status!)
+                        .trim()
+                        .toLowerCase() !=
+                    "pending",
+              )
+              .toList();
+
+          print("history ${historyList[1].status}");
+
+          return Container(
+            height: AppVars.screenSize.height,
+            child: Column(
+              children: [
+                TabBar(
+                  controller: _tabController,
+                  tabs: const [
+                    Tab(
+                        child: Text(
+                      'Pending Request',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )),
+                    Tab(
+                      child: Text(
+                        'History',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              )),
-              Tab(
-                child: Text(
-                  'History',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                Expanded(
+                  //  height: AppVars.screenSize.height * 0.7,
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      SingleChildScrollView(
+                          child: pendingRequests(pendingList)),
+                      NewsfeedPage(
+                        data: historyList,
+                      ) /* Center(child: Text('History')) */,
+                    ],
                   ),
                 ),
-              ),
-            ],
-          ),
-          Container(
-            height: AppVars.screenSize.height * 0.8,
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                SingleChildScrollView(child: pendingRequests()),
-                NewsfeedPage() /* Center(child: Text('History')) */,
               ],
             ),
-          ),
-        ],
+          );
+        },
       ), /* ListView.builder(
         itemCount: 10,
         itemBuilder: (BuildContext context, int index) {

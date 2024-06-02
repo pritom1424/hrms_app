@@ -1,5 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hrms_app/controller/leave_controller.dart';
+import 'package:hrms_app/model/leave_apply_model.dart';
+import 'package:hrms_app/utils/app_methods/app_methods.dart';
+import 'package:hrms_app/utils/app_variables/user_credential.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../../utils/app_colors/app_colors.dart';
 import '../../utils/app_variables/app_vars.dart';
@@ -14,21 +20,11 @@ class LeaveFormPage extends StatefulWidget {
 
 class _LeaveFormPageState extends State<LeaveFormPage> {
   final _formKey = GlobalKey<FormState>();
+  String? _selectLeaveType;
+  String _totalLeaveDays = "";
   // Define controllers for text fields
-  final TextEditingController _employeeIdController = TextEditingController();
-  final TextEditingController _contactNoController = TextEditingController();
-  final TextEditingController _responsibleEmployeeIdController =
-      TextEditingController();
-  final TextEditingController _leaveTypeController = TextEditingController();
-  final TextEditingController _startDateController = TextEditingController();
-  final TextEditingController _endDateController = TextEditingController();
-  final TextEditingController _totalLeaveDaysController =
-      TextEditingController();
-  final TextEditingController _addressDuringLeaveController =
-      TextEditingController();
-  final TextEditingController _reasonForLeaveController =
-      TextEditingController();
-  final TextEditingController _remarksController = TextEditingController();
+  double leftPadding = 20;
+  final TextEditingController _leaveReasonController = TextEditingController();
 
   // form vars
   EdgeInsetsGeometry contentPadding =
@@ -36,6 +32,8 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
   BorderRadius borderRadius = const BorderRadius.all(Radius.circular(10));
   Color borderColor = const Color.fromARGB(255, 189, 183, 183);
   double borderWidth = 1;
+
+  double marginHeight = 5;
 
   BoxDecoration boxDecoration = BoxDecoration(
     color: Colors.white,
@@ -55,32 +53,45 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
   Color labelFontColor = Colors.grey;
 
   TextStyle hintTextStyle = TextStyle(color: Colors.grey.withOpacity(0.5));
+  double smallLabelFontSize = 12;
 
+  double mediumLabelFontSize = 15;
+  int leaveTypeId = 0;
   // action button
   Color actionButtonBgColor = const Color.fromARGB(255, 68, 156, 204);
   Color actionButtonFgColor = Colors.white;
 
   Color iconColor = Colors.grey;
+  Future<DateTime?> selectDate(BuildContext context,
+      {DateTime? fDate, DateTime? lDate}) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: (fDate != null) ? fDate : DateTime(2015, 8),
+      lastDate: (lDate != null) ? lDate : DateTime(2101),
+    );
+    return picked;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   void dispose() {
     // Clean up controllers when the widget is disposed
 
-    _employeeIdController.dispose();
-    _contactNoController.dispose();
-    _responsibleEmployeeIdController.dispose();
-    _leaveTypeController.dispose();
-    _startDateController.dispose();
-    _endDateController.dispose();
-    _totalLeaveDaysController.dispose();
-    _addressDuringLeaveController.dispose();
-    _reasonForLeaveController.dispose();
-    _remarksController.dispose();
+    _leaveReasonController.dispose();
 
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final provLeave = Provider.of<LeaveController>(context, listen: false);
+
     return Scaffold(
       //Leave Application Form
       appBar: (widget.title == null)
@@ -97,241 +108,201 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
-                  decoration: boxDecoration,
-                  child: TextFormField(
-                    autofocus: false,
-                    controller: _employeeIdController,
-                    decoration: InputDecoration(
-                        floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        labelText: 'Employee ID',
-                        contentPadding: contentPadding,
-                        border: InputBorder.none,
-                        prefixIcon: Icon(
-                          Icons.person,
-                          color: iconColor,
+                  padding: EdgeInsets.only(left: leftPadding),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          "Leave Type",
+                          style: TextStyle(
+                              fontSize: labelFontSize,
+                              fontWeight: FontWeight.bold),
                         ),
-                        /* focusedBorder: OutlineInputBorder(
-                          borderRadius: borderRadius,
-                          borderSide:
-                              BorderSide(color: borderColor, width: borderWidth)),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: borderRadius,
-                          borderSide:
-                              BorderSide(color: borderColor, width: borderWidth)), */
-                        hintText: 'Employee ID',
-                        labelStyle: TextStyle(
-                            fontSize: labelFontSize, color: labelFontColor),
-                        hintStyle: AppVars.customHintTextStyle),
-                    validator: (value) {
-                      if (value != null && value == "") {
-                        return 'Please enter employee ID';
-                      }
-                      return null;
-                    },
+                      ),
+                      DropdownButtonHideUnderline(
+                        child: Expanded(
+                          flex: 2,
+                          child: Container(
+                            //width: AppVars.screenSize.width * 0.40,
+                            padding: AppVars.inputContentPadding,
+                            decoration: AppVars
+                                .customInputboxDecoration, // BoxDecoration(border: Border.all(width: 0.4)),
+                            margin:
+                                EdgeInsets.symmetric(vertical: marginHeight),
+                            child: FutureBuilder(
+                              future: provLeave.getLeaveType(),
+                              builder: (ctx, leaveSnap) => (!leaveSnap.hasData)
+                                  ? SizedBox.shrink()
+                                  : /* Text(nationSnap.data!.data[3].countryName!) */
+
+                                  Consumer<LeaveController>(
+                                      builder: (ctx, sConsume, _) =>
+                                          DropdownButton(
+                                              padding: EdgeInsets.all(0),
+                                              hint: Text(
+                                                "Choose Leave Type",
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                                style: TextStyle(
+                                                    fontSize:
+                                                        mediumLabelFontSize,
+                                                    color: Colors.black54),
+                                              ),
+                                              value: sConsume.leaveType,
+                                              items: List.generate(
+                                                  leaveSnap.data!.data.length,
+                                                  (index) => DropdownMenuItem(
+                                                      value: leaveSnap.data!
+                                                          .data[index].leaveType
+                                                          .toString(),
+                                                      child: Text(
+                                                        leaveSnap
+                                                            .data!
+                                                            .data[index]
+                                                            .leaveType
+                                                            .toString(),
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .labelSmall,
+                                                      ))),
+                                              onChanged: (val) {
+                                                if (val == null) {
+                                                  return;
+                                                }
+                                                final ind = leaveSnap.data!.data
+                                                    .indexWhere((type) =>
+                                                        type.leaveType == val);
+                                                if (ind > -1) {
+                                                  leaveTypeId = leaveSnap
+                                                      .data!.data[ind].id;
+                                                } else {
+                                                  leaveTypeId = -1;
+                                                }
+                                                provLeave.setLeaveType(val);
+                                              }),
+                                    ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Container(
-                  decoration: boxDecoration,
-                  child: TextFormField(
-                    controller: _contactNoController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                        labelText: 'Contact No',
-                        border: InputBorder.none,
-                        prefixIcon: Icon(
-                          Icons.phone,
-                          color: iconColor,
+                    margin: EdgeInsets.symmetric(vertical: marginHeight),
+                    padding: EdgeInsets.only(left: leftPadding),
+                    decoration: AppVars.customInputboxDecoration,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Consumer<LeaveController>(
+                          builder: (ctx, leaveSnap, _) => Text(
+                            'From Date: ${DateFormat.yMd().format(leaveSnap.fromDate)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
+                            style: TextStyle(fontSize: mediumLabelFontSize),
+                          ),
                         ),
-                        contentPadding: contentPadding,
-                        /* focusedBorder: OutlineInputBorder(
-                          borderRadius: borderRadius,
-                          borderSide:
-                              BorderSide(color: borderColor, width: borderWidth)),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: borderRadius,
-                          borderSide:
-                              BorderSide(color: borderColor, width: borderWidth)), */
-                        hintText: 'Contact No',
-                        labelStyle: TextStyle(
-                            fontSize: labelFontSize, color: labelFontColor),
-                        hintStyle: AppVars.customHintTextStyle),
-                    validator: (value) {
-                      if (value != null && value == "") {
-                        return 'Please enter contact number';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                /*  Container(
-                  decoration: boxDecoration,
-                  child: TextFormField(
-                    controller: _responsibleEmployeeIdController,
-                    decoration: InputDecoration(
-                        labelText: 'Responsible Employee ID',
-                        contentPadding: contentPadding,
-                        prefixIcon: Icon(
-                          Icons.group,
-                          color: iconColor,
+                        SizedBox(width: 20),
+                        TextButton(
+                          onPressed: () async {
+                            final selecDate = await selectDate(context,
+                                fDate: DateTime(1970));
+                            provLeave.setFromDate(selecDate ?? DateTime.now());
+                          },
+                          child: Text(
+                            'Select Date',
+                            style: TextStyle(fontSize: mediumLabelFontSize),
+                          ),
                         ),
-                        border: InputBorder.none,
-                        /*  focusedBorder: OutlineInputBorder(
-                          borderRadius: borderRadius,
-                          borderSide:
-                              BorderSide(color: borderColor, width: borderWidth)),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: borderRadius,
-                          borderSide:
-                              BorderSide(color: borderColor, width: borderWidth)), */
-                        hintText: 'Responsible Employee ID',
-                        labelStyle: TextStyle(
-                            fontSize: labelFontSize, color: labelFontColor),
-                        hintStyle: AppVars.customHintTextStyle),
-                        
-                  ),
-                ), */
+                      ],
+                    )),
+                Container(
+                    margin: EdgeInsets.symmetric(vertical: marginHeight),
+                    padding: EdgeInsets.only(left: leftPadding),
+                    decoration: AppVars.customInputboxDecoration,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Consumer<LeaveController>(
+                          builder: (ctx, leaveSnap, _) => Text(
+                            'To Date: ${DateFormat.yMd().format(leaveSnap.toDate)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
+                            style: TextStyle(fontSize: mediumLabelFontSize),
+                          ),
+                        ),
+                        SizedBox(width: 20),
+                        TextButton(
+                          onPressed: () async {
+                            final selecDate = await selectDate(context,
+                                fDate: DateTime(1970));
+                            provLeave.setToDate(selecDate ?? DateTime.now());
+                          },
+                          child: Text(
+                            'Select Date',
+                            style: TextStyle(fontSize: mediumLabelFontSize),
+                          ),
+                        ),
+                      ],
+                    )),
+                Container(
+                    margin: EdgeInsets.symmetric(vertical: marginHeight),
+                    padding: EdgeInsets.only(left: leftPadding, right: 10),
+                    decoration: boxDecoration,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Number of leave days",
+                          style: TextStyle(fontSize: mediumLabelFontSize),
+                        ),
+                        SizedBox(
+                          height: 50,
+                        ),
+                        Consumer<LeaveController>(
+                          builder: (ctx, leaveConsume, _) => Text(
+                            (leaveConsume.gettotalLeaveDays() > 0)
+                                ? leaveConsume.gettotalLeaveDays().toString()
+                                : "",
+                            style: TextStyle(fontSize: mediumLabelFontSize),
+                          ),
+                        ),
+                      ],
+                    )),
+                Container(
+                    margin: EdgeInsets.symmetric(vertical: marginHeight),
+                    padding: EdgeInsets.only(left: leftPadding, right: 10),
+                    decoration: boxDecoration,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Remaining leave days",
+                          style: TextStyle(fontSize: mediumLabelFontSize),
+                        ),
+                        SizedBox(
+                          height: 50,
+                        ),
+                        FutureBuilder(
+                          future: provLeave.getRemainLeave(),
+                          builder: (ctx, snap) => (!snap.hasData)
+                              ? SizedBox.shrink()
+                              : Text(
+                                  snap.data.toString(),
+                                  style:
+                                      TextStyle(fontSize: mediumLabelFontSize),
+                                ),
+                        ),
+                      ],
+                    )),
                 Container(
                   decoration: boxDecoration,
                   child: TextFormField(
-                    controller: _leaveTypeController,
+                    controller: _leaveReasonController,
                     decoration: InputDecoration(
-                        labelText: 'Leave Type',
+                        labelText: 'Leave Reason',
                         contentPadding: contentPadding,
-                        prefixIcon: Icon(
-                          Icons.type_specimen,
-                          color: iconColor,
-                        ),
-                        border: InputBorder.none,
-                        /*  focusedBorder: OutlineInputBorder(
-                          borderRadius: borderRadius,
-                          borderSide:
-                              BorderSide(color: borderColor, width: borderWidth)),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: borderRadius,
-                          borderSide:
-                              BorderSide(color: borderColor, width: borderWidth)), */
-                        hintText: 'Leave Type',
-                        labelStyle: TextStyle(
-                            fontSize: labelFontSize, color: labelFontColor),
-                        hintStyle: AppVars.customHintTextStyle),
-                    validator: (value) {
-                      if (value != null && value == "") {
-                        return 'Please enter leave type';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                Container(
-                  decoration: boxDecoration,
-                  child: TextFormField(
-                    controller: _startDateController,
-                    decoration: InputDecoration(
-                        labelText: 'Start Date',
-                        contentPadding: contentPadding,
-                        prefixIcon: Icon(
-                          Icons.calendar_month,
-                          color: iconColor,
-                        ),
-                        border: InputBorder.none,
-                        /* focusedBorder: OutlineInputBorder(
-                          borderRadius: borderRadius,
-                          borderSide:
-                              BorderSide(color: borderColor, width: borderWidth)),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: borderRadius,
-                          borderSide:
-                              BorderSide(color: borderColor, width: borderWidth)), */
-                        hintText: 'Start Date',
-                        labelStyle: TextStyle(
-                            fontSize: labelFontSize, color: labelFontColor),
-                        hintStyle: AppVars.customHintTextStyle),
-                    validator: (value) {
-                      if (value != null && value == "") {
-                        return 'Please enter start date';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                Container(
-                  decoration: boxDecoration,
-                  child: TextFormField(
-                    controller: _endDateController,
-                    decoration: InputDecoration(
-                        labelText: 'End Date',
-                        contentPadding: contentPadding,
-                        prefixIcon: Icon(
-                          Icons.calendar_month,
-                          color: iconColor,
-                        ),
-                        border: InputBorder.none,
-                        /* focusedBorder: OutlineInputBorder(
-                          borderRadius: borderRadius,
-                          borderSide:
-                              BorderSide(color: borderColor, width: borderWidth)),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: borderRadius,
-                          borderSide:
-                              BorderSide(color: borderColor, width: borderWidth)), */
-                        hintText: 'End Date',
-                        labelStyle: TextStyle(
-                            fontSize: labelFontSize, color: labelFontColor),
-                        hintStyle: AppVars.customHintTextStyle),
-                    validator: (value) {
-                      if (value != null && value == "") {
-                        return 'Please enter end date';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                Container(
-                  decoration: boxDecoration,
-                  child: TextFormField(
-                    controller: _totalLeaveDaysController,
-                    decoration: InputDecoration(
-                        labelText: 'Total Leave Days',
-                        contentPadding: contentPadding,
-                        prefixIcon: Icon(
-                          Icons.calendar_view_day,
-                          color: iconColor,
-                        ),
-                        border: InputBorder.none,
-                        /* focusedBorder: OutlineInputBorder(
-                          borderRadius: borderRadius,
-                          borderSide:
-                              BorderSide(color: borderColor, width: borderWidth)),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: borderRadius,
-                          borderSide:
-                              BorderSide(color: borderColor, width: borderWidth)), */
-                        hintText: 'Total Leave Days',
-                        labelStyle: TextStyle(
-                            fontSize: labelFontSize, color: labelFontColor),
-                        hintStyle: AppVars.customHintTextStyle),
-                    validator: (value) {
-                      if (value != null && value == "") {
-                        return 'Please enter total leave days';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                Container(
-                  decoration: boxDecoration,
-                  child: TextFormField(
-                    controller: _addressDuringLeaveController,
-                    decoration: InputDecoration(
-                        labelText: 'Address During Leave',
-                        contentPadding: contentPadding,
-                        prefixIcon: Icon(
-                          Icons.calendar_today,
-                          color: iconColor,
-                        ),
                         border: InputBorder.none,
                         /* focusedBorder: OutlineInputBorder(
                           borderRadius: borderRadius,
@@ -341,77 +312,19 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
                           borderRadius: borderRadius,
                           borderSide:
                               BorderSide(color: borderColor, width: borderWidth)), */
-                        hintText: 'Address During Leave',
-                        labelStyle: TextStyle(
-                            fontSize: labelFontSize, color: labelFontColor),
-                        hintStyle: AppVars.customHintTextStyle),
-                  ),
-                ),
-                Container(
-                  decoration: boxDecoration,
-                  child: TextFormField(
-                    controller: _reasonForLeaveController,
-                    decoration: InputDecoration(
-                        labelText: 'Reason for Leave',
-                        contentPadding: contentPadding,
-                        prefixIcon: Icon(
-                          Icons.time_to_leave,
-                          color: iconColor,
-                        ),
-                        border: InputBorder.none,
-                        /* focusedBorder: OutlineInputBorder(
-                          borderRadius: borderRadius,
-                          borderSide:
-                              BorderSide(color: borderColor, width: borderWidth)),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: borderRadius,
-                          borderSide:
-                              BorderSide(color: borderColor, width: borderWidth)), */
-                        hintText: 'Reason for Leave',
+                        hintText: 'Enter Leave Reason',
                         labelStyle: TextStyle(
                             fontSize: labelFontSize, color: labelFontColor),
                         hintStyle: AppVars.customHintTextStyle),
                     validator: (value) {
                       if (value != null && value == "") {
-                        return 'Please enter reason for leave';
+                        return 'Please enter leave reason';
                       }
                       return null;
                     },
                   ),
                 ),
-                Container(
-                  decoration: boxDecoration,
-                  child: TextFormField(
-                    controller: _remarksController,
-                    decoration: InputDecoration(
-                        labelText: 'Remarks',
-                        contentPadding: contentPadding,
-                        prefixIcon: Icon(
-                          CupertinoIcons.pen,
-                          color: iconColor,
-                        ),
-                        border: InputBorder.none,
-                        /* focusedBorder: OutlineInputBorder(
-                          borderRadius: borderRadius,
-                          borderSide:
-                              BorderSide(color: borderColor, width: borderWidth)),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: borderRadius,
-                          borderSide:
-                              BorderSide(color: borderColor, width: borderWidth)), */
-                        hintText: 'Remarks',
-                        labelStyle: TextStyle(
-                            fontSize: labelFontSize, color: labelFontColor),
-                        hintStyle: AppVars.customHintTextStyle),
-                    validator: (value) {
-                      if (value != null && value == "") {
-                        return 'Please enter proper remarks';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                //              const SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: 5),
@@ -419,12 +332,41 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
                           borderRadius: BorderRadius.circular(15)),
                       backgroundColor: Appcolors.assignButtonColor,
                       foregroundColor: actionButtonFgColor),
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState == null) {
                       return;
                     }
-                    if (_formKey.currentState!.validate()) {
+                    if (_formKey.currentState!.validate() &&
+                        provLeave.leaveType != null) {
+                      if (provLeave.gettotalLeaveDays() <= 0) {
+                        AppMethods().snackBar(
+                            "Please check \"form\" and \"to\" Dates", context);
+                        return;
+                      }
+                      if (leaveTypeId < 0) {
+                        AppMethods().snackBar("Something went wrong", context);
+                      }
                       _formKey.currentState!.save();
+
+                      final leaveModel = LeaveApplyModel(
+                          UserCredential.userid,
+                          leaveTypeId,
+                          AppMethods().dateOfBirthFormat(provLeave.fromDate),
+                          AppMethods().dateOfBirthFormat(provLeave.toDate),
+                          provLeave.gettotalLeaveDays().toString(),
+                          _leaveReasonController.text);
+
+                      print("leave type: ${leaveModel.leaveTypeId}");
+                      await provLeave.applyLeave(leaveModel);
+                      provLeave.initLeaveForm();
+                      _leaveReasonController.text = "";
+
+                      AppMethods().snackBar(
+                          "Application for leave successfully submitted",
+                          context);
+                    } else {
+                      AppMethods()
+                          .snackBar("Application for leave failed", context);
                     }
                     // Handle apply button press
                     // You can access the values using controller.text for each field

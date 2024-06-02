@@ -174,6 +174,7 @@ class _LoginFormState extends State<LoginForm> {
                           backgroundColor: Appcolors.assignButtonColor,
                           foregroundColor: actionButtonFgColor),
                       onPressed: () async {
+                        FocusScope.of(context).unfocus();
                         if (_formInfoKey.currentState == null) {
                           return;
                         }

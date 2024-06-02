@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hrms_app/controller/hrms_auth_controller.dart';
 import 'package:hrms_app/utils/app_variables/user_credential.dart';
+import 'package:hrms_app/view/pages/dashboard/leave_page/leave_page.dart';
 import 'package:hrms_app/view/pages/splash_page_2.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -67,7 +68,9 @@ class _RootNavPageState extends State<RootNavPage> {
         //employee list
         //  EmployeePage(),
 
-        LeaveFormPage(),
+        (UserCredential.userid == 1)
+            ? LeaveCards()
+            : LeaveFormPage() /*  LeaveFormPage() */,
 
         AttendancePage(),
         // user

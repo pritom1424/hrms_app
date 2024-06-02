@@ -405,8 +405,7 @@ class _EmployeeListState extends State<EmployeeList> {
                                                             .proPicPlaceholderPath)
                                                         as ImageProvider
                                                 : AssetImage(ImagePath
-                                                        .proPicPlaceholderPath)
-                                                    as ImageProvider,
+                                                    .proPicPlaceholderPath),
                                           )),
                                           DataCell(Row(
                                             children: [

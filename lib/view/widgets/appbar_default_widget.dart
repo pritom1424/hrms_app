@@ -55,16 +55,25 @@ class AppbarDefault extends StatelessWidget implements PreferredSize {
                                 .getEmployeeProfile(
                                     ApiLinks.employeeProfileLink,
                                     UserCredential.userid!),
-                            builder: (ctx, snap) => (!snap.hasData)
-                                ? CircleAvatar(
+                            builder: (ctx, snap) {
+                              if (!snap.hasData) {
+                                return CircleAvatar(
+                                  backgroundImage: AssetImage(
+                                      ImagePath.proPicPlaceholderPath),
+                                );
+                              } else {
+                                if (snap.data!.image == null) {
+                                  return CircleAvatar(
                                     backgroundImage: AssetImage(
                                         ImagePath.proPicPlaceholderPath),
-                                  )
-                                : CircleAvatar(
-                                    backgroundImage: NetworkImage(
-                                        "https://hrms.szamantech.com/storage/employee/${snap.data!.image}"),
-                                  ),
-                          ),
+                                  );
+                                }
+                                return CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                      "https://hrms.szamantech.com/storage/employee/${snap.data!.image}"),
+                                );
+                              }
+                            }),
                   )),
                   Text(
                     appbarName ?? "Home",
