@@ -96,7 +96,7 @@ class _SplashPage2State extends State<SplashPage2> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: indicators(images.length, activePage)),
             ),
-            Text(
+            const Text(
               "Monitor Your Employee with Style",
               style: TextStyle(
                   fontSize: 35,
@@ -106,7 +106,7 @@ class _SplashPage2State extends State<SplashPage2> {
             SizedBox(
               height: 10,
             ),
-            Text(
+            const Text(
               "A new way to monitor your employee through the application. anytime and anywhere!",
               textAlign: TextAlign.left,
               style: TextStyle(
@@ -114,7 +114,7 @@ class _SplashPage2State extends State<SplashPage2> {
                   fontWeight: FontWeight.normal,
                   fontSize: 18),
             ),
-            SizedBox(
+            const SizedBox(
               height: 40,
             ),
             ElevatedButton(
@@ -123,21 +123,25 @@ class _SplashPage2State extends State<SplashPage2> {
                         listen: false)
                     .tryAutoLogin();
                 if (!didLogin) {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (ctx) => LoginForm()));
+                  if (context.mounted) {
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (ctx) => LoginForm()));
+                  }
                 } else {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (ctx) => RootNavPage()));
+                  if (context.mounted) {
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (ctx) => RootNavPage()));
+                  }
                 }
               },
-              child: Text("Get Started"),
               style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
                   backgroundColor:
                       Appcolors.assignButtonColor, //Color(0xFF4F14DE),
-                  padding: EdgeInsets.symmetric(vertical: 15),
+                  padding: const EdgeInsets.symmetric(vertical: 15),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(0))),
+              child: const Text("Get Started"),
             )
           ],
         ),

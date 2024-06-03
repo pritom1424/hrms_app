@@ -82,7 +82,7 @@ class _UsersListState extends State<UsersList> {
 
                     for (int i = 0; i < snap.data!.data.length; i++) {
                       didEnable
-                          .add((snap.data!.data[i].status == 2) ? false : true);
+                          .add((snap.data!.data[i].status == 1) ? true : false);
                     }
 
                     return mainDataTable(_hrmsEmployeeUserModel);

@@ -100,7 +100,7 @@ class _LoginFormState extends State<LoginForm> {
                         labelText: 'Email',
                         labelStyle: TextStyle(fontSize: 18, color: Colors.grey),
                         prefixIcon:
-                            Icon(Icons.lock_open_rounded, color: Colors.grey),
+                            Icon(Icons.email_outlined, color: Colors.grey),
                         /*    suffixIcon: InkWell(
                             onTap: () {
                               _obSecurePassword.value = !_obSecurePassword.value;

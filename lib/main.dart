@@ -7,7 +7,6 @@ import 'package:hrms_app/controller/employee_user_controller.dart';
 import 'package:hrms_app/controller/hrms_auth_controller.dart';
 import 'package:hrms_app/controller/leave_controller.dart';
 import 'utils/app_variables/app_strings.dart';
-import 'utils/app_variables/app_vars.dart';
 import 'controller/employee_data_controller.dart';
 import 'view/pages/splash_page_2.dart';
 import 'package:provider/provider.dart';

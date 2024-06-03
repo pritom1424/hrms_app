@@ -1164,17 +1164,17 @@ class _EditEmployeeApplicationFormState
                 backgroundColor: Appcolors.assignButtonColor,
                 foregroundColor: actionButtonFgColor),
             onPressed: () async {
-              print("update tes");
+              FocusScope.of(context).unfocus();
               if (_formOfficialInfoKey.currentState == null) {
-                print("not valid");
                 return;
               }
+
               if (_formOfficialInfoKey.currentState!.validate() &&
                   _selectedDepartment != null &&
                   _selectedShift != null) {
                 _formOfficialInfoKey.currentState!.save();
-                print("image path");
-                //    print("Image path ${_storedImage!.path}");
+                econtrol.setLoading(true);
+
                 if (_employeeEmailController.text.isNotEmpty) {
                   _selectSelfAccess = "has_self_access";
                 }
@@ -1208,31 +1208,36 @@ class _EditEmployeeApplicationFormState
                     selfAccess: _selectSelfAccess);
 
                 if (widget.employeeID != null) {
-                  /*   await econtrol.updateEmployee(ApiLinks.employeeUpdateLink,
-                      widget.employeeID!, employeeData); */
-                  print("employee ID ${widget.employeeID!}");
                   await econtrol.updateEmployee(ApiLinks.employeeUpdateLink,
                       widget.employeeID!, employeeData);
-                  Navigator.of(context).pop();
+                  econtrol.setLoading(false);
+                  if (mounted) {
+                    Navigator.of(context).pop();
+                  }
                 }
-
-                /*   Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (ctx) => EmployeeList())); */
-
-                // Do something with the validated data
-                //print('Name: $_name');
               } else {
                 AppMethods().snackBar(AppStrings.formErrorText, context);
               }
-              print("nothing matched");
-              // Handle apply button press
-              // You can access the values using controller.text for each field
             },
             child: const Text(
               'Update',
               style: TextStyle(fontSize: 25),
             ),
           ),
+          SizedBox(
+            height: 20,
+          ),
+          Consumer<EmployeeDataController>(builder: (ctx, snap, ch) {
+            if (snap.isLoading) {
+              return Center(
+                child: CircularProgressIndicator(
+                  color: Appcolors.contentColorPurple,
+                ),
+              );
+            } else {
+              return SizedBox.shrink();
+            }
+          }),
         ],
       ),
     );

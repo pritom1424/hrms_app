@@ -19,6 +19,7 @@ class LeaveFormPage extends StatefulWidget {
 }
 
 class _LeaveFormPageState extends State<LeaveFormPage> {
+  bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
   String? _selectLeaveType;
   String _totalLeaveDays = "";
@@ -333,6 +334,7 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
                       backgroundColor: Appcolors.assignButtonColor,
                       foregroundColor: actionButtonFgColor),
                   onPressed: () async {
+                    FocusScope.of(context).unfocus();
                     if (_formKey.currentState == null) {
                       return;
                     }
@@ -348,6 +350,7 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
                       }
                       _formKey.currentState!.save();
 
+                      provLeave.setLoading(true);
                       final leaveModel = LeaveApplyModel(
                           UserCredential.userid,
                           leaveTypeId,
@@ -356,14 +359,16 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
                           provLeave.gettotalLeaveDays().toString(),
                           _leaveReasonController.text);
 
-                      print("leave type: ${leaveModel.leaveTypeId}");
                       await provLeave.applyLeave(leaveModel);
                       provLeave.initLeaveForm();
+                      provLeave.setLoading(false);
                       _leaveReasonController.text = "";
-
-                      AppMethods().snackBar(
-                          "Application for leave successfully submitted",
-                          context);
+                      if (context.mounted) {
+                        AppMethods().snackBar(
+                            "Application for leave successfully submitted",
+                            context,
+                            Appcolors.deepGreenColor);
+                      }
                     } else {
                       AppMethods()
                           .snackBar("Application for leave failed", context);
@@ -371,11 +376,23 @@ class _LeaveFormPageState extends State<LeaveFormPage> {
                     // Handle apply button press
                     // You can access the values using controller.text for each field
                   },
-                  child: Text(
+                  child: const Text(
                     'Apply',
                     style: TextStyle(fontSize: 25),
                   ),
                 ),
+                const SizedBox(height: 20),
+                Consumer<LeaveController>(builder: (ctx, snap, ch) {
+                  if (snap.isLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: Appcolors.contentColorPurple,
+                      ),
+                    );
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                })
               ],
             ),
           ),

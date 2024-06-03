@@ -5,6 +5,7 @@ import 'package:hrms_app/controller/employee_data_controller.dart';
 import 'package:hrms_app/controller/employee_shift_controller.dart';
 import 'package:hrms_app/model/hrms_shift_list_model.dart';
 import 'package:hrms_app/model/hrms_shift_post_model.dart';
+import 'package:hrms_app/utils/app_colors/app_colors.dart';
 import 'package:hrms_app/utils/app_methods/app_methods.dart';
 import 'package:hrms_app/utils/app_variables/api_links.dart';
 import 'package:hrms_app/utils/app_variables/app_strings.dart';
@@ -418,6 +419,7 @@ class _ShiftConfigState extends State<ShiftConfig> {
                   AppMethods().snackBar(AppStrings.formErrorText, context);
                   return;
                 }
+                providerShift.setLoading(true);
                 _totalWorkingHour = calculateTotalWorkingHours(
                     _selectedStartTime,
                     _selectedEndTime,
@@ -441,6 +443,7 @@ class _ShiftConfigState extends State<ShiftConfig> {
                 await providerShift.createShift(
                     ApiLinks.shiftCreateLink, shiftPostModel);
                 isInit = true;
+                providerShift.setLoading(false);
                 setState(() {});
                 /* if (_formPersonalInfoKey.currentState == null) {
                 return;
@@ -459,6 +462,20 @@ class _ShiftConfigState extends State<ShiftConfig> {
                 style: TextStyle(fontSize: 25),
               ),
             ),
+            SizedBox(
+              height: 20,
+            ),
+            Consumer<EmployeeShiftController>(builder: (ctx, snap, ch) {
+              if (snap.isLoading) {
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: Appcolors.contentColorPurple,
+                  ),
+                );
+              } else {
+                return SizedBox.shrink();
+              }
+            }),
             SizedBox(
               height: 20,
             ),

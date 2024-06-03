@@ -4,6 +4,7 @@ import 'package:hrms_app/controller/employee_shift_controller.dart';
 import 'package:hrms_app/model/hrms_employee_post_model.dart';
 import 'package:hrms_app/model/hrms_shift_model.dart';
 import 'package:hrms_app/model/hrms_shift_post_model.dart';
+import 'package:hrms_app/utils/app_colors/app_colors.dart';
 import 'package:hrms_app/utils/app_methods/app_methods.dart';
 import 'package:hrms_app/utils/app_variables/api_links.dart';
 import 'package:hrms_app/utils/app_variables/app_strings.dart';
@@ -393,10 +394,10 @@ class _EditShiftConfigFormState extends State<EditShiftConfigForm> {
               },
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
-          Text(
+          const Text(
             "Break Time",
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
           ),
@@ -411,7 +412,7 @@ class _EditShiftConfigFormState extends State<EditShiftConfigForm> {
                     'Start Time: ${AppMethods().dateTimeToTimeString(_selectedBreakStartTime)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
                     style: TextStyle(fontSize: mediumLabelFontSize),
                   ),
-                  SizedBox(width: 20),
+                  const SizedBox(width: 20),
                   TextButton(
                     onPressed: () => _selectBreakTime(context, false),
                     child: Text(
@@ -453,7 +454,7 @@ class _EditShiftConfigFormState extends State<EditShiftConfigForm> {
                     "Total Working Hour",
                     style: TextStyle(fontSize: mediumLabelFontSize),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 50,
                   ),
                   Text(
@@ -462,7 +463,7 @@ class _EditShiftConfigFormState extends State<EditShiftConfigForm> {
                   ),
                 ],
               )),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           ElevatedButton(
@@ -475,10 +476,12 @@ class _EditShiftConfigFormState extends State<EditShiftConfigForm> {
                 foregroundColor: actionButtonFgColor),
             onPressed: () async {
               // _gracePeriodController.text.isEmpty
+              FocusScope.of(context).unfocus();
               if (_selectedShift == null) {
                 AppMethods().snackBar(AppStrings.formErrorText, context);
                 return;
               }
+              provShif.setLoading(true);
               _totalWorkingHour = calculateTotalWorkingHours(
                   _selectedStartTime,
                   _selectedEndTime,
@@ -502,7 +505,10 @@ class _EditShiftConfigFormState extends State<EditShiftConfigForm> {
               await provShif.updateShift(
                   ApiLinks.shiftConfigUpdateLink, widget.id!, shiftPostModel);
 
-              Navigator.of(context).pop();
+              provShif.setLoading(false);
+              if (context.mounted) {
+                Navigator.of(context).pop();
+              }
 
               /* if (_formPersonalInfoKey.currentState!.validate()) {
                 _formPersonalInfoKey.currentState!.save();
@@ -517,7 +523,21 @@ class _EditShiftConfigFormState extends State<EditShiftConfigForm> {
               'Update',
               style: TextStyle(fontSize: 25),
             ),
-          )
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Consumer<EmployeeShiftController>(builder: (ctx, snap, ch) {
+            if (snap.isLoading) {
+              return Center(
+                child: CircularProgressIndicator(
+                  color: Appcolors.contentColorPurple,
+                ),
+              );
+            } else {
+              return SizedBox.shrink();
+            }
+          }),
         ]));
   }
 }

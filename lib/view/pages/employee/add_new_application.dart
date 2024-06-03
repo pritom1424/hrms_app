@@ -991,10 +991,11 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
                 backgroundColor: Appcolors.assignButtonColor,
                 foregroundColor: actionButtonFgColor),
             onPressed: () async {
+              FocusScope.of(context).unfocus();
               if (_formOfficialInfoKey.currentState == null) {
                 return;
               }
-
+              econtrol.setLoading(true);
               if (_formOfficialInfoKey.currentState!.validate() &&
                   _selectedDepartment != null &&
                   _selectedShift != null) {
@@ -1031,16 +1032,18 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
 
                 await econtrol.createEmployee(
                     ApiLinks.employeeListApiLink, employeeData);
-
-                if (widget.isPop != null && widget.isPop == true) {
-                  Navigator.of(context).pop();
-                } else if (widget.isReplace != null &&
-                    widget.isReplace == true) {
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (ctx) => const EmployeeList()));
-                } else {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (ctx) => const EmployeeList()));
+                econtrol.setLoading(false);
+                if (mounted) {
+                  if (widget.isPop != null && widget.isPop == true) {
+                    Navigator.of(context).pop();
+                  } else if (widget.isReplace != null &&
+                      widget.isReplace == true) {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (ctx) => const EmployeeList()));
+                  } else {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (ctx) => const EmployeeList()));
+                  }
                 }
               } else {
                 AppMethods().snackBar(AppStrings.formErrorText, context);
@@ -1051,6 +1054,20 @@ class _AddNewApplicationFormState extends State<AddNewApplicationForm>
               style: TextStyle(fontSize: 25),
             ),
           ),
+          const SizedBox(
+            height: 20,
+          ),
+          Consumer<EmployeeDataController>(builder: (ctx, snap, ch) {
+            if (snap.isLoading) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: Appcolors.contentColorPurple,
+                ),
+              );
+            } else {
+              return const SizedBox.shrink();
+            }
+          }),
         ],
       ),
     );

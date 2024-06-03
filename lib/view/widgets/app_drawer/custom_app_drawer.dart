@@ -34,30 +34,64 @@ class CustomAppDrawer extends StatelessWidget {
                 child: Container(
                   height: AppVars.screenSize.height * 0.15,
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      //  Image.asset("assets/images/dhakaprokash_logo.png"),
-                      FittedBox(
-                        child: (UserCredential.userid == null)
-                            ? CircleAvatar(
-                                radius: 20,
-                                backgroundImage:
-                                    AssetImage(ImagePath.proPicPlaceholderPath),
-                                /* child: Icon(
-                              CupertinoIcons.profile_circled,
-                              size: 40,
-                            ), */
-                              )
-                            : FutureBuilder(
-                                future: Provider.of<EmployeeProfileController>(
-                                        context,
-                                        listen: false)
-                                    .getEmployeeProfile(
-                                        ApiLinks.employeeProfileLink,
-                                        UserCredential.userid!),
-                                builder: (ctx, snap) => (!snap.hasData)
+                  child: FutureBuilder(
+                    future: Provider.of<EmployeeProfileController>(context,
+                            listen: false)
+                        .getEmployeeProfile(ApiLinks.employeeProfileLink,
+                            UserCredential.userid!),
+                    builder: (ctx, snap) => (!snap.hasData)
+                        ? FutureBuilder(
+                            future: Provider.of<EmployeeProfileController>(
+                                    context,
+                                    listen: false)
+                                .getAdminProfile(ApiLinks.employeeProfileLink,
+                                    UserCredential.userid!),
+                            builder: (ctx, snapAd) => (snapAd.hasData)
+                                ? Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      //  Image.asset("assets/images/dhakaprokash_logo.png"),
+                                      FittedBox(
+                                          child: CircleAvatar(
+                                        radius: 20,
+                                        backgroundImage: AssetImage(
+                                            ImagePath.proPicPlaceholderPath),
+                                      )), // AssetImage("assets/images/character_placeholder.png")
+                                      const SizedBox(
+                                        width: 12,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            snapAd.data!.name ?? "no name",
+                                            style: const TextStyle(
+                                                fontSize: 15,
+                                                color: Colors.white),
+                                          ),
+                                          Text(
+                                            snapAd.data!.email ?? 'Admin',
+                                            style: const TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.white),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  )
+                                : const SizedBox.shrink())
+                        : Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              //  Image.asset("assets/images/dhakaprokash_logo.png"),
+                              FittedBox(
+                                child: (UserCredential.userid == null)
                                     ? CircleAvatar(
                                         radius: 20,
                                         backgroundImage: AssetImage(
@@ -75,26 +109,28 @@ class CustomAppDrawer extends StatelessWidget {
                                             backgroundImage: NetworkImage(
                                                 "https://hrms.szamantech.com/storage/employee/${snap.data!.image}"),
                                           ),
+                              ), // AssetImage("assets/images/character_placeholder.png")
+                              const SizedBox(
+                                width: 12,
                               ),
-                      ), // AssetImage("assets/images/character_placeholder.png")
-                      const SizedBox(
-                        width: 12,
-                      ),
-                      const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Admin',
-                            style: TextStyle(fontSize: 15, color: Colors.white),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    snap.data!.employeeName ?? "no name",
+                                    style: const TextStyle(
+                                        fontSize: 15, color: Colors.white),
+                                  ),
+                                  Text(
+                                    snap.data!.employeeCode ?? 'Admin',
+                                    style: const TextStyle(
+                                        fontSize: 12, color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                          Text(
-                            'admin@gmail.com',
-                            style: TextStyle(fontSize: 12, color: Colors.white),
-                          ),
-                        ],
-                      ),
-                    ],
                   ),
                 ),
               ),

@@ -9,6 +9,17 @@ import 'package:hrms_app/model/hrms_shift_post_model.dart';
 import 'package:hrms_app/utils/app_variables/user_credential.dart';
 
 class EmployeeShiftController with ChangeNotifier {
+  bool _isLoading = false;
+
+  bool get isLoading {
+    return _isLoading;
+  }
+
+  void setLoading(bool didLoad) {
+    _isLoading = didLoad;
+    notifyListeners();
+  }
+
   Future<HrmsShiftListModel> loadEmployeeList(String apiLink) async {
     Dio dio = Dio();
     //final url = Uri.parse(apiLink);

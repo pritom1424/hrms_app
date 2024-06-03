@@ -67,4 +67,9 @@ class ApiLinks {
 
   static String leaveListLink =
       "https://hrms.szamantech.com/api/getallleaveassign";
+
+  static String approveLeaveLink =
+      "https://hrms.szamantech.com/api/approveleaveapp/";
+  static String cancelLeaveLink =
+      "https://hrms.szamantech.com/api/cancelleaveapp/";
 }

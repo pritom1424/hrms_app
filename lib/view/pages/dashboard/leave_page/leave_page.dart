@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:hrms_app/controller/leave_controller.dart';
 import 'package:hrms_app/model/hrms_leave_list_model.dart';
+import 'package:hrms_app/utils/app_colors/app_colors.dart';
+import 'package:hrms_app/utils/app_variables/user_credential.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -37,6 +39,7 @@ class _LeaveCardsState extends State<LeaveCards>
   }
 
   Widget pendingRequests(List<LeaveListDatum> data) {
+    final prov = Provider.of<LeaveController>(context, listen: false);
     return Column(
       children: List.generate(
           data.length,
@@ -114,8 +117,38 @@ class _LeaveCardsState extends State<LeaveCards>
                           alignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             TextButton(
-                              onPressed: () {
-                                print("Approve");
+                              onPressed: () async {
+                                await AppMethods().showAlertPop(
+                                    context,
+                                    Text(
+                                      "Are you sure?",
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Container(
+                                      width: AppVars.screenSize.width * 0.9,
+                                      child: Text(
+                                        "Do you want to approve this request?\n\nEmployee Name:${data[index].employeeName}\nReason:${data[index].leaveReason}",
+                                        textAlign: TextAlign.center,
+                                        //maxLines: 3,
+                                        // overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ), () async {
+                                  if (data[index].id != null) {
+                                    final message = await prov
+                                        .approveLeave(data[index].id!);
+                                    if (mounted) {
+                                      AppMethods().snackBar(message, context,
+                                          Appcolors.deepGreenColor);
+                                    }
+                                    setState(() {});
+                                  } else {
+                                    AppMethods().snackBar(
+                                        "something went wrong", context);
+                                  }
+                                  //  Navigator.of(context).pop();
+                                }, () {
+                                  //Navigator.of(context).pop();
+                                });
                               },
                               child: Text('Approve'),
                               style: ButtonStyle(
@@ -128,8 +161,8 @@ class _LeaveCardsState extends State<LeaveCards>
                               ),
                             ),
                             TextButton(
-                              onPressed: () {
-                                AppMethods().showAlertPop(
+                              onPressed: () async {
+                                await AppMethods().showAlertPop(
                                     context,
                                     Text(
                                       "Are you sure?",
@@ -143,9 +176,21 @@ class _LeaveCardsState extends State<LeaveCards>
                                         //maxLines: 3,
                                         // overflow: TextOverflow.ellipsis,
                                       ),
-                                    ),
-                                    () {},
-                                    () {});
+                                    ), () async {
+                                  if (data[index].id != null) {
+                                    final message =
+                                        await prov.cancelLeave(data[index].id!);
+                                    AppMethods().snackBar(message, context);
+                                    setState(() {});
+                                  } else {
+                                    AppMethods().snackBar(
+                                        "something went wrong", context);
+                                  }
+
+                                  //  Navigator.of(context).pop();
+                                }, () {
+                                  // Navigator.of(context).pop();
+                                });
                               },
                               child: Text('Reject'),
                               style: ButtonStyle(
@@ -157,6 +202,7 @@ class _LeaveCardsState extends State<LeaveCards>
                                         Colors.red),
                               ),
                             ),
+
                             /* TextButton(
                               onPressed: () {
                                 print("Edit");
@@ -293,10 +339,24 @@ class _LeaveCardsState extends State<LeaveCards>
                     controller: _tabController,
                     children: [
                       SingleChildScrollView(
-                          child: pendingRequests(pendingList)),
-                      NewsfeedPage(
-                        data: historyList,
-                      ) /* Center(child: Text('History')) */,
+                          child: (pendingList.isEmpty)
+                              ? Container(
+                                  height: AppVars.screenSize.height * 0.6,
+                                  child: Center(
+                                    child: Text("No pending request!"),
+                                  ),
+                                )
+                              : pendingRequests(pendingList)),
+                      (historyList.isEmpty)
+                          ? Container(
+                              height: AppVars.screenSize.height * 0.6,
+                              child: Center(
+                                child: Text("No history available!"),
+                              ),
+                            )
+                          : NewsfeedPage(
+                              data: historyList,
+                            ) /* Center(child: Text('History')) */,
                     ],
                   ),
                 ),

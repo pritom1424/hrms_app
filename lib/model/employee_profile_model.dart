@@ -14,7 +14,7 @@ String hrmsEmployeeProfileModelToJson(HrmsEmployeeProfileModel data) =>
 
 class HrmsEmployeeProfileModel {
   int id;
-  String employeeCode;
+  String? employeeCode;
   String? punchId;
   String? employeeName;
   String? employeeFather;

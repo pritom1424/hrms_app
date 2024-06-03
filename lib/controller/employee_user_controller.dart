@@ -9,6 +9,16 @@ import 'package:hrms_app/utils/app_variables/user_credential.dart';
 class EmployeeUserController with ChangeNotifier {
   List<UserDatum> _userData = [];
   List<UserDatum> _filterData = [];
+  bool _isLoading = false;
+
+  bool get isLoading {
+    return _isLoading;
+  }
+
+  void setLoading(bool didLoad) {
+    _isLoading = didLoad;
+    notifyListeners();
+  }
 
   Future<HrmsEmployeeUserApiModel> getUserLogin(
       String apiLink, String employeeCode) async {
@@ -36,8 +46,7 @@ class EmployeeUserController with ChangeNotifier {
 
   Future<HrmsEmployeeUserModel> loadAllUser(String apiLink) async {
     Dio dio = Dio();
-    // final url = Uri.parse(apiLink);
-    print("user status: ${UserCredential.usertoken}");
+
     final response = await dio.get(apiLink,
         options: Options(
             headers: {'Authorization': 'Bearer ${UserCredential.usertoken}'}));

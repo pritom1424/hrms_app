@@ -17,6 +17,7 @@ class Appcolors {
       const Color(0xFF534E83); // const Color(0xFFF5F5F5);
   static Color appdrawerItemIconColor = const Color(0xFF9688B0);
   static Color appdrawerItemTextColor = Color.fromARGB(255, 191, 181, 209);
+  static Color deepGreenColor = const Color.fromARGB(255, 30, 78, 31);
 
   //dashboard
   //search bar

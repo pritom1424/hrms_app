@@ -11,6 +11,16 @@ import 'package:hrms_app/model/leave_apply_model.dart';
 class LeaveController with ChangeNotifier {
   DateTime _fromdate = DateTime.now(), _toDate = DateTime.now();
   String? _leaveType;
+  bool _isLoading = false;
+
+  bool get isLoading {
+    return _isLoading;
+  }
+
+  void setLoading(bool didLoad) {
+    _isLoading = didLoad;
+    notifyListeners();
+  }
 
   DateTime get fromDate {
     return _fromdate;
@@ -91,6 +101,40 @@ class LeaveController with ChangeNotifier {
     HrmsLeaveListModel jsonResponse =
         hrmsLeaveListModelFromJson(jsonEncode(response.data));
     return jsonResponse;
+  }
+
+  Future<String> approveLeave(int id) async {
+    Dio dio = Dio();
+
+    String urlString = ApiLinks.approveLeaveLink + id.toString();
+
+    final response = await dio.get(urlString,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${UserCredential.usertoken}'
+        }));
+    if (response.statusCode == 200) {
+      return response.data["success"];
+    }
+
+    return "something went wrong!";
+  }
+
+  Future<String> cancelLeave(int id) async {
+    Dio dio = Dio();
+
+    String urlString = ApiLinks.cancelLeaveLink + id.toString();
+
+    final response = await dio.get(urlString,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${UserCredential.usertoken}'
+        }));
+    if (response.statusCode == 200) {
+      return response.data["success"];
+    }
+
+    return "something went wrong!";
   }
 
   Future<int> getRemainLeave() async {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hrms_app/utils/app_colors/app_colors.dart';
 import 'package:intl/intl.dart';
 
 import '../widgets/appbar_default_widget.dart';
@@ -106,8 +107,8 @@ class NewsfeedPage extends StatelessWidget {
                                                   .trim()
                                                   .toLowerCase() ==
                                               "cancelled")
-                                          ? Color(0xFF2A6D2C)
-                                          : Colors.red),
+                                          ? Colors.red
+                                          : Appcolors.deepGreenColor),
                                 )
                               ],
                             ),

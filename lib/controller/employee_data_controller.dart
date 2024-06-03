@@ -15,6 +15,16 @@ import 'package:dio/dio.dart';
 class EmployeeDataController with ChangeNotifier {
   List<EmployeeDatum> _userData = [];
   List<EmployeeDatum> _filterData = [];
+  bool _isLoading = false;
+
+  bool get isLoading {
+    return _isLoading;
+  }
+
+  void setLoading(bool didLoad) {
+    _isLoading = didLoad;
+    notifyListeners();
+  }
 
   Future<HrmsEmployeeModel> loadEmployeeList(String apiLink) async {
     Dio dio = Dio();
