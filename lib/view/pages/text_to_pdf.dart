@@ -27,12 +27,30 @@ class TextToPdfConverter extends StatefulWidget {
 }
 
 class _TextToPdfConverterState extends State<TextToPdfConverter> {
+  final pdf = pw.Document();
+  final theme = pw.PageTheme(
+    margin: pw.EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+    theme: pw.ThemeData(
+        defaultTextStyle: pw.TextStyle(fontSize: 18),
+        paragraphStyle: pw.TextStyle(fontSize: 15)),
+    pageFormat: PdfPageFormat.a4,
+    buildBackground: (pw.Context context) {
+      return pw.Container(
+        width: PdfPageFormat.a4.width,
+        height: PdfPageFormat.a4.height,
+        color: PdfColor.fromInt(0xFFE2E1E1),
+      );
+    },
+  );
   String imgPlaceHolder = "assets/images/propic_placeholder.png";
   final TextEditingController _textEditingController = TextEditingController();
   bool isLoading = false;
   String? _pdfPath;
   bool isInit = false;
   bool _isPDFCreated = false;
+
+  List<String> currentPageContent = [];
+  double currentPageHeight = 0;
   Future<Uint8List> _getImageBytes(String imagePath) async {
     final ByteData data = await rootBundle.load(imagePath);
     return data.buffer.asUint8List();
@@ -42,50 +60,14 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
     final pw.MemoryImage pdfImage;
     double columnSpaceHeight = 5;
 
-    final theme = pw.PageTheme(
-      margin: pw.EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-      theme: pw.ThemeData(
-          defaultTextStyle: pw.TextStyle(fontSize: 18),
-          paragraphStyle: pw.TextStyle(fontSize: 15)),
-      pageFormat: PdfPageFormat.a4, // Background color
-      buildBackground: (pw.Context context) {
-        // Draw a rectangle with the background color
-        return pw.Container(
-          width: PdfPageFormat.a4.width,
-          height: PdfPageFormat.a4.height,
-          color: PdfColor.fromInt(0xFFE2E1E1),
-        );
-      },
-
-      // Optionally, you can also define other properties of the page theme
-      // such as margins, padding, etc.
-    );
     if (_isPDFCreated) {
-      // PDF has already been created, no need to create again
       return;
     }
-    // Set _isPDFCreated to true to indicate that PDF creation has started
-    _isPDFCreated = true;
-    // Create a table header
-    // final List<String> headers = ["ID", "Name", "Employee Code", "Father's Name", "Gender", "Date of Birth", "Nationality", "Image"];
 
-    // Split the data into chunks (each chunk represents data for a page)
-    // const int chunkSize = 10; // Adjust the chunk size as needed
-    // final List<List<Map<String, dynamic>>> chunks = List.generate((users.length / chunkSize).ceil(), (index) {
-    // final int start = index * chunkSize;
-    // final int end = (index + 1) * chunkSize;
-    // return users.sublist(start, end > users.length ? users.length : end);
-    // });
-    final pdf = pw.Document();
+    _isPDFCreated = true;
+
     FocusScope.of(context).unfocus();
-/*     final Uint8List imageBytes = await _getImageBytes(
-        (hrmsEmployeeEditModel.image == null)
-            ? imgPlaceHolder
-            : (hrmsEmployeeEditModel.image.toString().isEmpty)
-                ? imgPlaceHolder
-                : widget.user!['image']
-                    .toString()); //'assets/images/profile_pic.png'
-    final pdfImage = pw.MemoryImage(imageBytes); */
+
     Dio dio = Dio();
     if (hrmsEmployeeEditModel.image != null) {
       final imageResponse = await dio.get(
@@ -118,7 +100,8 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
               textScaleFactor: 2, style: pw.TextStyle(font: pw.Font.times())),
         ), */
             {
-          return pw.Column(
+          return pw.Container(
+              child: pw.Column(
             mainAxisAlignment: pw.MainAxisAlignment.start,
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
@@ -243,14 +226,6 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
                         pw.Text((hrmsEmployeeEditModel.idType == null)
                             ? "Id"
                             : hrmsEmployeeEditModel.idType.toString() + ' :'),
-                        pw.SizedBox(
-                          height: columnSpaceHeight,
-                        ),
-                        pw.Text('Present Address :'),
-                        pw.SizedBox(
-                          height: columnSpaceHeight,
-                        ),
-                        pw.Text('Permanent Address :'),
                       ]),
                   pw.SizedBox(
                     width: 20,
@@ -292,88 +267,142 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
                         pw.Text((hrmsEmployeeEditModel.idNumber == null)
                             ? ""
                             : hrmsEmployeeEditModel.idNumber.toString()),
-                        pw.Text((hrmsEmployeeEditModel.permanentAddress == null)
-                            ? "permanent address"
-                            : hrmsEmployeeEditModel.permanentAddress
-                                .toString()),
-                        pw.SizedBox(
-                          height: columnSpaceHeight,
-                        ),
-                        pw.Text((hrmsEmployeeEditModel.presentAddress == null)
-                            ? "present address"
-                            : hrmsEmployeeEditModel.presentAddress.toString()),
                       ]),
                 ]),
               ),
+              pw.SizedBox(height: 5),
+              pw.Padding(
+                padding: pw.EdgeInsets.symmetric(horizontal: 20),
+                child: pw.Row(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.Container(
+                        width: PdfPageFormat.a4.width * 0.2,
+                        child: pw.Text('Present Address :')),
+                    pw.SizedBox(
+                      width: 20,
+                    ),
+                    pw.Container(
+                        width: PdfPageFormat.a4.width * 0.3,
+                        child: pw.Text(
+                            (hrmsEmployeeEditModel.presentAddress == null)
+                                ? "present address"
+                                : hrmsEmployeeEditModel.presentAddress
+                                    .toString(),
+                            maxLines: 3,
+                            overflow: pw.TextOverflow.clip,
+                            softWrap: true)),
+                  ],
+                ),
+              ),
+              pw.SizedBox(height: 5),
+              pw.Padding(
+                padding: pw.EdgeInsets.symmetric(horizontal: 20),
+                child: pw.Row(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.Container(
+                        width: PdfPageFormat.a4.width * 0.2,
+                        child: pw.Text('Permanent Address :')),
+                    pw.SizedBox(
+                      width: 20,
+                    ),
+                    pw.Container(
+                        width: PdfPageFormat.a4.width * 0.3,
+                        child: pw.Text(
+                            (hrmsEmployeeEditModel.permanentAddress == null)
+                                ? "permanent address"
+                                : hrmsEmployeeEditModel.permanentAddress
+                                    .toString(),
+                            maxLines: 3,
+                            overflow: pw.TextOverflow.clip,
+                            softWrap: true)),
+                  ],
+                ),
+              ),
+              if (hrmsEmployeeEditModel.education.isNotEmpty)
+                pw.SizedBox(height: 20),
+              if (hrmsEmployeeEditModel.education.isNotEmpty)
+                pw.Padding(
+                  padding: pw.EdgeInsets.symmetric(horizontal: 20),
+                  child: pw.Text('Educational Information',
+                      style: pw.TextStyle(
+                          fontWeight: pw.FontWeight.bold, fontSize: 22)),
+                ),
+              if (hrmsEmployeeEditModel.education.isNotEmpty)
+                pw.Padding(
+                  padding: pw.EdgeInsets.symmetric(horizontal: 20),
+                  child: pw.Row(children: [
+                    pw.Column(
+                        mainAxisAlignment: pw.MainAxisAlignment.start,
+                        crossAxisAlignment: pw.CrossAxisAlignment.start,
+                        children: List.generate(
+                          hrmsEmployeeEditModel.education.length,
+                          (index) => pw.Text(
+                              '${hrmsEmployeeEditModel.education[index].instituteName} (${hrmsEmployeeEditModel.education[index].educationType}) :'),
+                        )),
+                    if (hrmsEmployeeEditModel.education.isNotEmpty)
+                      pw.SizedBox(
+                        width: 20,
+                      ),
+                    if (hrmsEmployeeEditModel.education.isNotEmpty)
+                      pw.Column(
+                          mainAxisAlignment: pw.MainAxisAlignment.start,
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          children: List.generate(
+                            hrmsEmployeeEditModel.education.length,
+                            (index) => pw.Text((hrmsEmployeeEditModel
+                                        .education[index].cgpa ==
+                                    null)
+                                ? hrmsEmployeeEditModel.education[index].gpa ??
+                                    ""
+                                : hrmsEmployeeEditModel.education[index].cgpa ??
+                                    ""),
+                          )),
+                  ]),
+                ),
+              if (hrmsEmployeeEditModel.experience.isNotEmpty)
+                pw.SizedBox(height: 20),
+              if (hrmsEmployeeEditModel.experience.isNotEmpty)
+                pw.Padding(
+                  padding: pw.EdgeInsets.symmetric(horizontal: 20),
+                  child: pw.Text('Experience Information',
+                      style: pw.TextStyle(
+                          fontWeight: pw.FontWeight.bold, fontSize: 22)),
+                ),
+              if (hrmsEmployeeEditModel.experience.isNotEmpty)
+                pw.Padding(
+                  padding: pw.EdgeInsets.symmetric(horizontal: 20),
+                  child: pw.Row(children: [
+                    pw.Column(
+                        mainAxisAlignment: pw.MainAxisAlignment.start,
+                        crossAxisAlignment: pw.CrossAxisAlignment.start,
+                        children: List.generate(
+                          hrmsEmployeeEditModel.experience.length,
+                          (index) => pw.Text(
+                              '${hrmsEmployeeEditModel.experience[index].previousWorkplace} :'),
+                        )),
+                    if (hrmsEmployeeEditModel.experience.isNotEmpty)
+                      pw.SizedBox(
+                        width: 20,
+                      ),
+                    if (hrmsEmployeeEditModel.experience.isNotEmpty)
+                      pw.Column(
+                          mainAxisAlignment: pw.MainAxisAlignment.start,
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          children: List.generate(
+                            hrmsEmployeeEditModel.experience.length,
+                            (index) => pw.Text(durationDateinString(
+                                hrmsEmployeeEditModel
+                                    .experience[index].startDate,
+                                hrmsEmployeeEditModel
+                                    .experience[index].endDate)),
+                          )),
+                  ]),
+                ),
+              if (hrmsEmployeeEditModel.experience.isNotEmpty)
+                pw.SizedBox(height: 20),
 
-              // Education
-
-              /* pw.SizedBox(height: 20),
-            pw.Text('Education',
-                style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-            pw.SizedBox(height: 5),
-            pw.Row(children: [
-              pw.Column(
-                  mainAxisAlignment: pw.MainAxisAlignment.start,
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: [
-                    pw.Text('Father Name :'),
-                    pw.Text('Mother Name :'),
-                    pw.Text('Gender :'),
-                    pw.Text('Date Of Birth :'),
-                    pw.Text('Nationality :'),
-                    pw.Text('NID :'),
-                    pw.Text('Present Address :'),
-                    pw.Text('Permanent Address :'),
-                  ]),
-              // pw.SizedBox(width: 20,),
-              pw.Column(
-                  mainAxisAlignment: pw.MainAxisAlignment.start,
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: [
-                    pw.Text('Father'),
-                    pw.Text('Mother'),
-                    pw.Text('Male'),
-                    pw.Text('07/05/2024'),
-                    pw.Text('Bangladesh'),
-                    pw.Text('15523322311'),
-                    pw.Text('Dhaka'),
-                    pw.Text('Dhaka'),
-                  ]),
-            ]),
-            pw.SizedBox(height: 20),
-            pw.Text('Employee',
-                style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-            pw.SizedBox(height: 5),
-            pw.Row(children: [
-              pw.Column(
-                  mainAxisAlignment: pw.MainAxisAlignment.start,
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: [
-                    pw.Text('Father Name :'),
-                    pw.Text('Mother Name :'),
-                    pw.Text('Gender :'),
-                    pw.Text('Date Of Birth :'),
-                    pw.Text('Nationality :'),
-                    pw.Text('NID :'),
-                    pw.Text('Present Address :'),
-                    pw.Text('Permanent Address :'),
-                  ]),
-              // pw.SizedBox(width: 20,),
-              pw.Column(
-                  mainAxisAlignment: pw.MainAxisAlignment.start,
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: [
-                    pw.Text('Father'),
-                    pw.Text('Mother'),
-                    pw.Text('Male'),
-                    pw.Text('07/05/2024'),
-                    pw.Text('Bangladesh'),
-                    pw.Text('15523322311'),
-                    pw.Text('Dhaka'),
-                    pw.Text('Dhaka'),
-                  ]),
-            ]), */
               pw.Spacer(),
               pw.Container(
                 color: PdfColors.red,
@@ -383,58 +412,54 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
                     const pw.EdgeInsets.all(0.0), // Remove gap from right side
               ),
             ],
+          ));
+        },
+      ),
+    );
+
+    final output = await getDownloadsDirectory(); //
+
+    final file =
+        File("${output!.path}/${hrmsEmployeeEditModel.employeeName}_CV.pdf");
+
+    await file.writeAsBytes(await pdf.save());
+    setState(() {
+      _pdfPath = file.path;
+    });
+  }
+
+  String durationDateinString(DateTime? startDate, DateTime? endDate) {
+    if (startDate == null || endDate == null) {
+      return "";
+    }
+
+    final difference = endDate.difference(startDate);
+
+    int years = difference.inDays ~/ 365;
+    int months = (difference.inDays % 365) ~/ 30;
+    int days = difference.inDays % 30;
+    return '$years Year, $months Month${months != 1 ? 's' : ''}, $days Day${days != 1 ? 's' : ''}';
+  }
+
+  // Function to add a new page with specified content
+  void addPageWithContent(List<String> content) {
+    pdf.addPage(
+      pw.Page(
+        pageTheme: theme,
+        build: (context) {
+          return pw.Column(
+            mainAxisAlignment: pw.MainAxisAlignment.start,
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: content
+                .map((text) => pw.Container(
+                      margin: const pw.EdgeInsets.symmetric(vertical: 5),
+                      child: pw.Text(text),
+                    ))
+                .toList(),
           );
         },
       ),
     );
-    pdf.addPage(
-      pw.Page(
-        pageTheme: theme,
-        //  theme: pw.ThemeData(defaultTextStyle: pw.TextStyle(fontSize: 18)),
-        // pageFormat: PdfPageFormat.a4,
-        build:
-            (context) /* pw.Center(
-          child: pw.Text(defaultText /* _textEditingController.text */,
-              textScaleFactor: 2, style: pw.TextStyle(font: pw.Font.times())),
-        ), */
-            {
-          return pw.Center(child: pw.Text("This page is intentionally blank"));
-        },
-      ),
-    );
-    /* pdf.addPage(
-      pw.Page(
-          build: (context) => pw.Table(
-              border: pw.TableBorder.all(width: 1, color: PdfColors.black),
-              children: List.generate(
-                  4,
-                  (index) => pw.TableRow(
-                      children: List.generate(
-                          4,
-                          (ind) => pw.Text(data[index][ind],
-                              textScaleFactor: 2,
-                              textAlign: pw.TextAlign.center)))))
-          /* pw.Container(
-          child: pw.Text(defaultText1 /* _textEditingController.text */,
-              textScaleFactor: 2, style: pw.TextStyle(font: pw.Font.times())),
-        ), */
-          ),
-    ); */
-
-    final output = await getDownloadsDirectory(); //
-    //final Directory directory = Directory('hrms');
-
-    print("pdf path before:${output?.path}");
-    /* await directory.create(recursive: true);
-    print("pdf path: file check done"); */
-    final file = File("${output!.path}/example.pdf");
-
-    //'${output?.path ?? "/hrms pdf"}/example.pdf'
-    await file.writeAsBytes(await pdf.save());
-    setState(() {
-      _pdfPath = file.path;
-      print("pdf path: $_pdfPath");
-    });
   }
 
   @override

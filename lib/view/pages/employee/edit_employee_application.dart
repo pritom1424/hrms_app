@@ -270,9 +270,9 @@ class _EditEmployeeApplicationFormState
             : hrmsEmployeeEditModel.employeeMother!;
 
     _employeePhoneNumberController.text =
-        (hrmsEmployeeEditModel.employeePhoneNumber == null)
+        (hrmsEmployeeEditModel.phoneNumber == null)
             ? ""
-            : hrmsEmployeeEditModel.employeePhoneNumber!;
+            : hrmsEmployeeEditModel.phoneNumber!;
 
     (hrmsEmployeeEditModel.gender == null)
         ? _selectedGender = Gender.male
@@ -283,7 +283,8 @@ class _EditEmployeeApplicationFormState
     /*  (hrmsEmployeeEditModel.gender?.toLowerCase() == "Female".toLowerCase())
         ? _selectedGender = Gender.female
         : _selectedGender = Gender.male; */
-    selectedDateString = hrmsEmployeeEditModel.dateOfBirth;
+    selectedDateString =
+        AppMethods().dateOfBirthFormat(hrmsEmployeeEditModel.dateOfBirth);
     /*  _selectedDate = DateTime.parse(
             hrmsEmployeeEditModel.dateOfBirth ?? DateTime.now.toString()) ??
         DateTime.now(); */
@@ -327,14 +328,13 @@ class _EditEmployeeApplicationFormState
     } else {
       // print("office info not null");
 
-      DateTime? tempDate = DateTime.tryParse(
-          hrmsEmployeeEditModel.officeInformation!.shiftDate ?? "");
+      DateTime? tempDate = hrmsEmployeeEditModel.officeInformation!.shiftDate;
 
       DateTime? tempJoinDate = DateTime.tryParse(
           hrmsEmployeeEditModel.officeInformation!.joiningDate ?? "");
 
-      DateTime? tempConfirmDate = DateTime.tryParse(
-          hrmsEmployeeEditModel.officeInformation!.confirmationDate ?? "");
+      DateTime? tempConfirmDate =
+          hrmsEmployeeEditModel.officeInformation!.confirmationDate;
 
       _employeeDesignationController.text =
           hrmsEmployeeEditModel.officeInformation!.designation ?? "";
