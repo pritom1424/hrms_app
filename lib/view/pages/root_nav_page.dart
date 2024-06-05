@@ -6,6 +6,7 @@ import 'package:hrms_app/controller/hrms_auth_controller.dart';
 import 'package:hrms_app/utils/app_variables/user_credential.dart';
 import 'package:hrms_app/view/pages/dashboard/leave_page/leave_page.dart';
 import 'package:hrms_app/view/pages/splash_page_2.dart';
+
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'employee/add_new_application.dart';
@@ -34,8 +35,19 @@ class _RootNavPageState extends State<RootNavPage> {
   @override
   void initState() {
     TimeExpire();
+    // requestPermissions();
     super.initState();
   }
+
+  /* uture<void> requestPermissions() async {
+    var status = await Permission.manageExternalStorage.request();
+    if (status.isGranted) {
+      // Permission granted, you can now access the external storage
+    } else {
+      // Permission denied
+      // Handle the scenario where user denies permission
+    }
+  } */
 
   void TimeExpire() async {
     final prefs = await SharedPreferences.getInstance();

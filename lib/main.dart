@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hrms_app/controller/dashboard_controller.dart';
 import 'package:hrms_app/controller/employee_attendance_controller.dart';
 import 'package:hrms_app/controller/employee_edit_data_controller.dart';
 import 'package:hrms_app/controller/employee_profile_controller.dart';
@@ -39,6 +40,9 @@ void main() {
       ),
       ChangeNotifierProvider<LeaveController>(
         create: (_) => LeaveController(),
+      ),
+      ChangeNotifierProvider<DashboardController>(
+        create: (_) => DashboardController(),
       )
     ],
     child: const MyApp(),

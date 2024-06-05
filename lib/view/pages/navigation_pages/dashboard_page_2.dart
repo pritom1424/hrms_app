@@ -2,6 +2,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hrms_app/controller/dashboard_controller.dart';
+import 'package:provider/provider.dart';
 import '../../../utils/app_colors/app_colors.dart';
 import '../../../utils/app_variables/app_vars.dart';
 import '../../widgets/appbar_default_widget.dart';
@@ -12,6 +14,7 @@ class DashboardPage2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final prov = Provider.of<DashboardController>(context, listen: false);
     final List<Map<String, dynamic>> data = [
       {"dept": "Reporter", "total": "70", "present": "65", "absent": "5"},
       {"dept": "Editor", "total": "20", "present": "20", "absent": "0"},
@@ -125,73 +128,107 @@ class DashboardPage2 extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              height: AppVars.screenSize.height * 0.2,
-              width: AppVars.screenSize.width,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 5),
-                      child: ListTile(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        titleTextStyle: const TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                        subtitleTextStyle: const TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.normal),
-                        tileColor: Appcolors.contentColorBlue,
-                        title: Text("total"),
-                        subtitle: Text("100"),
+            FutureBuilder(
+              future: prov.totalEmployee(),
+              builder: (ctx, snapTotal) => (snapTotal.connectionState ==
+                      ConnectionState.waiting)
+                  ? SizedBox.shrink()
+                  : Container(
+                      height: AppVars.screenSize.height * 0.2,
+                      width: AppVars.screenSize.width,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              child: ListTile(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                titleTextStyle: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                                subtitleTextStyle: const TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.normal),
+                                tileColor: Appcolors.contentColorBlue,
+                                title: Text(
+                                  "Employee",
+                                  maxLines: 1,
+                                ),
+                                subtitle: Text(snapTotal.data.toString()),
+                              ),
+                            ),
+                          ),
+                          FutureBuilder(
+                              future: prov.totalUser(),
+                              builder: (ctx, snapUser) => (snapUser
+                                          .connectionState ==
+                                      ConnectionState.waiting)
+                                  ? SizedBox.shrink()
+                                  : Expanded(
+                                      child: Padding(
+                                        padding:
+                                            EdgeInsets.symmetric(horizontal: 5),
+                                        child: ListTile(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                          titleTextStyle: const TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                          subtitleTextStyle: const TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.normal),
+                                          tileColor:
+                                              Appcolors.contentColorPurple,
+                                          title: Text(
+                                            "User",
+                                            maxLines: 1,
+                                          ),
+                                          subtitle:
+                                              Text(snapUser.data.toString()),
+                                        ),
+                                      ),
+                                    )),
+                          FutureBuilder(
+                              future: prov.totalUser(),
+                              builder: (ctx, snapAttend) => (snapAttend
+                                          .connectionState ==
+                                      ConnectionState.waiting)
+                                  ? SizedBox.shrink()
+                                  : Expanded(
+                                      child: Padding(
+                                        padding:
+                                            EdgeInsets.symmetric(horizontal: 5),
+                                        child: ListTile(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                          titleTextStyle: const TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                          subtitleTextStyle: const TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.normal),
+                                          tileColor: Appcolors.contentColorPink,
+                                          title: Text(
+                                            "Attendance",
+                                            maxLines: 1,
+                                          ),
+                                          subtitle:
+                                              Text(snapAttend.data.toString()),
+                                        ),
+                                      ),
+                                    )),
+                        ],
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 5),
-                      child: ListTile(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        titleTextStyle: const TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                        subtitleTextStyle: const TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.normal),
-                        tileColor: Appcolors.contentColorPurple,
-                        title: Text("male"),
-                        subtitle: Text("75"),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 5),
-                      child: ListTile(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        titleTextStyle: const TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                        subtitleTextStyle: const TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.normal),
-                        tileColor: Appcolors.contentColorPink,
-                        title: Text("female"),
-                        subtitle: Text("25"),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
             ),
             DataTable(
                 dataTextStyle: TextStyle(color: Colors.black),

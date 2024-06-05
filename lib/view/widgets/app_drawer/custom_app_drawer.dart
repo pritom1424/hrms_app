@@ -25,10 +25,21 @@ class CustomAppDrawer extends StatelessWidget {
         child: Container(
           //height: GenericVars.scSize.height,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               /// Header of the Drawer
+              Container(
+                height: AppVars.screenSize.height * 0.1,
+                width: double.infinity,
+                color: Appcolors.appdrawerListBgColor,
+                padding: EdgeInsets.symmetric(horizontal: 60, vertical: 10),
+                child: Image.asset(
+                  "assets/images/hrms_logo.png",
+                  fit: BoxFit.contain,
+                ),
+              ),
+
               InkWell(
                 onTap: () {},
                 child: Container(

@@ -38,6 +38,11 @@ class _LoginFormState extends State<LoginForm> {
   void initState() {
     print("init login");
 
+    if (widget.isLogOut != null) {
+      if (widget.isLogOut == true) {
+        Provider.of<HrmsAuthController>(context, listen: false).logout();
+      }
+    }
     // TODO: implement initState
     super.initState();
   }
@@ -73,12 +78,21 @@ class _LoginFormState extends State<LoginForm> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Image.asset(
-                      ImagePath.splashLogoPath,
-                      width: AppVars.screenSize.width * 0.6, // Adjust as needed
-                      height: AppVars.screenSize.height * 0.06,
+                    Container(
+                      color: Appcolors.assignButtonColor,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.asset(
+                          ImagePath.logoPath,
+                          width: AppVars.screenSize.width *
+                              0.6, // Adjust as needed
+                          height: AppVars.screenSize.height * 0.06,
+                        ),
+                      ),
                     ),
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 10),
                     TextFormField(
                       //focusNode: emailFocusNode,
                       controller: emailController,

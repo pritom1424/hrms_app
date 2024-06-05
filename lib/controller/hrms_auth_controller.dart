@@ -93,17 +93,22 @@ class HrmsAuthController with ChangeNotifier {
       _authTimer.cancel();
       _authTimer = Timer(Duration.zero, () {});
     }
-
-    notifyListeners();
+    print("cleared before");
+    //notifyListeners();
     final prefs = await SharedPreferences.getInstance();
+    print("cleared");
+    prefs.remove('userData');
     prefs.clear();
+    print("cleared");
   }
 
   Future<bool> tryAutoLogin() async {
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey("userData")) {
+      print("Data stored");
       return false;
     }
+
     final extractedData =
         json.decode(prefs.getString('userData')!) as Map<String, dynamic>;
     final expiryDate = DateTime.parse(extractedData['expiryDate'] as String);

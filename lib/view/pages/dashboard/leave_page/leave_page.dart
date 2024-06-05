@@ -281,10 +281,11 @@ class _LeaveCardsState extends State<LeaveCards>
             );
           }
           if (!snap.hasData) {
-            Center(
+            return Center(
               child: Text("no data found!"),
             );
           }
+          print("snap data ${snap.data}");
 
           List<LeaveListDatum> pendingList = snap.data!.data
               .where(
@@ -295,6 +296,7 @@ class _LeaveCardsState extends State<LeaveCards>
                     "pending",
               )
               .toList();
+
           List<LeaveListDatum> historyList = snap.data!.data
               .where(
                 (element) =>
@@ -304,8 +306,6 @@ class _LeaveCardsState extends State<LeaveCards>
                     "pending",
               )
               .toList();
-
-          print("history ${historyList[1].status}");
 
           return Container(
             height: AppVars.screenSize.height,

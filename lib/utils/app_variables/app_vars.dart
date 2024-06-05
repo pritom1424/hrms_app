@@ -96,7 +96,9 @@ class AppVars {
     /*  "User Permission": UserPermission(
       title: "User Permission",
     ), */
-    "Logout": LoginForm()
+    "Logout": LoginForm(
+      isLogOut: true,
+    )
   };
   static Map<String, List<dynamic>> appsubDrawerListData = {
     "Employee": [

@@ -72,4 +72,12 @@ class ApiLinks {
       "https://hrms.szamantech.com/api/approveleaveapp/";
   static String cancelLeaveLink =
       "https://hrms.szamantech.com/api/cancelleaveapp/";
+
+  static String dashboardtotalEmployeeLink =
+      "https://hrms.szamantech.com/api/dashboard-total-employee";
+
+  static String dashboardTotalUserLink =
+      "https://hrms.szamantech.com/api/dashboard-total-user";
+  static String dashboardtodayTotalAttendance =
+      "https://hrms.szamantech.com/api/dashboard-today-total-attendance";
 }

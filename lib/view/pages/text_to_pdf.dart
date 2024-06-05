@@ -1,11 +1,10 @@
 import 'dart:io';
-import 'dart:typed_data';
-//import 'package:alh_pdf_view/alh_pdf_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:hrms_app/controller/employee_edit_data_controller.dart';
 import 'package:hrms_app/model/hrms_employee_edit_model.dart';
+import 'package:hrms_app/utils/app_methods/app_methods.dart';
 import 'package:hrms_app/utils/app_variables/api_links.dart';
 import 'package:hrms_app/utils/app_variables/app_vars.dart';
 import 'package:hrms_app/utils/app_variables/user_credential.dart';
@@ -46,6 +45,7 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
   final TextEditingController _textEditingController = TextEditingController();
   bool isLoading = false;
   String? _pdfPath;
+  File currentPDfFile = File("");
   bool isInit = false;
   bool _isPDFCreated = false;
 
@@ -254,7 +254,8 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
                         ),
                         pw.Text((hrmsEmployeeEditModel.dateOfBirth == null)
                             ? "BirthDate"
-                            : hrmsEmployeeEditModel.dateOfBirth.toString()),
+                            : AppMethods().dateOfBirthFormat(
+                                hrmsEmployeeEditModel.dateOfBirth)),
                         pw.SizedBox(
                           height: columnSpaceHeight,
                         ),
@@ -417,12 +418,28 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
       ),
     );
 
-    final output = await getDownloadsDirectory(); //
+    final output = await getExternalStorageDirectory();
 
     final file =
         File("${output!.path}/${hrmsEmployeeEditModel.employeeName}_CV.pdf");
 
     await file.writeAsBytes(await pdf.save());
+
+    /* String customPath = '/storage/Employee_CV';
+    Directory(customPath).createSync(recursive: true);
+    String filePath =
+        '$customPath/${hrmsEmployeeEditModel.employeeName}_CV.pdf';
+    Directory destinationDirectory = Directory(filePath);
+    // Check if the destination directory exists, if not create it
+    if (!(await destinationDirectory.exists())) {
+      destinationDirectory.createSync(recursive: true);
+    }
+
+    // Construct the destination file path
+    String destinationFilePath =
+        '${destinationDirectory.path}/${output.path.split('/').last}';
+    List<int> contents = await file.readAsBytes();
+    await File(destinationFilePath).writeAsBytes(contents); */
     setState(() {
       _pdfPath = file.path;
     });
@@ -461,6 +478,19 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
       ),
     );
   }
+/* 
+  void openFolder(String urlPath) async {
+    // Specify the path to the folder you want to open
+    String folderPath = "file:/$urlPath";
+    print(folderPath);
+    // Launch the file manager app with the specified folder
+    await launchUrlString(folderPath);
+  } */
+/* 
+  void openFolder(String urlPath) async {
+    // Specify the path to the folder you want to open
+    await OpenFile.open(urlPath);
+  } */
 
   @override
   void initState() {
@@ -479,6 +509,14 @@ class _TextToPdfConverterState extends State<TextToPdfConverter> {
         appBar: AppBar(
           title: Text('Text to PDF Converter'),
         ),
+        /*   floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            print("pdf path ${currentPDfFile.parent.parent.path}");
+            openFolder(
+                "/storage/emulated/0/Android/data/com.szamantech.hrms_app/files/employee 1_CV.pdf");
+          },
+          child: Icon(Icons.folder),
+        ), */
         body: (isInit)
             ? FutureBuilder(
                 future: employeeEditDataController.getEmployeeCurrentInfo(
