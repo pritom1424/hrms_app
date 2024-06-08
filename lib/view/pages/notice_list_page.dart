@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import '../../utils/app_colors/app_colors.dart';
+
 import '../../utils/app_variables/app_vars.dart';
 import '../../utils/app_variables/image_paths.dart';
 import '../widgets/appbar_default_widget.dart';
@@ -19,10 +17,6 @@ class NoticeListPage extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                 color: Color.fromARGB(66, 173, 163, 163),
-                /*  offset: Offset(
-                  4.0,
-                  4.0,
-                ), */
                 blurRadius: 5,
                 spreadRadius: 1,
               ),
@@ -45,10 +39,6 @@ class NoticeListPage extends StatelessWidget {
           subtitle: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              /*  const Divider(
-                thickness: 2.2,
-                color: Colors.black12,
-              ), */
               Text(
                 subtitle,
                 overflow: TextOverflow.ellipsis,
@@ -79,19 +69,6 @@ class NoticeListPage extends StatelessWidget {
                     AppVars.noticeData[index].entries.toList()[0].value,
                     AppVars.noticeData[index].entries.toList()[1].value)),
           ),
-        )
-
-        /* 
-      Container(
-        child: Row(
-          children: [
-            ,
-            Column(
-              children: [Text("title"), Divider(), Text("content")],
-            )
-          ],
-        ),
-      ), */
-        );
+        ));
   }
 }

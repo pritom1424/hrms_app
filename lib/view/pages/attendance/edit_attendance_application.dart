@@ -177,8 +177,8 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
   }
 
   void initEditAttendanceForm(HrmsEmployeeAttendanceModel hrmsAttendanceModel) {
-    _employeeCode = hrmsAttendanceModel.employee?.employeeCode??"";
-    _employeeName = hrmsAttendanceModel.employee?.employeeName??"";
+    _employeeCode = hrmsAttendanceModel.employee?.employeeCode ?? "";
+    _employeeName = hrmsAttendanceModel.employee?.employeeName ?? "";
     _employeeCodeController.text =
         hrmsAttendanceModel.employee?.employeeCode ?? "";
     _employeeNameController.text =
@@ -203,20 +203,12 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
     _selectedOverTime =
         TimeOfDay.fromDateTime(format.parse(hrmsAttendanceModel.overTime!));
     _selectedAttendanceTime = hrmsAttendanceModel.attendanceDate!;
-
-    /*  _selectedEndTime =
-        AppMethods().dateStringToTimeOfDay(hrmsShiftModel.shiftEndTime);
-    _selectedBreakStartTime =
-        AppMethods().dateStringToTimeOfDay(hrmsShiftModel.breakStartTime);
-    _selectedBreakEndTime =
-        AppMethods().dateStringToTimeOfDay(hrmsShiftModel.breakEndTime); */
-    /*    _totalWorkingHour = hrmsShiftModel.totalWorkingHour ?? ""; */
   }
 
   @override
   void initState() {
     isInit = true;
-    // TODO: implement initState
+
     super.initState();
   }
 
@@ -226,8 +218,6 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
     final provider =
         Provider.of<EmployeeAttendanceController>(context, listen: false);
 
-/*     final providerShift =
-        Provider.of<EmployeeShiftController>(context, listen: false); */
     return Scaffold(
         appBar: (widget.title == null)
             ? null
@@ -304,11 +294,6 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
                       'Attendance Date: ${AppMethods().dateOfBirthFormat(_selectedAttendanceTime)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
                       style: TextStyle(fontSize: mediumLabelFontSize),
                     ),
-                    /* 
-                     Text(
-                      'Date Of Birth: ${DateFormat.yMd().format(_selectedDate)}', //${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}
-                      style: TextStyle(fontSize: mediumLabelFontSize),
-                    ), */
                     SizedBox(width: 20),
                     TextButton(
                       onPressed: () =>
@@ -411,11 +396,6 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
               decoration: InputDecoration(
                 labelText: 'Shift Duration',
                 contentPadding: contentPadding,
-
-                /*  prefixIcon: Icon(
-              Icons.phone,
-              color: iconColor,
-            ), */
                 border: InputBorder.none,
                 hintText: 'Shift Duration',
                 hintStyle: AppVars.customHintTextStyle,
@@ -480,11 +460,6 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
               decoration: InputDecoration(
                 labelText: 'Total Working Hour',
                 contentPadding: contentPadding,
-
-                /*  prefixIcon: Icon(
-              Icons.phone,
-              color: iconColor,
-            ), */
                 border: InputBorder.none,
                 hintText: 'Total Working Hour',
                 hintStyle: AppVars.customHintTextStyle,
@@ -538,11 +513,6 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
                 backgroundColor: actionButtonBgColor,
                 foregroundColor: actionButtonFgColor),
             onPressed: () async {
-              // _gracePeriodController.text.isEmpty
-              /* if (_selected == null) {
-                AppMethods.snackBar(AppStrings.formErrorText, context);
-                return;
-              } */
               if (_formInfoKey.currentState!.validate()) {
                 _formInfoKey.currentState!.save();
 
@@ -576,14 +546,6 @@ class _EditShiftConfigFormState extends State<EditAttendanceForm> {
               } else {
                 AppMethods().snackBar(AppStrings.formErrorText, context);
               }
-              /* if (_formPersonalInfoKey.currentState!.validate()) {
-                _formPersonalInfoKey.currentState!.save();
-                // Do something with the validated data
-                // print('Name: $_name');
-              } */
-
-              // Handle apply button press
-              // You can access the values using controller.text for each field
             },
             child: const Text(
               'Update',

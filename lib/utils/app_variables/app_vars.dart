@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'app_strings.dart';
-import '../../view/pages/employee/add_new_application.dart';
-import '../../view/pages/employee/employee_table.dart';
-import '../../view/pages/users/users_table.dart';
+import '../../view/pages/drawer_pages/employee/add_new_application.dart';
+import '../../view/pages/drawer_pages/employee/employee_table.dart';
+import '../../view/pages/drawer_pages/users/users_table.dart';
 import '../../view/pages/login_page.dart';
-import '../../view/pages/shift/shift_config.dart';
+import '../../view/pages/drawer_pages/shift/shift_config.dart';
 import 'image_paths.dart';
 
 class AppVars {

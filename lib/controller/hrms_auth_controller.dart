@@ -3,16 +3,13 @@ import 'package:dio/dio.dart';
 import 'package:hrms_app/utils/app_variables/api_links.dart';
 import 'package:hrms_app/utils/app_variables/app_strings.dart';
 import 'package:hrms_app/utils/app_variables/user_credential.dart';
-import 'package:hrms_app/view/pages/login_page.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:convert';
 
 class HrmsAuthController with ChangeNotifier {
-  /* static const params = {
-    'key': 'AIzaSyCBZMulm0QGQlpU_A2E5bTg_UBY38iS160',
-  }; */
   String _token = "";
   DateTime _expiryDate = DateTime(0);
   int? _userId;

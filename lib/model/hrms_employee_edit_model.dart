@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final hrmsEmployeeEditModel = hrmsEmployeeEditModelFromJson(jsonString);
-
 import 'dart:convert';
 
 HrmsEmployeeEditModel hrmsEmployeeEditModelFromJson(String str) =>
@@ -12,8 +8,8 @@ String hrmsEmployeeEditModelToJson(HrmsEmployeeEditModel data) =>
 
 class HrmsEmployeeEditModel {
   int id;
-  String employeeCode;
-  String punchId;
+  String? employeeCode;
+  String? punchId;
   String? employeeName;
   String? employeeFather;
   String? employeeMother;
@@ -30,7 +26,7 @@ class HrmsEmployeeEditModel {
   DateTime createdAt;
   DateTime updatedAt;
   dynamic deletedAt;
-  OfficeInformation officeInformation;
+  OfficeInformation? officeInformation;
   List<Education> education;
   List<Experience> experience;
 
@@ -109,7 +105,7 @@ class HrmsEmployeeEditModel {
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
         "deleted_at": deletedAt,
-        "office_information": officeInformation.toJson(),
+        "office_information": officeInformation?.toJson(),
         "education": List<dynamic>.from(education.map((x) => x.toJson())),
         "experience": List<dynamic>.from(experience.map((x) => x.toJson())),
       };

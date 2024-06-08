@@ -87,14 +87,6 @@ class AppbarDefault extends StatelessWidget implements PreferredSize {
             ),
             bottom: (bottomAppWidget != null) ? bottomAppWidget : null,
 
-            /* Image.asset(
-          "assets/images/dhakaprokash_logo.png",
-          fit: BoxFit.fill,
-        ),
-      ), */
-            /* bottom: PreferredSize(
-          preferredSize: Size.fromHeight(kToolbarHeight * 0.1),
-          child: DigitalClockWidget()), */
             actions: (isShowNotification != null && isShowNotification == false)
                 ? null
                 : [

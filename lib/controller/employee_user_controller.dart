@@ -36,12 +36,12 @@ class EmployeeUserController with ChangeNotifier {
 
   Future<void> updateUserStatus(String apiLink, int id) async {
     Dio dio = Dio();
-    // final url = Uri.parse(apiLink + employeeCode.toString());
 
     final urlString = apiLink + id.toString();
     final response = await dio.get(urlString,
         options: Options(
             headers: {'Authorization': 'Bearer ${UserCredential.usertoken}'}));
+    (response.statusCode == 200) ? print("success") : print("failure");
   }
 
   Future<HrmsEmployeeUserModel> loadAllUser(String apiLink) async {

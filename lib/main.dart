@@ -9,7 +9,7 @@ import 'package:hrms_app/controller/hrms_auth_controller.dart';
 import 'package:hrms_app/controller/leave_controller.dart';
 import 'utils/app_variables/app_strings.dart';
 import 'controller/employee_data_controller.dart';
-import 'view/pages/splash_page_2.dart';
+import 'view/pages/splash_page.dart';
 import 'package:provider/provider.dart';
 
 import 'utils/app_colors/app_colors.dart';
@@ -104,12 +104,7 @@ class MyApp extends StatelessWidget {
                 bodySmall: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.normal,
-                    fontFamily: AppStrings.currentFontFamily))
-            //        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            // useMaterial3: true,
-            ),
-        home: SplashPage2()
-        //SplashScreen(),
-        );
+                    fontFamily: AppStrings.currentFontFamily))),
+        home: SplashPage());
   }
 }

@@ -12,7 +12,6 @@ class AppDrawerListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // AppVars.appsubDrawerListData[AppVars.appdrawerListData[itemIndex].entries.toList()[0].key]
     return Container(
       decoration: const BoxDecoration(
           border: Border(bottom: BorderSide(width: 0.3, color: Colors.grey))),
@@ -62,23 +61,7 @@ class AppDrawerListTile extends StatelessWidget {
                                             .key]![index]),
                               )
                         : null;
-                  } /* (
-                    AppVars.appsubDrawerListData[AppVars
-                                .appdrawerListData[itemIndex].entries
-                                .toList()[0]
-                                .key] !=
-                            null
-                        ? Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    AppVars.appsubDrawerListData[AppVars
-                                        .appdrawerListData[itemIndex].entries
-                                        .toList()[0]
-                                        .key]![index]),
-                          )
-                        : null */
-                  ,
+                  },
                   leading: Icon(
                     AppVars.appdrawerListData[itemIndex].entries
                         .toList()[index + 1]

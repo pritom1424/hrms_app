@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 HrmsAttendancePostModel hrmsAttendancePostModelFromJson(String str) =>
     HrmsAttendancePostModel.fromJson(json.decode(str));
@@ -55,45 +54,3 @@ class HrmsAttendancePostModel {
         "status": employeeStatus,
       };
 }
-
-/*
-punch_id
-employee_name
-employee_father
-employee_mother
-gender
-date_of_birth
-nationality
-id_type
-id_number
-permanent_address
-present_address
-user_id
-image
-email_address
-password
-shift_date
-shift_id
-joining_date
-confirmation_date
-designation
-department_id
-
-9
-key list
----------------
-attendance_date
-employee_id
-in_time
-out_time
-shift_duration
-late_time
-over_time
-total_working_hour
-status
-
-
-
-
-
- */

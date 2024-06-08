@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hrms_app/controller/employee_attendance_controller.dart';
-import 'package:hrms_app/model/hrms_employee_attendance_list_model.dart';
+
 import 'package:hrms_app/utils/app_methods/app_methods.dart';
 import 'package:hrms_app/utils/app_variables/api_links.dart';
 import 'package:hrms_app/view/pages/attendance/create_attendance_application.dart';
@@ -11,10 +11,7 @@ import '../../../utils/app_variables/app_strings.dart';
 import '../../widgets/appbar_default_widget.dart';
 
 import '../../../utils/app_variables/app_vars.dart';
-import '../../../utils/app_variables/image_paths.dart';
-import '../../../utils/enums/enums.dart';
 
-import '../../widgets/dashboard_page/search_widget.dart';
 import 'package:intl/intl.dart';
 
 class AttendancePage extends StatefulWidget {
@@ -44,7 +41,7 @@ class _AttendancePageState extends State<AttendancePage> {
   @override
   void initState() {
     isInit = true;
-    // TODO: implement initState
+
     super.initState();
   }
 
@@ -57,7 +54,7 @@ class _AttendancePageState extends State<AttendancePage> {
     punchIdController.dispose();
     _scrollController.dispose();
     searchController.dispose();
-    // TODO: implement dispose
+
     super.dispose();
   }
 
@@ -65,8 +62,6 @@ class _AttendancePageState extends State<AttendancePage> {
   Widget build(BuildContext context) {
     EmployeeAttendanceController employeeDataController =
         Provider.of<EmployeeAttendanceController>(context, listen: false);
-
-    List<AttendanceDatum> listData = [];
 
     return Scaffold(
       appBar: (widget.title == null)
@@ -194,9 +189,9 @@ class _AttendancePageState extends State<AttendancePage> {
                     dividerThickness: 3,
                     headingTextStyle: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),
-                    headingRowColor: MaterialStateColor.resolveWith(
+                    headingRowColor: WidgetStateColor.resolveWith(
                         (states) => Appcolors.dataTableHeadingColor),
-                    dataRowColor: MaterialStateColor.resolveWith(
+                    dataRowColor: WidgetStateColor.resolveWith(
                         (states) => Colors.black26),
                     sortAscending: true,
                     columns: const [
@@ -220,13 +215,12 @@ class _AttendancePageState extends State<AttendancePage> {
                     rows: List<DataRow>.generate(
                       consumer.userData.length,
                       (index) => DataRow(
-                          color: MaterialStateColor.resolveWith((states) =>
+                          color: WidgetStateColor.resolveWith((states) =>
                               (index % 2 == 0)
                                   ? Color.fromARGB(223, 179, 157, 219)
                                   : Colors.deepPurple.shade100),
                           cells: [
-                            DataCell(Text((index + 1)
-                                .toString())), //consumer.userData[index].id.toString()
+                            DataCell(Text((index + 1).toString())),
                             DataCell(Text(AppMethods().dateOfBirthFormat(
                                 consumer.userData[index].attendanceDate))),
                             DataCell(Text(consumer.userData[index].employeeId
@@ -283,11 +277,6 @@ class _AttendancePageState extends State<AttendancePage> {
                                       setState(() {
                                         isInit = true;
                                       });
-
-                                      /* _editUser(
-                                      context,
-                                      users[
-                                          index]);  */ //_editName(context, users[index]);
                                     },
                                   ),
                                   IconButton(
@@ -304,7 +293,6 @@ class _AttendancePageState extends State<AttendancePage> {
 
                                       isInit = true;
                                       setState(() {});
-                                      // _deleteUser(index);
                                     },
                                   ),
                                 ],

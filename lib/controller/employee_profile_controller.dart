@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:hrms_app/model/admin_profile_model.dart';
 import 'package:hrms_app/model/employee_profile_model.dart';
 import 'package:hrms_app/utils/app_variables/user_credential.dart';
-import 'package:hrms_app/view/pages/employee_profile_page.dart';
 
 class EmployeeProfileController with ChangeNotifier {
   Future<HrmsEmployeeProfileModel> getEmployeeProfile(

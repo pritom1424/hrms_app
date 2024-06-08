@@ -1,8 +1,5 @@
-import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:hrms_app/controller/employee_profile_controller.dart';
 import 'package:hrms_app/utils/app_variables/api_links.dart';
 import 'package:hrms_app/utils/app_variables/user_credential.dart';
@@ -17,13 +14,10 @@ class CustomAppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // String iconPath = "assets/images/dhakaprokash_icon.png";
-
     return Drawer(
         width: AppVars.screenSize.width * 0.7,
-        backgroundColor: Appcolors.appdrawerBgColor, //AppColors.logoColorDeep
+        backgroundColor: Appcolors.appdrawerBgColor,
         child: Container(
-          //height: GenericVars.scSize.height,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -147,7 +141,6 @@ class CustomAppDrawer extends StatelessWidget {
               ),
               Expanded(
                 child: Container(
-                  //  height: AppVars.screenSize.height * 0.75,
                   color: Appcolors.appdrawerListBgColor,
                   child: ListView.builder(
                       padding: const EdgeInsets.all(0),
@@ -157,12 +150,6 @@ class CustomAppDrawer extends StatelessWidget {
                           )),
                 ),
               ),
-              /* const FittedBox(
-                child: Text(
-                  "Footer",
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                ),
-              ) */
             ],
           ),
         ));

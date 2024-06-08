@@ -55,7 +55,7 @@ class EmployeeDataController with ChangeNotifier {
   Future<void> deleteEmployee(String apiLink, int employeeId) async {
     Dio dio = Dio();
     final urlString = apiLink + employeeId.toString();
-    //final url = Uri.parse(urlString);
+
     final response = await dio.get(urlString,
         options: Options(
             headers: {'Authorization': 'Bearer ${UserCredential.usertoken}'}));
@@ -71,12 +71,8 @@ class EmployeeDataController with ChangeNotifier {
   Future<void> createEmployee(
       String apiLink, HrmsEmployeePostModel hrmsEmployeePostModel) async {
     Dio dio = Dio();
-    print("into dio");
-    if (hrmsEmployeePostModel.image == null) {
-      print("into dio null");
-      //  final url = Uri.parse(apiLink);
-      final bodyData = hrmsEmployeePostModelToJson(hrmsEmployeePostModel);
 
+    if (hrmsEmployeePostModel.image == null) {
       final response = await dio.post(apiLink,
           data: hrmsEmployeePostModel,
           options: Options(headers: {
@@ -103,7 +99,6 @@ class EmployeeDataController with ChangeNotifier {
     Dio dio = Dio();
 
     if (hrmsEmployeePostModel.image == null) {
-      // final url = Uri.parse(apiLink + employeeId.toString());
       String urlString = apiLink + employeeId.toString();
       final bodyData = hrmsEmployeePostModelToJson(hrmsEmployeePostModel);
 
@@ -132,7 +127,7 @@ class EmployeeDataController with ChangeNotifier {
     final url = apiLink + employeeId.toString();
 
     FormData formData = FormData.fromMap({
-      'image': await MultipartFile.fromFile(image!.path,
+      'image': await MultipartFile.fromFile(image.path,
           filename: image.path.split("/").last),
       // Add other fields if needed
       'id': hrmsEmployeePostModel.id,
@@ -250,7 +245,7 @@ class EmployeeDataController with ChangeNotifier {
 
   Future<HrmsDepartmentListModel> getDepartmentList(String apiLink) async {
     Dio dio = Dio();
-    //final url = Uri.parse(apiLink);
+
     final response = await dio.get(apiLink,
         options: Options(
             headers: {'Authorization': 'Bearer ${UserCredential.usertoken}'}));
@@ -261,7 +256,7 @@ class EmployeeDataController with ChangeNotifier {
 
   Future<HrmsShifttypesModel> getShiftList(String apiLink) async {
     Dio dio = Dio();
-    //final url = Uri.parse(apiLink);
+
     final response = await dio.get(apiLink,
         options: Options(
             headers: {'Authorization': 'Bearer ${UserCredential.usertoken}'}));
@@ -272,7 +267,7 @@ class EmployeeDataController with ChangeNotifier {
 
   Future<HrmsNationalityListModel> getNationalityList(String apiLink) async {
     Dio dio = Dio();
-    //final url = Uri.parse(apiLink);
+
     final response = await dio.get(apiLink,
         options: Options(
             headers: {'Authorization': 'Bearer ${UserCredential.usertoken}'}));
@@ -284,7 +279,7 @@ class EmployeeDataController with ChangeNotifier {
 
   Future<HrmsIdtypeListModel> getIdTypeList(String apiLink) async {
     Dio dio = Dio();
-    // final url = Uri.parse(apiLink);
+
     final response = await dio.get(apiLink,
         options: Options(
             headers: {'Authorization': 'Bearer ${UserCredential.usertoken}'}));

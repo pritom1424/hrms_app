@@ -2,20 +2,19 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:hrms_app/controller/hrms_auth_controller.dart';
-import 'package:hrms_app/utils/app_variables/user_credential.dart';
-import 'package:hrms_app/view/pages/dashboard/leave_page/leave_page.dart';
-import 'package:hrms_app/view/pages/splash_page_2.dart';
 
-import 'package:provider/provider.dart';
+import 'package:hrms_app/utils/app_variables/user_credential.dart';
+import 'package:hrms_app/view/pages/navigation_pages/leave/leave_page.dart';
+import 'package:hrms_app/view/pages/splash_page.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
-import 'employee/add_new_application.dart';
-import 'leave_application.dart';
+import 'drawer_pages/employee/add_new_application.dart';
+import 'navigation_pages/leave/leave_application.dart';
 import 'navigation_pages/attendance_page.dart';
-import 'navigation_pages/dashboard_page_2.dart';
+import 'navigation_pages/dashboard_page.dart';
 
 import '../../utils/app_variables/app_vars.dart';
-import 'employee_profile_page.dart';
+import 'navigation_pages/employee_profile_page.dart';
 
 import '../widgets/app_drawer/custom_app_drawer.dart';
 
@@ -35,19 +34,9 @@ class _RootNavPageState extends State<RootNavPage> {
   @override
   void initState() {
     TimeExpire();
-    // requestPermissions();
+
     super.initState();
   }
-
-  /* uture<void> requestPermissions() async {
-    var status = await Permission.manageExternalStorage.request();
-    if (status.isGranted) {
-      // Permission granted, you can now access the external storage
-    } else {
-      // Permission denied
-      // Handle the scenario where user denies permission
-    }
-  } */
 
   void TimeExpire() async {
     final prefs = await SharedPreferences.getInstance();
@@ -63,8 +52,8 @@ class _RootNavPageState extends State<RootNavPage> {
 
     Timer(Duration(seconds: timeToExpiry), () {
       if (mounted) {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (ctx) => SplashPage2()));
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (ctx) => SplashPage()));
       }
     });
   }
@@ -74,23 +63,10 @@ class _RootNavPageState extends State<RootNavPage> {
     AppVars.screenSize = MediaQuery.of(context).size;
     List<Widget?> navViews() {
       return [
-        //dashboard
-        //DashboardPage(),
-        DashboardPage2(),
-        //employee list
-        //  EmployeePage(),
-
-        (UserCredential.userid == 1)
-            ? LeaveCards()
-            : LeaveFormPage() /*  LeaveFormPage() */,
-
+        DashboardPage(),
+        (UserCredential.userid == 1) ? LeaveCards() : LeaveFormPage(),
         AttendancePage(),
-        // user
-        EmployeeProfilePage(id: ""), // UsersPage(),
-        // settings
-        //  SettingsPage(),
-        //logout
-        // LogoutPage(),
+        EmployeeProfilePage(id: ""),
       ];
     }
 
@@ -101,7 +77,6 @@ class _RootNavPageState extends State<RootNavPage> {
     }
 
     return SafeArea(
-        // top: false,
         child: Scaffold(
             appBar: AppbarDefault(
               appbarName:
@@ -132,7 +107,6 @@ class _RootNavPageState extends State<RootNavPage> {
                     },
                     foregroundColor: Colors.greenAccent,
                     backgroundColor: Colors.deepPurple,
-                    // shape: customizations[index].$3,
                     child: const Icon(
                       Icons.add,
                       size: 24,

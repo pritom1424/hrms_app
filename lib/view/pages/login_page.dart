@@ -1,5 +1,3 @@
-// loginForm widget
-
 import 'package:flutter/material.dart';
 
 import 'package:hrms_app/controller/hrms_auth_controller.dart';
@@ -24,10 +22,6 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  /* final emailFocusNode = FocusNode();
-
-  final passwordFocusNode = FocusNode(); */
-
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
   Color actionButtonBgColor = const Color.fromARGB(255, 68, 156, 204);
@@ -36,25 +30,19 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   void initState() {
-    print("init login");
-
     if (widget.isLogOut != null) {
       if (widget.isLogOut == true) {
         Provider.of<HrmsAuthController>(context, listen: false).logout();
       }
     }
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     emailController.dispose();
     passController.dispose();
-/*     emailFocusNode.dispose();
-    passwordFocusNode.dispose(); */
   }
 
   @override
@@ -115,13 +103,6 @@ class _LoginFormState extends State<LoginForm> {
                         labelStyle: TextStyle(fontSize: 18, color: Colors.grey),
                         prefixIcon:
                             Icon(Icons.email_outlined, color: Colors.grey),
-                        /*    suffixIcon: InkWell(
-                            onTap: () {
-                              _obSecurePassword.value = !_obSecurePassword.value;
-                            },
-                            child: Icon(_obSecurePassword.value
-                                ? Icons.visibility_off_outlined
-                                : Icons.visibility)), */
                       ),
                       validator: (value) {
                         if (value != null && value == "") {
@@ -129,14 +110,9 @@ class _LoginFormState extends State<LoginForm> {
                         }
                         return null;
                       },
-                      /*   onChanged: (value) {
-                        //  provider.setPassword(value);
-                      }, */
-                      // passwordFocusNode: passwordFocusNode,
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
-                      // focusNode: passwordFocusNode,
                       controller: passController,
                       style: TextStyle(
                           fontSize: 18, fontWeight: FontWeight.normal),
@@ -158,13 +134,6 @@ class _LoginFormState extends State<LoginForm> {
                         labelStyle: TextStyle(fontSize: 18, color: Colors.grey),
                         prefixIcon:
                             Icon(Icons.lock_open_rounded, color: Colors.grey),
-                        /* suffixIcon: InkWell(
-                            onTap: () {
-                              _obSecurePassword.value = !_obSecurePassword.value;
-                            },
-                            child: Icon(_obSecurePassword.value
-                                ? Icons.visibility_off_outlined
-                                : Icons.visibility)), */
                       ),
                       validator: (value) {
                         if (value != null && value == "") {
@@ -172,12 +141,8 @@ class _LoginFormState extends State<LoginForm> {
                         }
                         return null;
                       },
-                      /*  onChanged: (value) {
-                        //  provider.setPassword(value);
-                      }, */
                     ),
                     const SizedBox(height: 50),
-                    // LoginButtonWidget(),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.symmetric(vertical: 5),
@@ -231,29 +196,6 @@ class _LoginFormState extends State<LoginForm> {
                         return SizedBox.shrink();
                       }
                     })
-                    /* TextButton(
-                        onPressed: () {},
-                        child: const Text("Forgotten Password?")), */
-                    /*  const SizedBox(
-                      height: 20,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (ctx) => const RegisterPage()));
-                      },
-                      style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          backgroundColor: Colors.green,
-                          foregroundColor: Colors.white,
-                          fixedSize: Size(AppVars.screenSize.width * 0.9,
-                              AppVars.screenSize.height * 0.065)),
-                      child: const Text(
-                        "Create New Account",
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ) */
                   ],
                 ),
               ),
@@ -264,13 +206,3 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 }
-
-
-
-// provider
-
-/* class PasswordValidator {
-  static bool validate(String value) {
-    return value.length >= 6;
-  }
-} */

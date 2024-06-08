@@ -10,17 +10,6 @@ class NavBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-
-        // margin: const EdgeInsets.all(20),
-        /* decoration: BoxDecoration(
-            color: const Color.fromRGBO(0, 0, 0, 0),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.black.withOpacity(0.35),
-                  blurRadius: 30,
-                  offset: const Offset(0, 10))
-            ],
-            borderRadius: BorderRadius.circular(30)), */
         child: BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       backgroundColor: Appcolors.navbarBgColor,

@@ -34,7 +34,7 @@ class EmployeeAttendanceController with ChangeNotifier {
   Future<HrmsEmployeeAttendanceModel> showEmployeeAttendance(
       String apiLink, int id) async {
     Dio dio = Dio();
-    // final url = Uri.parse(apiLink + employeeCode.toString());
+
     final urlString = apiLink + id.toString();
     final response = await dio.get(urlString,
         options: Options(
@@ -49,7 +49,6 @@ class EmployeeAttendanceController with ChangeNotifier {
       HrmsAttendancePostModel hrmsEmployeeAttendancePostModel) async {
     Dio dio = Dio();
 
-    // final url = Uri.parse(apiLink + employeeId.toString());
     String urlString = apiLink + employeeId.toString();
     final bodyData =
         hrmsAttendancePostModelToJson(hrmsEmployeeAttendancePostModel);
@@ -76,7 +75,6 @@ class EmployeeAttendanceController with ChangeNotifier {
       String apiLink, HrmsAttendancePostModel hrmsAttendanceModel) async {
     Dio dio = Dio();
 
-    // final url = Uri.parse(apiLink + employeeId.toString());
     String urlString = apiLink;
     final bodyData = hrmsAttendancePostModelToJson(hrmsAttendanceModel);
 
@@ -99,26 +97,6 @@ class EmployeeAttendanceController with ChangeNotifier {
       return false;
     }
   }
-
-  /* Future<void> updateUserStatus(String apiLink, int id) async {
-    Dio dio = Dio();
-    // final url = Uri.parse(apiLink + employeeCode.toString());
-    final urlString = apiLink + id.toString();
-    final response = await dio.get(urlString);
-  }
-
-  Future<HrmsEmployeeUserModel> loadAllUser(String apiLink) async {
-    Dio dio = Dio();
-    // final url = Uri.parse(apiLink);
-    final response = await dio.get(apiLink);
-    HrmsEmployeeUserModel jsonResponse =
-        hrmsEmployeeUserModelFromJson(jsonEncode(response.data));
-
-    _userData = jsonResponse.data;
-    _filterData = _userData;
-
-    return jsonResponse;
-  }*/
 
   void filterUserData(String query) {
     query = query.toLowerCase();
@@ -145,7 +123,6 @@ class EmployeeAttendanceController with ChangeNotifier {
               element.status.toString().toLowerCase().contains(query)))
           .toList();
     }
-    //_userData.clear();
 
     notifyListeners();
   }
@@ -154,7 +131,7 @@ class EmployeeAttendanceController with ChangeNotifier {
     Dio dio = Dio();
 
     final urlString = apiLink + employeeId.toString();
-    //final url = Uri.parse(urlString);
+
     print("respnse delete attend ${UserCredential.usertoken}");
     final response = await dio.delete(urlString,
         options: Options(

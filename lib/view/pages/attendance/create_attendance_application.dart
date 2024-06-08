@@ -5,14 +5,12 @@ import 'package:hrms_app/controller/employee_attendance_controller.dart';
 import 'package:hrms_app/model/hrms_attendance_post_model.dart';
 import 'package:hrms_app/model/hrms_employee_attendance_list_model.dart';
 
-import 'package:hrms_app/model/hrms_employee_attendance_model.dart';
-
 import 'package:hrms_app/utils/app_methods/app_methods.dart';
 import 'package:hrms_app/utils/app_variables/api_links.dart';
 import 'package:hrms_app/utils/app_variables/app_strings.dart';
 import 'package:hrms_app/utils/app_variables/app_vars.dart';
 import 'package:hrms_app/view/widgets/appbar_default_widget.dart';
-import 'package:intl/intl.dart';
+
 import 'package:provider/provider.dart';
 
 class CreateAttendanceForm extends StatefulWidget {
@@ -80,9 +78,6 @@ class _CreateAttendanceFormState extends State<CreateAttendanceForm> {
 
   String? _selectedEmployee;
   int? _selectedEmployeeID;
-
-  String _employeeCode = "";
-  String _employeeName = "";
 
   HrmsEmployeeAttendanceListModel? currentModel;
 
@@ -184,47 +179,12 @@ class _CreateAttendanceFormState extends State<CreateAttendanceForm> {
   }
 
   void initEditAttendanceForm(
-      HrmsEmployeeAttendanceListModel hrmsAttendanceModel) {
-    // _employeeCode = hrmsAttendanceModel.data.employeeCode;
-    //_employeeName = hrmsAttendanceModel.employee.employeeName;
-/*     _employeeCodeController.text =
-        hrmsAttendanceModel.employee.employeeCode ?? "";
-    _employeeNameController.text = */
-    //    hrmsAttendanceModel.employee.employeeName ?? "";
-    /*   _employeeShiftDurationController.text =
-        hrmsAttendanceModel.shiftDuration ?? ""; */
-    /*  _totalWorkingHourController.text =
-        hrmsAttendanceModel.totalWorkingHour ?? ""; */
-
-    // (hrmsAttendanceModel.status == 1) ? didPresent = true : didPresent = false;
-
-    print("_selectedStartTime: }");
-    /*   _selectedStartTime =
-        AppMethods().dateStringToTimeOfDay(hrmsShiftModel.shiftStartTime); */
-    /*  final format = DateFormat("HH:mm"); //"6:00 AM"
-    _selectedInTime =
-        TimeOfDay.fromDateTime(format.parse(hrmsAttendanceModel.inTime!));
-    _selectedOutTime =
-        TimeOfDay.fromDateTime(format.parse(hrmsAttendanceModel.outTime!));
-    _selectedLateTime =
-        TimeOfDay.fromDateTime(format.parse(hrmsAttendanceModel.lateTime!));
-    _selectedOverTime =
-        TimeOfDay.fromDateTime(format.parse(hrmsAttendanceModel.overTime!));
-    _selectedAttendanceTime = hrmsAttendanceModel.attendanceDate!; */
-
-    /*  _selectedEndTime =
-        AppMethods().dateStringToTimeOfDay(hrmsShiftModel.shiftEndTime);
-    _selectedBreakStartTime =
-        AppMethods().dateStringToTimeOfDay(hrmsShiftModel.breakStartTime);
-    _selectedBreakEndTime =
-        AppMethods().dateStringToTimeOfDay(hrmsShiftModel.breakEndTime); */
-    /*    _totalWorkingHour = hrmsShiftModel.totalWorkingHour ?? ""; */
-  }
+      HrmsEmployeeAttendanceListModel hrmsAttendanceModel) {}
 
   @override
   void initState() {
     isInit = true;
-    // TODO: implement initState
+
     super.initState();
   }
 
@@ -234,8 +194,6 @@ class _CreateAttendanceFormState extends State<CreateAttendanceForm> {
     final provider =
         Provider.of<EmployeeAttendanceController>(context, listen: false);
 
-/*     final providerShift =
-        Provider.of<EmployeeShiftController>(context, listen: false); */
     return Scaffold(
         appBar: (widget.title == null)
             ? null
@@ -689,14 +647,6 @@ class _CreateAttendanceFormState extends State<CreateAttendanceForm> {
               } else {
                 AppMethods().snackBar(AppStrings.formErrorText, context);
               }
-              /* if (_formPersonalInfoKey.currentState!.validate()) {
-                _formPersonalInfoKey.currentState!.save();
-                // Do something with the validated data
-                // print('Name: $_name');
-              } */
-
-              // Handle apply button press
-              // You can access the values using controller.text for each field
             },
             child: const Text(
               'Add',
